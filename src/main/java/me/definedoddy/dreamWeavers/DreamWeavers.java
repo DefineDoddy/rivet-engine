@@ -1,0 +1,15 @@
+package me.definedoddy.dreamWeavers;
+
+import me.definedoddy.engine.context.GameContext;
+import me.definedoddy.engine.window.GameWindow;
+
+public class DreamWeavers extends GameContext {
+    public static void main(String[] args) {
+        DreamWeavers instance = new DreamWeavers();
+
+        GameWindow window = new GameWindow("Dream Weavers", 1280, 720);
+        instance.attachWindow(window);
+
+        instance.startProcess();
+    }
+}
