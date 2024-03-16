@@ -1,18 +1,18 @@
-package me.definedoddy.toolkit.errors;
+package me.definedoddy.engine.utils.errors;
 
 import static org.lwjgl.util.tinyfd.TinyFileDialogs.*;
 
-public class ErrorPopupException extends RuntimeException {
+public class ErrorWindowPopup extends RuntimeException {
     private final String title;
 
-    public ErrorPopupException(String title, String message) {
+    public ErrorWindowPopup(String title, String message) {
         super(message);
         this.title = message;
 
         createErrorWindow(title, message);
     }
 
-    public ErrorPopupException(String title, String message, Throwable cause) {
+    public ErrorWindowPopup(String title, String message, Throwable cause) {
         super(message, cause);
         this.title = message;
 

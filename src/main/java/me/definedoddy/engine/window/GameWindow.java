@@ -1,7 +1,8 @@
 package me.definedoddy.engine.window;
 
-import me.definedoddy.toolkit.errors.ErrorPopupException;
-import me.definedoddy.toolkit.glfw.GlfwMappings;
+import me.definedoddy.engine.rendering.icon.Icon;
+import me.definedoddy.engine.utils.errors.ErrorWindowPopup;
+import me.definedoddy.engine.utils.glfw.GlfwMappings;
 import me.definedoddy.toolkit.memory.Disposable;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
@@ -9,6 +10,7 @@ import org.lwjgl.glfw.GLFWVidMode;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL.createCapabilities;
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.glLoadIdentity;
 
 public class GameWindow implements Disposable {
     private String title;
@@ -23,6 +25,7 @@ public class GameWindow implements Disposable {
     private boolean fullScreen = false;
     private boolean decorated = true;
     private boolean alwaysOnTop = false;
+    private Icon icon;
 
     public GameWindow(String title, int width, int height) {
         this.title = title;
@@ -34,7 +37,7 @@ public class GameWindow implements Disposable {
         GLFWErrorCallback.createPrint(System.err).set();
 
         if (!glfwInit()) {
-            throw new ErrorPopupException("GLFW Error", "Failed to initialise GLFW");
+            throw new ErrorWindowPopup("GLFW Error", "Failed to initialise GLFW");
         }
 
         glfwDefaultWindowHints();
@@ -48,7 +51,7 @@ public class GameWindow implements Disposable {
         windowId = glfwCreateWindow(width, height, title, fullScreen ? glfwGetPrimaryMonitor() : 0, 0);
 
         if (GlfwMappings.isNull(windowId)) {
-            throw new ErrorPopupException("GLFW Error", "Failed to create window");
+            throw new ErrorWindowPopup("GLFW Error", "Failed to create window");
         }
 
         glfwMakeContextCurrent(windowId);
@@ -73,6 +76,26 @@ public class GameWindow implements Disposable {
             GLFWVidMode vidMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
             if (vidMode != null) glfwSetWindowPos(windowId, (vidMode.width() - width) / 2, (vidMode.height() - height) / 2);
         }
+
+        if (icon != null) glfwSetWindowIcon(windowId, icon.createGlfwImageBuffer());
+    }
+
+    public void update() {
+        if (!isCreated()) return;
+
+        glfwPollEvents();
+
+        glViewport(0, 0, width, height);
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+        glOrtho(0.0f, width, 0.0f, height, 1.0f, -1.0f);
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
+    }
+
+    public void setIcon(Icon icon) {
+        this.icon = icon;
+        if (isCreated()) glfwSetWindowIcon(windowId, icon.createGlfwImageBuffer());
     }
 
     public void setVisible(boolean visible) {
@@ -145,18 +168,5 @@ public class GameWindow implements Disposable {
     public boolean canUpdate() {
         if (!isCreated()) return false;
         return !glfwWindowShouldClose(windowId);
-    }
-
-    public void update() {
-        if (!isCreated()) return;
-
-        glfwPollEvents();
-
-        glViewport(0, 0, width, height);
-        glMatrixMode(GL_PROJECTION);
-        glLoadIdentity();
-        glOrtho(0.0f, width, 0.0f, height, 1.0f, -1.0f);
-        glMatrixMode(GL_MODELVIEW);
-        glLoadIdentity();
     }
 }

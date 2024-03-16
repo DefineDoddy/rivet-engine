@@ -1,4 +1,4 @@
-package me.definedoddy.toolkit.glfw;
+package me.definedoddy.engine.utils.glfw;
 
 import static java.sql.Types.NULL;
 import static org.lwjgl.glfw.GLFW.GLFW_FALSE;
