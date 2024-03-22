@@ -19,7 +19,7 @@ public class ErrorWindowPopup extends RuntimeException {
         createErrorWindow(title, message);
     }
 
-    private void createErrorWindow(String title, String message) {
+    protected void createErrorWindow(String title, String message) {
         tinyfd_messageBox(title, message, "ok", "error", false);
     }
 

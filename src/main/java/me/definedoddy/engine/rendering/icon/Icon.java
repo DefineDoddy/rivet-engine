@@ -56,5 +56,7 @@ public class Icon implements Disposable {
     @Override
     public void dispose() {
         buffer.flush();
+        glfwImage = null;
+        glfwImageBuffer = null;
     }
 }

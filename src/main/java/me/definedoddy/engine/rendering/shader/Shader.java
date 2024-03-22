@@ -1,0 +1,98 @@
+package me.definedoddy.engine.rendering.shader;
+
+import me.definedoddy.toolkit.file.ProjectFile;
+import me.definedoddy.toolkit.memory.Disposable;
+
+import java.util.List;
+
+import static org.lwjgl.opengl.GL11.GL_FALSE;
+import static org.lwjgl.opengl.GL20.*;
+
+public class Shader implements Disposable {
+    private final int programId;
+
+    private List<Uniform> uniforms;
+
+    public Shader(ProjectFile vertexFile, ProjectFile fragmentFile, String... attributes) {
+        programId = glCreateProgram();
+
+        int vertexShaderId = compileShader(vertexFile, GL_VERTEX_SHADER);
+        int fragmentShaderId = compileShader(fragmentFile, GL_FRAGMENT_SHADER);
+
+        glAttachShader(programId, vertexShaderId);
+        glAttachShader(programId, fragmentShaderId);
+
+        bindAttributes(attributes);
+        glLinkProgram(programId);
+
+        glDetachShader(programId, vertexShaderId);
+        glDetachShader(programId, fragmentShaderId);
+        glDeleteShader(vertexShaderId);
+        glDeleteShader(fragmentShaderId);
+    }
+
+    public int getProgramId() {
+        return programId;
+    }
+
+    public void bind() {
+        glUseProgram(programId);
+    }
+
+    public void unbind() {
+        glUseProgram(0);
+    }
+
+    public void setUniforms(Uniform... uniforms) {
+        this.uniforms = List.of(uniforms);
+        for (Uniform uniform : uniforms) {
+            uniform.storeUniformLocation(programId);
+        }
+        validate();
+    }
+
+    public <T extends Uniform> T getUniform(Class<T> type, String name) {
+        for (Uniform uniform : uniforms) {
+            if (uniform.getName().equals(name)) {
+                return type.cast(uniform);
+            }
+        }
+        return null;
+    }
+
+    public void validate() {
+        glValidateProgram(programId);
+        if (glGetProgrami(programId, GL_VALIDATE_STATUS) == GL_FALSE) {
+            throw new RuntimeException("Failed to validate shader program: " + glGetProgramInfoLog(programId));
+        }
+    }
+
+    private void bindAttributes(String[] attributes) {
+        for (int i = 0; i < attributes.length; i++) {
+            glBindAttribLocation(programId, i, attributes[i]);
+        }
+    }
+
+    private int compileShader(ProjectFile file, int type) {
+        String source = file.read();
+
+        int shaderId = glCreateShader(type);
+
+        glShaderSource(shaderId, source);
+        glCompileShader(shaderId);
+
+        int status = glGetShaderi(shaderId, GL_COMPILE_STATUS);
+        if (glGetShaderi(shaderId, GL_COMPILE_STATUS) == GL_FALSE) {
+            String message = glGetShaderInfoLog(shaderId, status);
+            throw new RuntimeException("Failed to compile shader: " + file + "\n" + message);
+        }
+
+        return shaderId;
+    }
+
+    @Override
+    public void dispose() {
+        unbind();
+        glDeleteProgram(programId);
+    }
+}

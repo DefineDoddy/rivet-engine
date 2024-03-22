@@ -1,16 +1,18 @@
 package me.definedoddy.engine.window;
 
 import me.definedoddy.engine.rendering.icon.Icon;
-import me.definedoddy.engine.utils.errors.ErrorWindowPopup;
+import me.definedoddy.engine.utils.errors.FatalErrorWindowPopup;
 import me.definedoddy.engine.utils.glfw.GlfwMappings;
 import me.definedoddy.toolkit.memory.Disposable;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 
+import java.awt.*;
+
+import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL.createCapabilities;
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL11.glLoadIdentity;
 
 public class GameWindow implements Disposable {
     private String title;
@@ -27,6 +29,8 @@ public class GameWindow implements Disposable {
     private boolean alwaysOnTop = false;
     private Icon icon;
 
+    private Color backgroundColor = Color.BLACK;
+
     public GameWindow(String title, int width, int height) {
         this.title = title;
         this.width = width;
@@ -37,7 +41,7 @@ public class GameWindow implements Disposable {
         GLFWErrorCallback.createPrint(System.err).set();
 
         if (!glfwInit()) {
-            throw new ErrorWindowPopup("GLFW Error", "Failed to initialise GLFW");
+            throw new FatalErrorWindowPopup("GLFW Error", "Failed to initialise GLFW");
         }
 
         glfwDefaultWindowHints();
@@ -51,7 +55,7 @@ public class GameWindow implements Disposable {
         windowId = glfwCreateWindow(width, height, title, fullScreen ? glfwGetPrimaryMonitor() : 0, 0);
 
         if (GlfwMappings.isNull(windowId)) {
-            throw new ErrorWindowPopup("GLFW Error", "Failed to create window");
+            throw new FatalErrorWindowPopup("GLFW Error", "Failed to create window");
         }
 
         glfwMakeContextCurrent(windowId);
@@ -64,6 +68,16 @@ public class GameWindow implements Disposable {
         glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
 
         glfwSwapInterval(vSync ? 1 : 0);
+
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glEnable(GL_TEXTURE_2D);
+        glEnable(GL_DEPTH_TEST);
+        glDepthFunc(GL_LEQUAL);
+        glEnable(GL_CULL_FACE);
+        glCullFace(GL_BACK);
+        glFrontFace(GL_CCW);
+        glEnable(GL_SCISSOR_TEST);
 
         glfwSetWindowCloseCallback(windowId, win -> glfwSetWindowShouldClose(win, true));
 
@@ -78,12 +92,26 @@ public class GameWindow implements Disposable {
         }
 
         if (icon != null) glfwSetWindowIcon(windowId, icon.createGlfwImageBuffer());
+
+        glClearColor(backgroundColor.getRed() / 255f,
+                backgroundColor.getGreen() / 255f,
+                backgroundColor.getBlue() / 255f,
+                backgroundColor.getAlpha() / 255f
+        );
     }
 
     public void update() {
         if (!isCreated()) return;
 
-        glfwPollEvents();
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        glClearColor(backgroundColor.getRed() / 255f,
+                backgroundColor.getGreen() / 255f,
+                backgroundColor.getBlue() / 255f,
+                backgroundColor.getAlpha() / 255f
+        );
+
+        glfwSwapBuffers(windowId);
 
         glViewport(0, 0, width, height);
         glMatrixMode(GL_PROJECTION);
@@ -91,6 +119,12 @@ public class GameWindow implements Disposable {
         glOrtho(0.0f, width, 0.0f, height, 1.0f, -1.0f);
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
+
+        glfwPollEvents();
+    }
+
+    public void setBackgroundColor(Color color) {
+        this.backgroundColor = color;
     }
 
     public void setIcon(Icon icon) {
@@ -162,7 +196,15 @@ public class GameWindow implements Disposable {
 
     @Override
     public void dispose() {
-        if (isCreated()) glfwDestroyWindow(windowId);
+        if (isCreated()) {
+            glfwFreeCallbacks(windowId);
+
+            glfwDestroyWindow(windowId);
+            windowId = 0;
+
+            glfwTerminate();
+            glfwSetErrorCallback(null).free();
+        }
     }
 
     public boolean canUpdate() {
