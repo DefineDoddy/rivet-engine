@@ -16,9 +16,8 @@ public class BasicMeshRenderer {
 
     public void render() {
         shader.bind();
-        DebugLog.info("Rendering " + meshes.size() + " meshes");
         for (Mesh mesh : meshes) {
-            shader.getColour().loadColour(mesh.getColor());
+            shader.getColour().loadColour(mesh.getColour());
             mesh.render();
         }
         shader.unbind();

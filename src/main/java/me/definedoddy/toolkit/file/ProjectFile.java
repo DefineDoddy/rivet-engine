@@ -43,18 +43,18 @@ public class ProjectFile {
         return path.substring(0, path.lastIndexOf(FILE_SEPARATOR));
     }
 
-    public static BufferedReader getReader(ProjectFile file) {
+    public BufferedReader getReader() {
         try {
-            return new BufferedReader(new FileReader(file.getPath()));
+            return new BufferedReader(new FileReader(this.getPath()));
         } catch (Exception e) {
-            throw new RuntimeException("Error reading file: " + file.getPath(), e);
+            throw new RuntimeException("Error reading file: " + this.getPath(), e);
         }
     }
 
     public String read() {
         StringBuilder fileContent = new StringBuilder();
         try {
-            BufferedReader reader = getReader(this);
+            BufferedReader reader = this.getReader();
             String line;
             while ((line = reader.readLine()) != null) {
                 fileContent.append(line).append("\n");

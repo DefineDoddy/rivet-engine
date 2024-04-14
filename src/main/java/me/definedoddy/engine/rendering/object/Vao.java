@@ -2,7 +2,7 @@ package me.definedoddy.engine.rendering.object;
 
 import me.definedoddy.toolkit.memory.Disposable;
 
-import java.nio.ByteBuffer;
+import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,30 +12,19 @@ public class Vao implements Disposable {
     private final int id;
 
     private final List<Vbo> vbos = new ArrayList<>();
-    private final List<Attribute> attributes = new ArrayList<>();
 
     public Vao() {
         id = glGenVertexArrays();
     }
 
-    public Vbo storeData(ByteBuffer buffer, Attribute... attributes) {
+    public void storeData(int index, FloatBuffer data, int componentSize) {
         Vbo vbo = new Vbo();
         vbo.bind();
-        vbo.storeData(buffer);
-        vbos.add(vbo);
-        linkAttributes(attributes);
+        vbo.storeData(data, componentSize);
+        glVertexAttribPointer(index, componentSize, GL_FLOAT, false, 0, 0);
+        glEnableVertexAttribArray(index);
         vbo.unbind();
-        return vbo;
-    }
-
-    public void linkAttributes(Attribute... attributes) {
-        int offset = 0;
-        for (Attribute attribute : attributes) {
-            attribute.link(offset, getVertexDataTotalBytes(attributes));
-            attribute.setEnabled(true);
-            this.attributes.add(attribute);
-            offset += attribute.getBytesPerVertex();
-        }
+        vbos.add(vbo);
     }
 
     public void bind() {
@@ -57,14 +46,6 @@ public class Vao implements Disposable {
     }
 
     public int getVertexCount() {
-        return (int) (vbos.getFirst().getSizeInBytes() / attributes.getFirst().getBytesPerVertex());
-    }
-
-    private int getVertexDataTotalBytes(Attribute... attributes) {
-        int total = 0;
-        for (Attribute attribute : attributes) {
-            total += attribute.getBytesPerVertex();
-        }
-        return total;
+        return vbos.getFirst().getLength();
     }
 }

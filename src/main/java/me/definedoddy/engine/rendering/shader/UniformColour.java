@@ -9,8 +9,11 @@ public class UniformColour extends Uniform {
         super(name);
     }
 
-    public void loadColour(Color color) {
-        loadColour(color.getRed(), color.getGreen(), color.getBlue());
+    public void loadColour(Color colour) {
+        loadColour(colour.getRed() / 255f,
+                colour.getGreen() / 255f,
+                colour.getBlue() / 255f
+        );
     }
 
     public void loadColour(float r, float g, float b) {

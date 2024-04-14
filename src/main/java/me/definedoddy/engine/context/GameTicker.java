@@ -13,7 +13,7 @@ public class GameTicker {
     }
 
     public void start() {
-        init();
+        this.init();
 
         while (window.canUpdate()) {
             try {
@@ -31,8 +31,9 @@ public class GameTicker {
     }
 
     public void update() {
-        window.update();
+        window.preUpdate();
         GameManager.update();
         Time.update();
+        window.postUpdate();
     }
 }

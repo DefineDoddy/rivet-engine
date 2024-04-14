@@ -6,13 +6,18 @@ import me.definedoddy.toolkit.file.Resource;
 
 import java.awt.image.BufferedImage;
 import java.nio.ByteBuffer;
+import java.util.HashMap;
 
 import static org.lwjgl.opengl.GL11.*;
 
 public class TextureLoader {
-    private static final HashMapList<String, Texture> textures = new HashMapList<>();
+    private static final HashMap<String, Texture> textures = new HashMap<>();
 
     public static Texture loadTexture(Resource resource) {
+        if (textures.containsKey(resource.getPath())) {
+            return textures.get(resource.getPath());
+        }
+
         BufferedImage image = ImageUtils.readImage(resource.getStream());
         int width = image.getWidth();
         int height = image.getHeight();
@@ -29,7 +34,7 @@ public class TextureLoader {
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, buf);
 
         Texture tex = new Texture(textureId, width, height);
-        textures.add(resource.getPath(), tex);
+        textures.put(resource.getPath(), tex);
 
         return tex;
     }

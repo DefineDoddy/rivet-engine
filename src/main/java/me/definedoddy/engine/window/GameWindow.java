@@ -44,6 +44,12 @@ public class GameWindow implements Disposable {
             throw new FatalErrorWindowPopup("GLFW Error", "Failed to initialise GLFW");
         }
 
+        GLFWVidMode vidMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+
+        if (vidMode == null) {
+            throw new FatalErrorWindowPopup("GLFW Error", "Failed to get video mode");
+        }
+
         glfwDefaultWindowHints();
 
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
@@ -52,7 +58,7 @@ public class GameWindow implements Disposable {
         glfwWindowHint(GLFW_DECORATED, GlfwMappings.toGlfwBoolean(decorated));
         glfwWindowHint(GLFW_FLOATING, GlfwMappings.toGlfwBoolean(alwaysOnTop));
 
-        windowId = glfwCreateWindow(width, height, title, fullScreen ? glfwGetPrimaryMonitor() : 0, 0);
+        windowId = glfwCreateWindow(vidMode.width(), vidMode.height(), title, fullScreen ? glfwGetPrimaryMonitor() : 0, 0);
 
         if (GlfwMappings.isNull(windowId)) {
             throw new FatalErrorWindowPopup("GLFW Error", "Failed to create window");
@@ -61,6 +67,7 @@ public class GameWindow implements Disposable {
         glfwMakeContextCurrent(windowId);
         createCapabilities();
 
+        glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
         glfwWindowHint(GLFW_SRGB_CAPABLE, GLFW_TRUE);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -79,6 +86,8 @@ public class GameWindow implements Disposable {
         glFrontFace(GL_CCW);
         glEnable(GL_SCISSOR_TEST);
 
+        glfwSetWindowSize(windowId, width, height);
+
         glfwSetWindowCloseCallback(windowId, win -> glfwSetWindowShouldClose(win, true));
 
         glfwSetWindowSizeCallback(windowId, (win, w, h) -> {
@@ -87,8 +96,7 @@ public class GameWindow implements Disposable {
         });
 
         if (!maximized && !fullScreen) {
-            GLFWVidMode vidMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-            if (vidMode != null) glfwSetWindowPos(windowId, (vidMode.width() - width) / 2, (vidMode.height() - height) / 2);
+            glfwSetWindowPos(windowId,(vidMode.width() - width) / 2, (vidMode.height() - height) / 2);
         }
 
         if (icon != null) glfwSetWindowIcon(windowId, icon.createGlfwImageBuffer());
@@ -98,9 +106,11 @@ public class GameWindow implements Disposable {
                 backgroundColor.getBlue() / 255f,
                 backgroundColor.getAlpha() / 255f
         );
+
+        glfwShowWindow(windowId);
     }
 
-    public void update() {
+    public void preUpdate() {
         if (!isCreated()) return;
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -110,21 +120,25 @@ public class GameWindow implements Disposable {
                 backgroundColor.getBlue() / 255f,
                 backgroundColor.getAlpha() / 255f
         );
+    }
+
+    public void postUpdate() {
+        if (!isCreated()) return;
 
         glfwSwapBuffers(windowId);
 
         glViewport(0, 0, width, height);
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
-        glOrtho(0.0f, width, 0.0f, height, 1.0f, -1.0f);
+        glOrtho(0f, width, 0f, height, 1f, -1f);
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
 
         glfwPollEvents();
     }
 
-    public void setBackgroundColor(Color color) {
-        this.backgroundColor = color;
+    public void setBackgroundColour(Color colour) {
+        this.backgroundColor = colour;
     }
 
     public void setIcon(Icon icon) {
@@ -154,7 +168,8 @@ public class GameWindow implements Disposable {
 
     public void setFullScreen(boolean fullScreen) {
         this.fullScreen = fullScreen;
-        if (isCreated()) glfwSetWindowMonitor(windowId, fullScreen ? glfwGetPrimaryMonitor() : 0, 0, 0, width, height, GLFW_DONT_CARE);
+        if (isCreated()) glfwSetWindowMonitor(windowId, fullScreen ? glfwGetPrimaryMonitor() : 0,
+                0, 0, width, height, GLFW_DONT_CARE);
     }
 
     public void setDecorated(boolean decorated) {

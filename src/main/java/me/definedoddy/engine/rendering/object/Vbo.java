@@ -2,36 +2,24 @@ package me.definedoddy.engine.rendering.object;
 
 import me.definedoddy.toolkit.memory.Disposable;
 
-import java.nio.ByteBuffer;
+import java.nio.FloatBuffer;
 
 import static org.lwjgl.opengl.GL15.*;
 
 public class Vbo implements Disposable {
     private final int id;
-    private long sizeInBytes;
+
+    private int componentSize;
+    private int length;
 
     public Vbo() {
         id = glGenBuffers();
     }
 
-    public static ByteBuffer create(int index, int size, float[] data) {
-        ByteBuffer buffer = ByteBuffer.allocateDirect(data.length * 4);
-        for (float f : data) {
-            buffer.putFloat(f);
-        }
-        buffer.flip();
-        return buffer;
-    }
-
-    public void storeData(ByteBuffer buffer) {
-        bind();
-        glBufferData(GL_ARRAY_BUFFER, buffer, GL_STATIC_DRAW);
-        unbind();
-        sizeInBytes = buffer.capacity();
-    }
-
-    public long getSizeInBytes() {
-        return sizeInBytes;
+    public void storeData(FloatBuffer data, int componentSize) {
+        this.componentSize = componentSize;
+        this.length = data.limit() / componentSize;
+        glBufferData(GL_ARRAY_BUFFER, data, GL_STATIC_DRAW);
     }
 
     public void bind() {
@@ -49,5 +37,13 @@ public class Vbo implements Disposable {
 
     public int getId() {
         return id;
+    }
+
+    public int getComponentSize() {
+        return componentSize;
+    }
+
+    public int getLength() {
+        return length;
     }
 }
