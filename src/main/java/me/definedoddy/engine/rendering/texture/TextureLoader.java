@@ -1,7 +1,6 @@
 package me.definedoddy.engine.rendering.texture;
 
 import me.definedoddy.toolkit.buffer.ImageUtils;
-import me.definedoddy.toolkit.collections.HashMapList;
 import me.definedoddy.toolkit.file.Resource;
 
 import java.awt.image.BufferedImage;

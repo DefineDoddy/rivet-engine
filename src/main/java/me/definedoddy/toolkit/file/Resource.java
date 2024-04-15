@@ -1,6 +1,8 @@
 package me.definedoddy.toolkit.file;
 
+import java.io.BufferedReader;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URL;
 
 public class Resource {
@@ -28,5 +30,9 @@ public class Resource {
             throw new RuntimeException("Failed to find resource from path: " + path);
         }
         return stream;
+    }
+
+    public BufferedReader getReader() {
+        return new BufferedReader(new InputStreamReader(getStream()));
     }
 }

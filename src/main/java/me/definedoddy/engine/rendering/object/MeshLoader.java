@@ -1,6 +1,8 @@
 package me.definedoddy.engine.rendering.object;
 
-import me.definedoddy.toolkit.file.ProjectFile;
+import me.definedoddy.engine.rendering.texture.Texture;
+import me.definedoddy.engine.rendering.texture.TextureLoader;
+import me.definedoddy.toolkit.file.Resource;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
@@ -9,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MeshLoader {
-    public static Mesh loadFromObjFile(ProjectFile objFile) {
+    public static Mesh loadFromObjFile(Resource objFile, Resource textureFile) {
         BufferedReader reader = objFile.getReader();
         String line = null;
 
@@ -50,7 +52,7 @@ public class MeshLoader {
                     normals.add(normal);
                 } else if (line.startsWith("f ")) {
                     texturesArray = new float[vertices.size() * 2];
-                    normalsArray = new float[normals.size() * 3];
+                    normalsArray = new float[vertices.size() * 3];
                     break;
                 }
             }
@@ -94,7 +96,8 @@ public class MeshLoader {
             indicesArray[i] = indices.get(i);
         }
 
-        return MeshUtils.createMesh(verticesArray, texturesArray, normalsArray, indicesArray);
+        Texture texture = textureFile != null ? TextureLoader.loadTexture(textureFile) : null;
+        return MeshUtils.createMesh(verticesArray, texturesArray, normalsArray, indicesArray, texture);
     }
 
     private static void processVertex(String[] vertexData, List<Integer> indices, List<Vector2f> textures,

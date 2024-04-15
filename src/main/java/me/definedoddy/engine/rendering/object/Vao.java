@@ -3,6 +3,7 @@ package me.definedoddy.engine.rendering.object;
 import me.definedoddy.toolkit.memory.Disposable;
 
 import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,17 +23,31 @@ public class Vao implements Disposable {
         vbo.bind();
         vbo.storeData(data, componentSize);
         glVertexAttribPointer(index, componentSize, GL_FLOAT, false, 0, 0);
-        glEnableVertexAttribArray(index);
+        vbo.unbind();
+        vbos.add(vbo);
+    }
+
+    public void storeIndices(IntBuffer indices) {
+        Vbo vbo = new Vbo();
+        vbo.bind();
+        vbo.storeIndices(indices);
         vbo.unbind();
         vbos.add(vbo);
     }
 
     public void bind() {
         glBindVertexArray(id);
+        glEnableVertexAttribArray(0);
+        glEnableVertexAttribArray(1);
+        glEnableVertexAttribArray(2);
+        glActiveTexture(GL_TEXTURE0);
     }
 
     public void unbind() {
         glBindVertexArray(0);
+        glDisableVertexAttribArray(0);
+        glDisableVertexAttribArray(1);
+        glDisableVertexAttribArray(2);
     }
 
     @Override
