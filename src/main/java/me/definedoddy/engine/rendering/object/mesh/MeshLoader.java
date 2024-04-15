@@ -1,4 +1,4 @@
-package me.definedoddy.engine.rendering.object;
+package me.definedoddy.engine.rendering.object.mesh;
 
 import me.definedoddy.engine.rendering.texture.Texture;
 import me.definedoddy.engine.rendering.texture.TextureLoader;

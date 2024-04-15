@@ -12,21 +12,20 @@ public class Vbo implements Disposable {
 
     private int componentSize;
     private int length;
-    private boolean isIndices;
+    private final boolean isIndices;
 
-    public Vbo() {
+    public Vbo(boolean isIndices) {
         id = glGenBuffers();
+        this.isIndices = isIndices;
     }
 
     public void storeData(FloatBuffer data, int componentSize) {
-        this.isIndices = false;
         this.componentSize = componentSize;
         this.length = data.limit() / componentSize;
         glBufferData(GL_ARRAY_BUFFER, data, GL_STATIC_DRAW);
     }
 
     public void storeIndices(IntBuffer indices) {
-        this.isIndices = true;
         this.length = indices.limit();
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices, GL_STATIC_DRAW);
     }
@@ -56,5 +55,9 @@ public class Vbo implements Disposable {
 
     public int getLength() {
         return length;
+    }
+
+    public boolean isIndices() {
+        return isIndices;
     }
 }

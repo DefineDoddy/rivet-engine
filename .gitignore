@@ -42,6 +42,6 @@ bin/
 .DS_Store
 
 ### Custom ###
-.idea/
-.gradle/
-build/
+.idea
+build
+*.log

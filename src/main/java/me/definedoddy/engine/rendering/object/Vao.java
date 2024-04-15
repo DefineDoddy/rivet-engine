@@ -11,15 +11,16 @@ import static org.lwjgl.opengl.GL30.*;
 
 public class Vao implements Disposable {
     private final int id;
-
     private final List<Vbo> vbos = new ArrayList<>();
+
+    private int indicesCount;
 
     public Vao() {
         id = glGenVertexArrays();
     }
 
     public void storeData(int index, FloatBuffer data, int componentSize) {
-        Vbo vbo = new Vbo();
+        Vbo vbo = new Vbo(false);
         vbo.bind();
         vbo.storeData(data, componentSize);
         glVertexAttribPointer(index, componentSize, GL_FLOAT, false, 0, 0);
@@ -28,7 +29,8 @@ public class Vao implements Disposable {
     }
 
     public void storeIndices(IntBuffer indices) {
-        Vbo vbo = new Vbo();
+        indicesCount = indices.limit();
+        Vbo vbo = new Vbo(true);
         vbo.bind();
         vbo.storeIndices(indices);
         vbo.unbind();
@@ -37,6 +39,7 @@ public class Vao implements Disposable {
 
     public void bind() {
         glBindVertexArray(id);
+        for (Vbo vbo : vbos) if (vbo.isIndices()) vbo.bind();
         glEnableVertexAttribArray(0);
         glEnableVertexAttribArray(1);
         glEnableVertexAttribArray(2);
@@ -45,6 +48,7 @@ public class Vao implements Disposable {
 
     public void unbind() {
         glBindVertexArray(0);
+        for (Vbo vbo : vbos) if (vbo.isIndices()) vbo.unbind();
         glDisableVertexAttribArray(0);
         glDisableVertexAttribArray(1);
         glDisableVertexAttribArray(2);
@@ -61,6 +65,6 @@ public class Vao implements Disposable {
     }
 
     public int getVertexCount() {
-        return vbos.getFirst().getLength();
+        return indicesCount;
     }
 }

@@ -1,7 +1,6 @@
 package me.definedoddy.engine.rendering.basicMesh;
 
-import me.definedoddy.engine.rendering.object.Mesh;
-import me.definedoddy.toolkit.debug.DebugLog;
+import me.definedoddy.engine.rendering.object.mesh.Mesh;
 
 import java.util.ArrayList;
 import java.util.List;

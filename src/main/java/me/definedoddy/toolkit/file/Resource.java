@@ -35,4 +35,8 @@ public class Resource {
     public BufferedReader getReader() {
         return new BufferedReader(new InputStreamReader(getStream()));
     }
+
+    public boolean exists() {
+        return Resource.class.getClassLoader().getResource(path) != null;
+    }
 }

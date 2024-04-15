@@ -1,5 +1,6 @@
-package me.definedoddy.engine.rendering.object;
+package me.definedoddy.engine.rendering.object.mesh;
 
+import me.definedoddy.engine.rendering.object.Vao;
 import me.definedoddy.engine.rendering.texture.Texture;
 import me.definedoddy.toolkit.buffer.BufferUtils;
 import me.definedoddy.toolkit.memory.Disposable;
@@ -8,6 +9,7 @@ import org.lwjgl.opengl.GL20;
 
 import java.awt.*;
 import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
 
 public class Mesh implements Disposable {
     private final Vao vao = new Vao();
@@ -16,7 +18,7 @@ public class Mesh implements Disposable {
 
     public void render() {
         vao.bind();
-        GL20.glBindTexture(GL11.GL_TEXTURE_2D, texture.getId());
+        if (texture != null) GL20.glBindTexture(GL11.GL_TEXTURE_2D, texture.getId());
         GL11.glDrawElements(GL11.GL_TRIANGLES, vao.getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
         vao.unbind();
     }
@@ -46,8 +48,10 @@ public class Mesh implements Disposable {
     }
 
     public void setIndices(int[] indices) {
+        IntBuffer buffer = BufferUtils.createIntBuffer(indices);
+
         vao.bind();
-        vao.storeIndices(BufferUtils.createIntBuffer(indices));
+        vao.storeIndices(buffer);
         vao.unbind();
     }
 
