@@ -1,5 +1,7 @@
 package me.definedoddy.engine.rendering.camera;
 
+import me.definedoddy.engine.input.KeyCode;
+import me.definedoddy.engine.input.Keyboard;
 import me.definedoddy.engine.utils.maths.MathsUtils;
 import me.definedoddy.engine.window.GameWindow;
 import org.joml.Matrix4f;
@@ -8,7 +10,7 @@ import org.joml.Vector3f;
 public class Camera {
     private static final Camera instance = new Camera();
 
-    private Vector3f position = new Vector3f(0, 0, 0);
+    private Vector3f position;
     private float pitch, yaw, roll;
 
     private float fieldOfView = 70f;
@@ -19,15 +21,15 @@ public class Camera {
     private Matrix4f viewMatrix;
 
     public Camera() {
-        position = new Vector3f(0, 2, 15f);
+        position = new Vector3f(0f, 2f, 0f);
         calcMatrices();
     }
 
     public void update() {
-        // Rotate around an object at the origin
-        position.x = (float) (15 * Math.sin(Math.toRadians(System.currentTimeMillis() / 10)));
-        position.z = (float) (15 * Math.cos(Math.toRadians(System.currentTimeMillis() / 10)));
-        yaw = (float) (-System.currentTimeMillis() / 10 % 360);
+        if (Keyboard.get().isKeyPressed(KeyCode.W)) move(new Vector3f(0f, 0f, -0.1f));
+        if (Keyboard.get().isKeyPressed(KeyCode.S)) move(new Vector3f(0f, 0f, 0.1f));
+        if (Keyboard.get().isKeyPressed(KeyCode.A)) move(new Vector3f(-0.1f, 0f, 0f));
+        if (Keyboard.get().isKeyPressed(KeyCode.D)) move(new Vector3f(0.1f, 0f, 0f));
         calcViewMatrix();
     }
 

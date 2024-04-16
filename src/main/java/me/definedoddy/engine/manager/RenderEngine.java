@@ -5,7 +5,9 @@ import me.definedoddy.engine.rendering.entity.EntityRenderer;
 import me.definedoddy.engine.rendering.entity.EntityShader;
 import me.definedoddy.engine.rendering.object.model.Model;
 import me.definedoddy.engine.rendering.object.model.ModelLoader;
+import me.definedoddy.engine.rendering.object.model.ModelUtils;
 import me.definedoddy.toolkit.file.Resource;
+import org.joml.Vector3f;
 
 public class RenderEngine {
     private final EntityRenderer entityRenderer;
@@ -15,33 +17,22 @@ public class RenderEngine {
     }
 
     public void init() {
-        Model model = ModelLoader.loadFromObjFile(new Resource("obj/stall.obj"), new Resource("obj/stallTexture.png"));
-        /*Model model = new Model();
-        model.setIndices(new int[] {
-                0, 1, 3,
-                3, 1, 2
-        });
-        model.setVertexPositions(new float[] {
-                -0.5f, 0.5f, 0f,
-                -0.5f, -0.5f, 0f,
-                0.5f, -0.5f, 0f,
-                0.5f, 0.5f, 0f
-        });
-        model.setTextureCoords(new float[] {
-                0, 0,
-                0, 1,
-                1, 1,
-                1, 0
-        });
-        model.setTexture(TextureLoader.loadTexture(new Resource("obj/stallTexture.png")));
-        model.setColour(Color.GREEN);*/
-        ModelEntity entity = new ModelEntity() {
+        ModelEntity stall = new ModelEntity() {
             @Override
             protected Model defineModel() {
-                return model;
+                return ModelLoader.loadFromObjFile(new Resource("obj/stall.obj"), new Resource("obj/stallTexture.png"));
             }
         };
-        entityRenderer.addEntityToRender(entity);
+        entityRenderer.addEntityToRender(stall);
+
+        ModelEntity groundQuad = new ModelEntity() {
+            @Override
+            protected Model defineModel() {
+                return ModelUtils.createQuad(new Vector3f(100, 100, 0), null);
+            }
+        };
+        groundQuad.getRotation().set(90, 0, 0);
+        entityRenderer.addEntityToRender(groundQuad);
     }
 
     public void update() {

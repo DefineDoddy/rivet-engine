@@ -27,6 +27,7 @@ public class Model implements Disposable {
             GameManager.getRenderEngine().getEntityRenderer().getShader().getTransformationMatrix().loadMatrix(transformMat);
         }
         if (texture != null) GL20.glBindTexture(GL11.GL_TEXTURE_2D, texture.getId());
+        else GL20.glBindTexture(GL11.GL_TEXTURE_2D, 0);
         GL11.glDrawElements(GL11.GL_TRIANGLES, vao.getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
         vao.unbind();
     }

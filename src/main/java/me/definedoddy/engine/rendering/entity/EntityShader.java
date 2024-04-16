@@ -18,7 +18,7 @@ public class EntityShader extends Shader {
     private final UniformMatrix4f viewMatrix = new UniformMatrix4f("view_matrix");
 
     public EntityShader(ProjectFile vertexFile, ProjectFile fragmentFile) {
-        super(vertexFile, fragmentFile, "position", "tex_coords");
+        super(vertexFile, fragmentFile, "position", "tex_coords", "normal");
     }
 
     public static EntityShader create() {

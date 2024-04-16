@@ -13,7 +13,7 @@ public class DreamWeavers extends GameContext {
 
         GameWindow window = new GameWindow("Dream Weavers", 1280, 720);
         window.setIcon(Icon.fromResource(new Resource("icon.png")));
-        window.setBackgroundColour(Color.RED);
+        window.setBackgroundColour(Color.CYAN);
         instance.attachWindow(window);
 
         instance.startProcess();
