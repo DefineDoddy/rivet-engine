@@ -15,6 +15,8 @@ import static org.lwjgl.opengl.GL.createCapabilities;
 import static org.lwjgl.opengl.GL11.*;
 
 public class GameWindow implements Disposable {
+    private static GameWindow instance;
+
     private String title;
     private int width, height;
 
@@ -35,6 +37,7 @@ public class GameWindow implements Disposable {
         this.title = title;
         this.width = width;
         this.height = height;
+        instance = this;
     }
 
     public void create() {
@@ -81,10 +84,10 @@ public class GameWindow implements Disposable {
         glEnable(GL_TEXTURE_2D);
         glEnable(GL_DEPTH_TEST);
         glDepthFunc(GL_LEQUAL);
-        glEnable(GL_CULL_FACE);
-        glCullFace(GL_BACK);
-        glFrontFace(GL_CCW);
-        glEnable(GL_SCISSOR_TEST);
+        //glEnable(GL_CULL_FACE);
+        //glCullFace(GL_BACK);
+        //glFrontFace(GL_CCW);
+        //glEnable(GL_SCISSOR_TEST);
 
         glfwSetWindowSize(windowId, width, height);
 
@@ -108,6 +111,10 @@ public class GameWindow implements Disposable {
         );
 
         glfwShowWindow(windowId);
+    }
+
+    public static GameWindow get() {
+        return instance;
     }
 
     public void preUpdate() {

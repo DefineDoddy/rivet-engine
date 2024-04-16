@@ -1,4 +1,4 @@
-package me.definedoddy.engine.rendering.object.mesh;
+package me.definedoddy.engine.rendering.object.model;
 
 import me.definedoddy.engine.rendering.texture.Texture;
 import me.definedoddy.engine.rendering.texture.TextureLoader;
@@ -10,8 +10,8 @@ import java.io.BufferedReader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MeshLoader {
-    public static Mesh loadFromObjFile(Resource objFile, Resource textureFile) {
+public class ModelLoader {
+    public static Model loadFromObjFile(Resource objFile, Resource textureFile) {
         BufferedReader reader = objFile.getReader();
         String line = null;
 
@@ -97,7 +97,7 @@ public class MeshLoader {
         }
 
         Texture texture = textureFile != null ? TextureLoader.loadTexture(textureFile) : null;
-        return MeshUtils.createMesh(verticesArray, texturesArray, normalsArray, indicesArray, texture);
+        return ModelUtils.createMesh(verticesArray, texturesArray, normalsArray, indicesArray, texture);
     }
 
     private static void processVertex(String[] vertexData, List<Integer> indices, List<Vector2f> textures,

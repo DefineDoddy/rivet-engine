@@ -1,9 +1,13 @@
-package me.definedoddy.engine.rendering.object.mesh;
+package me.definedoddy.engine.rendering.object.model;
 
+import me.definedoddy.engine.entity.Entity;
+import me.definedoddy.engine.manager.GameManager;
 import me.definedoddy.engine.rendering.object.Vao;
 import me.definedoddy.engine.rendering.texture.Texture;
+import me.definedoddy.engine.utils.maths.MathsUtils;
 import me.definedoddy.toolkit.buffer.BufferUtils;
 import me.definedoddy.toolkit.memory.Disposable;
+import org.joml.Matrix4f;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 
@@ -11,13 +15,17 @@ import java.awt.*;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
-public class Mesh implements Disposable {
+public class Model implements Disposable {
     private final Vao vao = new Vao();
     private Color colour = Color.WHITE;
     private Texture texture;
 
-    public void render() {
+    public void render(Entity entity) {
         vao.bind();
+        if (entity != null) {
+            Matrix4f transformMat = MathsUtils.createTransformationMatrix(entity.getPosition(), entity.getRotation(), entity.getScale());
+            GameManager.getRenderEngine().getEntityRenderer().getShader().getTransformationMatrix().loadMatrix(transformMat);
+        }
         if (texture != null) GL20.glBindTexture(GL11.GL_TEXTURE_2D, texture.getId());
         GL11.glDrawElements(GL11.GL_TRIANGLES, vao.getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
         vao.unbind();
