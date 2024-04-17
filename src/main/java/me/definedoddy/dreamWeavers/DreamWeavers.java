@@ -1,6 +1,8 @@
 package me.definedoddy.dreamWeavers;
 
+import me.definedoddy.dreamWeavers.rendering.camera.FPCamera;
 import me.definedoddy.engine.context.GameContext;
+import me.definedoddy.engine.rendering.camera.Camera;
 import me.definedoddy.engine.rendering.icon.Icon;
 import me.definedoddy.engine.window.GameWindow;
 import me.definedoddy.toolkit.file.Resource;
@@ -15,6 +17,8 @@ public class DreamWeavers extends GameContext {
         window.setIcon(Icon.fromResource(new Resource("icon.png")));
         window.setBackgroundColour(Color.CYAN);
         instance.attachWindow(window);
+
+        Camera.set(new FPCamera());
 
         instance.startProcess();
     }

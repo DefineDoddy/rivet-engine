@@ -1,16 +1,15 @@
 package me.definedoddy.engine.rendering.camera;
 
-import me.definedoddy.engine.input.KeyCode;
-import me.definedoddy.engine.input.Keyboard;
 import me.definedoddy.engine.utils.maths.MathsUtils;
 import me.definedoddy.engine.window.GameWindow;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
+import org.lwjgl.glfw.GLFW;
 
 public class Camera {
-    private static final Camera instance = new Camera();
+    private static Camera instance;
 
-    private Vector3f position;
+    private Vector3f position = new Vector3f(0, 0, 0);
     private float pitch, yaw, roll;
 
     private float fieldOfView = 70f;
@@ -21,20 +20,24 @@ public class Camera {
     private Matrix4f viewMatrix;
 
     public Camera() {
-        position = new Vector3f(0f, 2f, 0f);
         calcMatrices();
-    }
-
-    public void update() {
-        if (Keyboard.get().isKeyPressed(KeyCode.W)) move(new Vector3f(0f, 0f, -0.1f));
-        if (Keyboard.get().isKeyPressed(KeyCode.S)) move(new Vector3f(0f, 0f, 0.1f));
-        if (Keyboard.get().isKeyPressed(KeyCode.A)) move(new Vector3f(-0.1f, 0f, 0f));
-        if (Keyboard.get().isKeyPressed(KeyCode.D)) move(new Vector3f(0.1f, 0f, 0f));
-        calcViewMatrix();
     }
 
     public static Camera get() {
         return instance;
+    }
+
+    public static void set(Camera camera) {
+        instance = camera;
+    }
+
+    public void init() {
+        GLFW.glfwSetInputMode(GameWindow.get().getWindowId(), GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_DISABLED);
+        GLFW.glfwSetCursorPos(GameWindow.get().getWindowId(), GameWindow.get().getWidth() / 2f, GameWindow.get().getHeight() / 2f);
+    }
+
+    public void update() {
+        calcViewMatrix();
     }
 
     private void calcMatrices() {
@@ -59,8 +62,8 @@ public class Camera {
         return viewMatrix;
     }
 
-    public void move(Vector3f offset) {
-        position.add(offset);
+    public void move(Vector3f vector) {
+        position.add(vector);
         calcViewMatrix();
     }
 

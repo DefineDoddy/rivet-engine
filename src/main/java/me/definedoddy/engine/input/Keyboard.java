@@ -3,7 +3,6 @@ package me.definedoddy.engine.input;
 import me.definedoddy.engine.window.GameWindow;
 import org.lwjgl.glfw.GLFW;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -11,24 +10,22 @@ import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
 import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
 
 public class Keyboard {
-    private static final List<Keyboard> keyboards = new ArrayList<>();
+    private static List<Keyboard> connected;
 
     private final boolean[] keysPressed = new boolean[350];
     private final boolean[] lastKeysPressed = new boolean[350];
 
-    private Keyboard() {}
-
     public static Keyboard get() {
-        return keyboards.getFirst();
+        return connected.getFirst();
     }
 
     public static void initAll() {
-        keyboards.add(new Keyboard()); // Add default/main keyboard
-        keyboards.forEach(Keyboard::init);
+        connected = Input.getConnectedKeyboards();
+        connected.forEach(Keyboard::init);
     }
 
     public static void updateAll() {
-        keyboards.forEach(Keyboard::update);
+        connected.forEach(Keyboard::update);
     }
 
     public void init() {
