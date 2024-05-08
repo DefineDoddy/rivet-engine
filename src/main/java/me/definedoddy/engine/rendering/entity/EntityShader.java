@@ -11,13 +11,14 @@ public class EntityShader extends Shader {
     // Uniform variables
     private final UniformColour colour = new UniformColour("tint_colour");
     private final UniformTexture texture = new UniformTexture("tex");
+    private final UniformBool useTexture = new UniformBool("use_texture");
 
     private final UniformMatrix4f transformMatrix = new UniformMatrix4f("transform_matrix");
     private final UniformMatrix4f projectionMatrix = new UniformMatrix4f("projection_matrix");
     private final UniformMatrix4f viewMatrix = new UniformMatrix4f("view_matrix");
 
-    private final UniformVec3f lightPosition = new UniformVec3f("light_position");
-    private final UniformColour lightColour = new UniformColour("light_colour");
+    private final UniformArray lightPositions = new UniformArray("light_positions", UniformArray.Type.VEC3F);
+    private final UniformArray lightColours = new UniformArray("light_colours", UniformArray.Type.COLOUR);
 
     public EntityShader(ProjectFile vertexFile, ProjectFile fragmentFile) {
         super(vertexFile, fragmentFile, "position", "tex_coords", "normal");
@@ -26,9 +27,9 @@ public class EntityShader extends Shader {
     public static EntityShader create() {
         EntityShader shader = new EntityShader(VERTEX_SHADER, FRAGMENT_SHADER);
         shader.setUniforms(
-                shader.colour, shader.texture,
+                shader.colour, shader.texture, shader.useTexture,
                 shader.transformMatrix, shader.projectionMatrix, shader.viewMatrix,
-                shader.lightColour
+                shader.lightPositions, shader.lightColours
         );
         shader.validate();
         return shader;
@@ -40,6 +41,10 @@ public class EntityShader extends Shader {
 
     public UniformTexture getTexture() {
         return texture;
+    }
+
+    public UniformBool getUseTexture() {
+        return useTexture;
     }
 
     public UniformMatrix4f getTransformationMatrix() {
@@ -54,11 +59,11 @@ public class EntityShader extends Shader {
         return viewMatrix;
     }
 
-    public UniformVec3f getLightPosition() {
-        return lightPosition;
+    public UniformArray getLightPositions() {
+        return lightPositions;
     }
 
-    public UniformColour getLightColour() {
-        return lightColour;
+    public UniformArray getLightColours() {
+        return lightColours;
     }
 }

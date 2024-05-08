@@ -24,7 +24,7 @@ public class DreamWeavers extends GameContext {
 
         Camera.set(new FPCamera());
 
-        instance.startProcess(); // Currently must be the last line in the main method
+        instance.startProcess(); // Must be the last line in the main method
     }
 
     @Override

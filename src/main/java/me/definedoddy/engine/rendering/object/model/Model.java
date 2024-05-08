@@ -2,6 +2,7 @@ package me.definedoddy.engine.rendering.object.model;
 
 import me.definedoddy.engine.entity.Entity;
 import me.definedoddy.engine.manager.GameManager;
+import me.definedoddy.engine.rendering.entity.EntityShader;
 import me.definedoddy.engine.rendering.object.Vao;
 import me.definedoddy.engine.rendering.texture.Texture;
 import me.definedoddy.engine.utils.maths.MathsUtils;
@@ -21,15 +22,23 @@ public class Model implements Disposable {
     private Texture texture;
 
     public void render(Entity entity) {
+        EntityShader entityShader = GameManager.getRenderEngine().getEntityRenderer().getShader();
+
         vao.bind();
 
         if (entity != null) {
             Matrix4f transformMat = MathsUtils.createTransformationMatrix(entity.getPosition(), entity.getRotation(), entity.getScale());
-            GameManager.getRenderEngine().getEntityRenderer().getShader().getTransformationMatrix().loadMatrix(transformMat);
+            entityShader.getTransformationMatrix().loadMatrix(transformMat);
         }
 
-        if (texture != null) GL20.glBindTexture(GL11.GL_TEXTURE_2D, texture.getId());
-        else GL20.glBindTexture(GL11.GL_TEXTURE_2D, 0);
+        if (texture != null) {
+            GL20.glBindTexture(GL11.GL_TEXTURE_2D, texture.getId());
+            entityShader.getUseTexture().loadBoolean(true);
+
+        } else {
+            GL20.glBindTexture(GL11.GL_TEXTURE_2D, 0);
+            entityShader.getUseTexture().loadBoolean(false);
+        }
 
         GL11.glDrawElements(GL11.GL_TRIANGLES, vao.getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
 

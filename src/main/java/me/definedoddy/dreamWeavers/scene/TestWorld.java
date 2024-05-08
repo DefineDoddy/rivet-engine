@@ -30,9 +30,11 @@ public class TestWorld extends Scene {
         dragon.getPosition().set(0, 0, -5);
         addEntity(dragon);
 
-        Light light1 = new Light(new Vector3f(0, 0, 0), Color.BLUE);
-        addLight(light1);
-
         addEntity(new Stall());
+
+        addLight(new Light(new Vector3f(15, 5, 15), Color.RED));
+        addLight(new Light(new Vector3f(-15, 5, -15), Color.GREEN));
+        addLight(new Light(new Vector3f(15, 5, -15), Color.BLUE));
+        addLight(new Light(new Vector3f(-15, 5, 15), Color.YELLOW));
     }
 }
