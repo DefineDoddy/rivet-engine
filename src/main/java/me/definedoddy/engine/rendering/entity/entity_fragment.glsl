@@ -9,6 +9,7 @@ uniform sampler2D tex;
 uniform bool use_texture;
 
 uniform vec3 light_colours[4];
+uniform float light_attenuations[4];
 
 out vec4 frag_colour;
 
@@ -18,10 +19,13 @@ void main() {
     vec3 total_diffuse = vec3(0.0);
 
     for (int i = 0; i < 4; i++) {
+        float distance = length(pass_light_directions[i]);
+        float attenuation = clamp(light_attenuations[i] / distance, 0.0, 1.0);
+
         vec3 unit_light_direction = normalize(pass_light_directions[i]);
 
         float brightness = max(dot(unit_normal, unit_light_direction), 0.0);
-        total_diffuse += brightness * light_colours[i];
+        total_diffuse += brightness * light_colours[i] * attenuation;
     }
 
     total_diffuse = max(total_diffuse, 0.2); // Ambient light

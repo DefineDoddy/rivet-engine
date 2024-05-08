@@ -57,11 +57,47 @@ public class UniformArray extends Uniform {
         );
     }
 
+    public void loadInts(int[] values) {
+        if (type != Type.INT) {
+            throw new IllegalArgumentException("Cannot load int values into a non-INT uniform");
+        }
+
+        for (int i = 0; i < values.length; i++) {
+            GL20.glUniform1i(getLocationOf(i), values[i]);
+        }
+    }
+
+    public void loadInt(int index, int value) {
+        if (type != Type.INT) {
+            throw new IllegalArgumentException("Cannot load int values into a non-INT uniform");
+        }
+
+        GL20.glUniform1i(getLocationOf(index), value);
+    }
+
+    public void loadFloats(float[] values) {
+        if (type != Type.FLOAT) {
+            throw new IllegalArgumentException("Cannot load float values into a non-FLOAT uniform");
+        }
+
+        for (int i = 0; i < values.length; i++) {
+            GL20.glUniform1f(getLocationOf(i), values[i]);
+        }
+    }
+
+    public void loadFloat(int index, float value) {
+        if (type != Type.FLOAT) {
+            throw new IllegalArgumentException("Cannot load float values into a non-FLOAT uniform");
+        }
+
+        GL20.glUniform1f(getLocationOf(index), value);
+    }
+
     private int getLocationOf(int index) {
         return GL20.glGetUniformLocation(getProgramID(), getName() + "[" + index + "]");
     }
 
     public enum Type {
-        VEC3F, COLOUR
+        VEC3F, COLOUR, INT, FLOAT
     }
 }

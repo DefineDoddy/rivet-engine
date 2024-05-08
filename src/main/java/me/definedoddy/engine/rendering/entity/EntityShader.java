@@ -19,6 +19,7 @@ public class EntityShader extends Shader {
 
     private final UniformArray lightPositions = new UniformArray("light_positions", UniformArray.Type.VEC3F);
     private final UniformArray lightColours = new UniformArray("light_colours", UniformArray.Type.COLOUR);
+    private final UniformArray lightAttenuations = new UniformArray("light_attenuations", UniformArray.Type.FLOAT);
 
     public EntityShader(ProjectFile vertexFile, ProjectFile fragmentFile) {
         super(vertexFile, fragmentFile, "position", "tex_coords", "normal");
@@ -29,7 +30,7 @@ public class EntityShader extends Shader {
         shader.setUniforms(
                 shader.colour, shader.texture, shader.useTexture,
                 shader.transformMatrix, shader.projectionMatrix, shader.viewMatrix,
-                shader.lightPositions, shader.lightColours
+                shader.lightPositions, shader.lightColours, shader.lightAttenuations
         );
         shader.validate();
         return shader;
@@ -65,5 +66,9 @@ public class EntityShader extends Shader {
 
     public UniformArray getLightColours() {
         return lightColours;
+    }
+
+    public UniformArray getLightAttenuations() {
+        return lightAttenuations;
     }
 }
