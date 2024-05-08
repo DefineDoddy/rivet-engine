@@ -30,4 +30,7 @@ public abstract class GameContext {
     public GameWindow getWindow() {
         return window;
     }
+
+    public void init() {}
+    public void update() {}
 }

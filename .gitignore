@@ -41,11 +41,5 @@ bin/
 ### Mac OS ###
 .DS_Store
 
-### Project folders ###
-.idea/
-.gradle/
-gradle/
-
 ### Custom ###
-build/
 *.log

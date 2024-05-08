@@ -1,0 +1,57 @@
+package me.definedoddy.engine.scene;
+
+import me.definedoddy.engine.entity.Entity;
+import me.definedoddy.engine.entity.ModelEntity;
+import me.definedoddy.engine.manager.GameManager;
+import me.definedoddy.engine.rendering.entity.EntityRenderer;
+import me.definedoddy.engine.rendering.lighting.Light;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Scene {
+    private final List<Entity> entities = new ArrayList<>();
+    private final List<Light> lights = new ArrayList<>();
+
+    private final EntityRenderer entityRenderer = GameManager.getRenderEngine().getEntityRenderer();
+
+    public void update() {
+        entities.forEach(Entity::update);
+        entities.removeIf(Entity::isRemoved);
+    }
+
+    public void load() {}
+    public void unload() {}
+
+    public void addEntity(Entity entity) {
+        entities.add(entity);
+
+        if (entity instanceof ModelEntity modelEntity) {
+            entityRenderer.addEntity(modelEntity);
+        }
+    }
+
+    public void removeEntity(Entity entity) {
+        entities.remove(entity);
+
+        if (entity instanceof ModelEntity modelEntity) {
+            entityRenderer.removeEntity(modelEntity);
+        }
+    }
+
+    public List<Entity> getEntities() {
+        return entities;
+    }
+
+    public void addLight(Light light) {
+        lights.add(light);
+    }
+
+    public void removeLight(Light light) {
+        lights.remove(light);
+    }
+
+    public List<Light> getLights() {
+        return lights;
+    }
+}

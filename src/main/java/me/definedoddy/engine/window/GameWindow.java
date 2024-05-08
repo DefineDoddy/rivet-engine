@@ -84,8 +84,8 @@ public class GameWindow implements Disposable {
         glEnable(GL_TEXTURE_2D);
         glEnable(GL_DEPTH_TEST);
         glDepthFunc(GL_LEQUAL);
-        //glEnable(GL_CULL_FACE);
-        //glCullFace(GL_BACK);
+        glEnable(GL_CULL_FACE);
+        glCullFace(GL_BACK);
         //glFrontFace(GL_CCW);
         //glEnable(GL_SCISSOR_TEST);
 
@@ -109,8 +109,6 @@ public class GameWindow implements Disposable {
                 backgroundColor.getBlue() / 255f,
                 backgroundColor.getAlpha() / 255f
         );
-
-        glfwShowWindow(windowId);
     }
 
     public static GameWindow get() {
@@ -232,5 +230,9 @@ public class GameWindow implements Disposable {
     public boolean canUpdate() {
         if (!isCreated()) return false;
         return !glfwWindowShouldClose(windowId);
+    }
+
+    public void close() {
+        if (isCreated()) glfwSetWindowShouldClose(windowId, true);
     }
 }

@@ -1,15 +1,12 @@
 package me.definedoddy.engine.manager;
 
-import me.definedoddy.engine.entity.ModelEntity;
+import me.definedoddy.engine.rendering.config.DefaultRenderConfig;
+import me.definedoddy.engine.rendering.config.RenderConfig;
 import me.definedoddy.engine.rendering.entity.EntityRenderer;
 import me.definedoddy.engine.rendering.entity.EntityShader;
-import me.definedoddy.engine.rendering.object.model.Model;
-import me.definedoddy.engine.rendering.object.model.ModelLoader;
-import me.definedoddy.engine.rendering.object.model.ModelUtils;
-import me.definedoddy.toolkit.file.Resource;
-import org.joml.Vector3f;
 
 public class RenderEngine {
+    private RenderConfig renderConfig = new DefaultRenderConfig();
     private final EntityRenderer entityRenderer;
 
     public RenderEngine() {
@@ -17,22 +14,7 @@ public class RenderEngine {
     }
 
     public void init() {
-        ModelEntity stall = new ModelEntity() {
-            @Override
-            protected Model defineModel() {
-                return ModelLoader.loadFromObjFile(new Resource("obj/stall.obj"), new Resource("obj/stallTexture.png"));
-            }
-        };
-        entityRenderer.addEntityToRender(stall);
 
-        ModelEntity groundQuad = new ModelEntity() {
-            @Override
-            protected Model defineModel() {
-                return ModelUtils.createQuad(new Vector3f(100, 100, 0), null);
-            }
-        };
-        groundQuad.getRotation().set(90, 0, 0);
-        entityRenderer.addEntityToRender(groundQuad);
     }
 
     public void update() {
@@ -41,5 +23,13 @@ public class RenderEngine {
 
     public EntityRenderer getEntityRenderer() {
         return entityRenderer;
+    }
+
+    public void setRenderConfig(RenderConfig renderConfig) {
+        this.renderConfig = renderConfig;
+    }
+
+    public RenderConfig getRenderConfig() {
+        return renderConfig;
     }
 }

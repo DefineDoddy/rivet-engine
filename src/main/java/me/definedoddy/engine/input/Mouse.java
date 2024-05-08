@@ -41,19 +41,18 @@ public class Mouse {
     private void init() {
         GLFW.glfwSetCursorPosCallback(GameWindow.get().getWindowId(), this::processMousePosition);
         GLFW.glfwSetMouseButtonCallback(GameWindow.get().getWindowId(), this::processMouseButton);
-        GLFW.glfwSetScrollCallback(GameWindow.get().getWindowId(), this::processMouseDrag);
+        GLFW.glfwSetScrollCallback(GameWindow.get().getWindowId(), this::processMouseScroll);
     }
 
     private void preUpdate() {
         Arrays.fill(lastButtonPressed, false);
-
-        scrollX = 0d;
-        scrollY = 0d;
     }
 
     private void postUpdate() {
         xPos = lastX;
         yPos = lastY;
+        scrollX = 0d;
+        scrollY = 0d;
     }
 
     private void processMousePosition(long window, double xPos, double yPos) {
@@ -72,7 +71,7 @@ public class Mouse {
         }
     }
 
-    private void processMouseDrag(long window, double xOffset, double yOffset) {
+    private void processMouseScroll(long window, double xOffset, double yOffset) {
         scrollX = xOffset;
         scrollY = yOffset;
     }

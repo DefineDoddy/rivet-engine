@@ -32,7 +32,11 @@ public class EntityRenderer {
         return shader;
     }
 
-    public void addEntityToRender(ModelEntity entity) {
+    public void addEntity(ModelEntity entity) {
         entities.add(entity);
+    }
+
+    public void removeEntity(ModelEntity entity) {
+        entities.remove(entity);
     }
 }

@@ -28,9 +28,11 @@ public class GameTicker {
 
     public void init() {
         GameManager.init();
+        GameContext.get().init();
     }
 
     public void update() {
+        GameContext.get().update();
         window.preUpdate();
         GameManager.update();
         Time.update();

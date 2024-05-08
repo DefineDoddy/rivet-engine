@@ -1,9 +1,13 @@
 package me.definedoddy.dreamWeavers;
 
 import me.definedoddy.dreamWeavers.rendering.camera.FPCamera;
+import me.definedoddy.dreamWeavers.scene.TestWorld;
 import me.definedoddy.engine.context.GameContext;
+import me.definedoddy.engine.input.KeyCode;
+import me.definedoddy.engine.input.Keyboard;
 import me.definedoddy.engine.rendering.camera.Camera;
 import me.definedoddy.engine.rendering.icon.Icon;
+import me.definedoddy.engine.scene.SceneManager;
 import me.definedoddy.engine.window.GameWindow;
 import me.definedoddy.toolkit.file.Resource;
 
@@ -20,6 +24,18 @@ public class DreamWeavers extends GameContext {
 
         Camera.set(new FPCamera());
 
-        instance.startProcess();
+        instance.startProcess(); // Currently must be the last line in the main method
+    }
+
+    @Override
+    public void init() {
+        SceneManager.loadScene(TestWorld.class);
+    }
+
+    @Override
+    public void update() {
+        if (Keyboard.get().wasKeyPressed(KeyCode.ESCAPE)) {
+            getWindow().close();
+        }
     }
 }

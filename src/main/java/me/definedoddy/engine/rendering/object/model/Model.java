@@ -22,13 +22,17 @@ public class Model implements Disposable {
 
     public void render(Entity entity) {
         vao.bind();
+
         if (entity != null) {
             Matrix4f transformMat = MathsUtils.createTransformationMatrix(entity.getPosition(), entity.getRotation(), entity.getScale());
             GameManager.getRenderEngine().getEntityRenderer().getShader().getTransformationMatrix().loadMatrix(transformMat);
         }
+
         if (texture != null) GL20.glBindTexture(GL11.GL_TEXTURE_2D, texture.getId());
         else GL20.glBindTexture(GL11.GL_TEXTURE_2D, 0);
+
         GL11.glDrawElements(GL11.GL_TRIANGLES, vao.getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
+
         vao.unbind();
     }
 

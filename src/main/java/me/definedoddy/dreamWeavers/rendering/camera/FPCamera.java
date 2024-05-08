@@ -30,6 +30,8 @@ public class FPCamera extends Camera {
         if (Keyboard.get().isKeyPressed(KeyCode.S)) forward -= 1f;
         if (Keyboard.get().isKeyPressed(KeyCode.A)) strafe -= 1f;
         if (Keyboard.get().isKeyPressed(KeyCode.D)) strafe += 1f;
+        if (Keyboard.get().isKeyPressed(KeyCode.SPACE)) getPosition().y += movementSpeed;
+        if (Keyboard.get().isKeyPressed(KeyCode.SHIFT)) getPosition().y -= movementSpeed;
 
         travel(forward, strafe);
 
