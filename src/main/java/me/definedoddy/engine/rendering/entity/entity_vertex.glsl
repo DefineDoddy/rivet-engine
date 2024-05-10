@@ -11,14 +11,15 @@ uniform mat4 projection_matrix;
 uniform mat4 view_matrix;
 
 // Uniform (lighting)
-uniform vec3 light_positions[4];
+uniform int num_lights;
+uniform vec3 light_positions[_MAX_LIGHTS_];
 
 // Output (texture)
 out vec2 pass_tex_coords;
 out vec3 pass_surface_normal;
 
 // Output (lighting)
-out vec3 pass_light_directions[4];
+out vec3 pass_light_directions[_MAX_LIGHTS_];
 out vec3 pass_camera_direction;
 
 void main() {
@@ -29,7 +30,7 @@ void main() {
     pass_tex_coords = tex_coords;
     pass_surface_normal = (transform_matrix * vec4(normal, 0.0)).xyz;
 
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < num_lights; i++) {
         pass_light_directions[i] = light_positions[i] - world_pos.xyz;
     }
 

@@ -28,7 +28,7 @@ public class EntityRenderer {
         applyLighting();
 
         for (ModelEntity entity : entities) {
-            shader.getColour().loadColour(entity.getModel().getColour());
+            shader.getColour().loadColour(entity.getModel().getMaterial().getTintColour());
             shader.getReflectivity().loadFloat(entity.getModel().getMaterial().getReflectivity());
             entity.getModel().render(entity);
         }
@@ -39,6 +39,7 @@ public class EntityRenderer {
     private void applyLighting() {
         List<Light> lights = SceneManager.getCurrentScene().getLights();
         int maxLightsOnEntity = GameManager.getRenderEngine().getRenderConfig().getMaxLightsOnEntity();
+        shader.getNumLights().loadInt(lights.size());
 
         for (int i = 0; i < maxLightsOnEntity; i++) {
             if (i < lights.size()) {

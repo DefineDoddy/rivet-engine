@@ -3,19 +3,31 @@ package me.definedoddy.engine.rendering.shader;
 import me.definedoddy.toolkit.file.ProjectFile;
 import me.definedoddy.toolkit.memory.Disposable;
 
+import java.util.HashMap;
 import java.util.List;
 
 import static org.lwjgl.opengl.GL11.GL_FALSE;
 import static org.lwjgl.opengl.GL20.*;
 
 public class Shader implements Disposable {
+    private final ProjectFile vertexFile;
+    private final ProjectFile fragmentFile;
+    private final String[] attributes;
+
     private final int programId;
+    private final HashMap<String, String> variables = new HashMap<>();
 
     private List<Uniform> uniforms;
 
     public Shader(ProjectFile vertexFile, ProjectFile fragmentFile, String... attributes) {
-        programId = glCreateProgram();
+        this.vertexFile = vertexFile;
+        this.fragmentFile = fragmentFile;
+        this.attributes = attributes;
 
+        programId = glCreateProgram();
+    }
+
+    public void compile() {
         int vertexShaderId = compileShader(vertexFile, GL_VERTEX_SHADER);
         int fragmentShaderId = compileShader(fragmentFile, GL_FRAGMENT_SHADER);
 
@@ -48,7 +60,6 @@ public class Shader implements Disposable {
         for (Uniform uniform : uniforms) {
             uniform.storeUniformLocation(programId);
         }
-        validate();
     }
 
     public <T extends Uniform> T getUniform(Class<T> type, String name) {
@@ -58,6 +69,14 @@ public class Shader implements Disposable {
             }
         }
         return null;
+    }
+
+    public void setVariable(String name, String value) {
+        variables.put(name, value);
+    }
+
+    public String getVariable(String name) {
+        return variables.get(name);
     }
 
     public void validate() {
@@ -75,6 +94,10 @@ public class Shader implements Disposable {
 
     private int compileShader(ProjectFile file, int type) {
         String source = file.read();
+
+        for (String variable : variables.keySet()) {
+            source = source.replace("_" + variable + "_", variables.get(variable));
+        }
 
         int shaderId = glCreateShader(type);
 

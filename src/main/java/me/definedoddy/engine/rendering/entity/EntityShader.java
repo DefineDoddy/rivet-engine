@@ -1,5 +1,6 @@
 package me.definedoddy.engine.rendering.entity;
 
+import me.definedoddy.engine.manager.GameManager;
 import me.definedoddy.engine.rendering.shader.*;
 import me.definedoddy.toolkit.file.ProjectFile;
 
@@ -17,6 +18,7 @@ public class EntityShader extends Shader {
     private final UniformMatrix4f projectionMatrix = new UniformMatrix4f("projection_matrix");
     private final UniformMatrix4f viewMatrix = new UniformMatrix4f("view_matrix");
 
+    private final UniformInt numLights = new UniformInt("num_lights");
     private final UniformArray lightPositions = new UniformArray("light_positions", UniformArray.Type.VEC3F);
     private final UniformArray lightColours = new UniformArray("light_colours", UniformArray.Type.COLOUR);
     private final UniformFloat reflectivity = new UniformFloat("reflectivity");
@@ -27,11 +29,19 @@ public class EntityShader extends Shader {
 
     public static EntityShader create() {
         EntityShader shader = new EntityShader(VERTEX_SHADER, FRAGMENT_SHADER);
+
+        // Set shader variables
+        int maxLightsOnEntity = GameManager.getRenderEngine().getRenderConfig().getMaxLightsOnEntity();
+        shader.setVariable("MAX_LIGHTS", String.valueOf(maxLightsOnEntity));
+
+        shader.compile();
+
         shader.setUniforms(
                 shader.colour, shader.texture, shader.useTexture,
                 shader.transformMatrix, shader.projectionMatrix, shader.viewMatrix,
-                shader.lightPositions, shader.lightColours, shader.reflectivity
+                shader.numLights, shader.lightPositions, shader.lightColours, shader.reflectivity
         );
+
         shader.validate();
         return shader;
     }
@@ -58,6 +68,10 @@ public class EntityShader extends Shader {
 
     public UniformMatrix4f getViewMatrix() {
         return viewMatrix;
+    }
+
+    public UniformInt getNumLights() {
+        return numLights;
     }
 
     public UniformArray getLightPositions() {

@@ -12,13 +12,11 @@ import org.joml.Matrix4f;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 
-import java.awt.*;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
 public class Model implements Disposable {
     private final Vao vao = new Vao();
-    private Color colour = Color.WHITE;
 
     private Material material;
 
@@ -82,20 +80,12 @@ public class Model implements Disposable {
         this.material = material;
     }
 
+    public Material getMaterial() {
+        return material;
+    }
+
     @Override
     public void dispose() {
         vao.dispose();
-    }
-
-    public void setColour(Color colour) {
-        this.colour = colour;
-    }
-
-    public Color getColour() {
-        return colour;
-    }
-
-    public Material getMaterial() {
-        return material;
     }
 }

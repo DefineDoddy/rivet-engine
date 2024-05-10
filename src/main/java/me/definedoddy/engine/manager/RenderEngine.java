@@ -7,14 +7,14 @@ import me.definedoddy.engine.rendering.entity.EntityShader;
 
 public class RenderEngine {
     private RenderConfig renderConfig = new DefaultRenderConfig();
-    private final EntityRenderer entityRenderer;
+    private EntityRenderer entityRenderer;
 
     public RenderEngine() {
-        entityRenderer = new EntityRenderer(EntityShader.create());
+
     }
 
     public void init() {
-
+        entityRenderer = new EntityRenderer(EntityShader.create());
     }
 
     public void update() {

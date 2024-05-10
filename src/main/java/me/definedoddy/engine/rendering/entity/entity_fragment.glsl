@@ -5,7 +5,7 @@ in vec2 pass_tex_coords;
 in vec3 pass_surface_normal;
 
 // Input (lighting)
-in vec3 pass_light_directions[4];
+in vec3 pass_light_directions[_MAX_LIGHTS_];
 in vec3 pass_camera_direction;
 
 // Uniform (texture)
@@ -14,7 +14,8 @@ uniform sampler2D tex;
 uniform bool use_texture;
 
 // Uniform (lighting)
-uniform vec3 light_colours[4];
+uniform int num_lights;
+uniform vec3 light_colours[_MAX_LIGHTS_];
 uniform float reflectivity;
 
 // Output
@@ -27,7 +28,7 @@ void main() {
     vec3 total_diffuse = vec3(0.0);
     vec3 total_specular = vec3(0.0);
 
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < num_lights; i++) {
         float distance = length(pass_light_directions[i]);
         vec3 unit_light_direction = normalize(pass_light_directions[i]);
 
