@@ -97,7 +97,7 @@ public class ModelLoader {
         }
 
         Texture texture = textureFile != null ? TextureLoader.loadTexture(textureFile) : null;
-        return ModelUtils.createMesh(verticesArray, texturesArray, normalsArray, indicesArray, texture);
+        return ModelUtils.createModel(verticesArray, texturesArray, normalsArray, indicesArray, texture);
     }
 
     private static void processVertex(String[] vertexData, List<Integer> indices, List<Vector2f> textures,

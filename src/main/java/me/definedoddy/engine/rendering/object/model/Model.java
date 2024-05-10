@@ -1,83 +1,39 @@
 package me.definedoddy.engine.rendering.object.model;
 
-import me.definedoddy.engine.entity.Entity;
 import me.definedoddy.engine.manager.GameManager;
-import me.definedoddy.engine.rendering.entity.EntityShader;
-import me.definedoddy.engine.rendering.object.Vao;
+import me.definedoddy.engine.rendering.model.ModelShader;
+import me.definedoddy.engine.rendering.object.mesh.Mesh;
 import me.definedoddy.engine.rendering.texture.Material;
-import me.definedoddy.engine.utils.maths.MathsUtils;
-import me.definedoddy.toolkit.buffer.BufferUtils;
 import me.definedoddy.toolkit.memory.Disposable;
-import org.joml.Matrix4f;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 
-import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
-
 public class Model implements Disposable {
-    private final Vao vao = new Vao();
+    private final Mesh mesh;
+    private final Material material;
 
-    private Material material;
+    public Model(Mesh mesh, Material material) {
+        this.mesh = mesh;
+        this.material = material;
+    }
 
-    public void render(Entity entity) {
-        EntityShader entityShader = GameManager.getRenderEngine().getEntityRenderer().getShader();
-
-        vao.bind();
-
-        if (entity != null) {
-            Matrix4f transformMat = MathsUtils.createTransformationMatrix(entity.getPosition(), entity.getRotation(), entity.getScale());
-            entityShader.getTransformationMatrix().loadMatrix(transformMat);
-        }
+    public void render() {
+        ModelShader modelShader = GameManager.getRenderEngine().getModelRenderer().getShader();
 
         if (material != null && material.getDiffuse() != null) {
             GL20.glBindTexture(GL11.GL_TEXTURE_2D, material.getDiffuse().getId());
-            entityShader.getUseTexture().loadBoolean(true);
+            modelShader.getUseTexture().loadBoolean(true);
 
         } else {
             GL20.glBindTexture(GL11.GL_TEXTURE_2D, 0);
-            entityShader.getUseTexture().loadBoolean(false);
+            modelShader.getUseTexture().loadBoolean(false);
         }
 
-        GL11.glDrawElements(GL11.GL_TRIANGLES, vao.getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
-
-        vao.unbind();
+        mesh.render();
     }
 
-    public void setVertexPositions(float[] vertPositions) {
-        FloatBuffer buffer = BufferUtils.createFloatBuffer(vertPositions);
-
-        vao.bind();
-        vao.storeData(0, buffer, 3);
-        vao.unbind();
-    }
-
-    public void setTextureCoords(float[] texCoords) {
-        FloatBuffer buffer = BufferUtils.createFloatBuffer(texCoords);
-
-        vao.bind();
-        vao.storeData(1, buffer, 2);
-        vao.unbind();
-    }
-
-    public void setNormals(float[] normals) {
-        FloatBuffer buffer = BufferUtils.createFloatBuffer(normals);
-
-        vao.bind();
-        vao.storeData(2, buffer, 3);
-        vao.unbind();
-    }
-
-    public void setIndices(int[] indices) {
-        IntBuffer buffer = BufferUtils.createIntBuffer(indices);
-
-        vao.bind();
-        vao.storeIndices(buffer);
-        vao.unbind();
-    }
-
-    public void setMaterial(Material material) {
-        this.material = material;
+    public Mesh getMesh() {
+        return mesh;
     }
 
     public Material getMaterial() {
@@ -86,6 +42,7 @@ public class Model implements Disposable {
 
     @Override
     public void dispose() {
-        vao.dispose();
+        mesh.dispose();
+        material.dispose();
     }
 }

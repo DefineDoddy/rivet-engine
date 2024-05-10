@@ -1,13 +1,13 @@
-package me.definedoddy.engine.rendering.entity;
+package me.definedoddy.engine.rendering.model;
 
 import me.definedoddy.engine.manager.GameManager;
 import me.definedoddy.engine.rendering.shader.*;
 import me.definedoddy.toolkit.file.ProjectFile;
 
-public class EntityShader extends Shader {
-    private static final ProjectFile FOLDER = new ProjectFile("engine/rendering/entity");
-    private static final ProjectFile VERTEX_SHADER = new ProjectFile(FOLDER, "entity_vertex.glsl");
-    private static final ProjectFile FRAGMENT_SHADER = new ProjectFile(FOLDER, "entity_fragment.glsl");
+public class ModelShader extends Shader {
+    private static final ProjectFile FOLDER = new ProjectFile("engine/rendering/model");
+    private static final ProjectFile VERTEX_SHADER = new ProjectFile(FOLDER, "model_vertex.glsl");
+    private static final ProjectFile FRAGMENT_SHADER = new ProjectFile(FOLDER, "model_fragment.glsl");
 
     // Uniform variables
     private final UniformColour colour = new UniformColour("tint_colour");
@@ -23,16 +23,16 @@ public class EntityShader extends Shader {
     private final UniformArray lightColours = new UniformArray("light_colours", UniformArray.Type.COLOUR);
     private final UniformFloat reflectivity = new UniformFloat("reflectivity");
 
-    public EntityShader(ProjectFile vertexFile, ProjectFile fragmentFile) {
+    public ModelShader(ProjectFile vertexFile, ProjectFile fragmentFile) {
         super(vertexFile, fragmentFile, "position", "tex_coords", "normal");
     }
 
-    public static EntityShader create() {
-        EntityShader shader = new EntityShader(VERTEX_SHADER, FRAGMENT_SHADER);
+    public static ModelShader create() {
+        ModelShader shader = new ModelShader(VERTEX_SHADER, FRAGMENT_SHADER);
 
         // Set shader variables
-        int maxLightsOnEntity = GameManager.getRenderEngine().getRenderConfig().getMaxLightsOnEntity();
-        shader.setVariable("MAX_LIGHTS", String.valueOf(maxLightsOnEntity));
+        int maxLights = GameManager.getRenderEngine().getRenderConfig().getMaxLightsOnMesh();
+        shader.setVariable("MAX_LIGHTS", String.valueOf(maxLights));
 
         shader.compile();
 

@@ -12,6 +12,10 @@ public class MaterialBuilder {
         this.diffuse = diffuse;
     }
 
+    public static Material fromDiffuse(Texture diffuse) {
+        return new MaterialBuilder(diffuse).build();
+    }
+
     public MaterialBuilder normal(Texture normal) {
         this.normal = normal;
         return this;

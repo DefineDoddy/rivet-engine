@@ -3,7 +3,7 @@ package me.definedoddy.engine.scene;
 import me.definedoddy.engine.entity.Entity;
 import me.definedoddy.engine.entity.ModelEntity;
 import me.definedoddy.engine.manager.GameManager;
-import me.definedoddy.engine.rendering.entity.EntityRenderer;
+import me.definedoddy.engine.rendering.model.ModelRenderer;
 import me.definedoddy.engine.rendering.lighting.Light;
 
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ public class Scene {
     private final List<Entity> entities = new ArrayList<>();
     private final List<Light> lights = new ArrayList<>();
 
-    private final EntityRenderer entityRenderer = GameManager.getRenderEngine().getEntityRenderer();
+    private final ModelRenderer entityRenderer = GameManager.getRenderEngine().getModelRenderer();
 
     public void update() {
         entities.forEach(Entity::update);

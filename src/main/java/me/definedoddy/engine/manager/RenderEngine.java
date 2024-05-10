@@ -2,27 +2,23 @@ package me.definedoddy.engine.manager;
 
 import me.definedoddy.engine.rendering.config.DefaultRenderConfig;
 import me.definedoddy.engine.rendering.config.RenderConfig;
-import me.definedoddy.engine.rendering.entity.EntityRenderer;
-import me.definedoddy.engine.rendering.entity.EntityShader;
+import me.definedoddy.engine.rendering.model.ModelRenderer;
+import me.definedoddy.engine.rendering.model.ModelShader;
 
 public class RenderEngine {
     private RenderConfig renderConfig = new DefaultRenderConfig();
-    private EntityRenderer entityRenderer;
-
-    public RenderEngine() {
-
-    }
+    private ModelRenderer modelRenderer;
 
     public void init() {
-        entityRenderer = new EntityRenderer(EntityShader.create());
+        modelRenderer = new ModelRenderer(ModelShader.create());
     }
 
     public void update() {
-        entityRenderer.render();
+        modelRenderer.render();
     }
 
-    public EntityRenderer getEntityRenderer() {
-        return entityRenderer;
+    public ModelRenderer getModelRenderer() {
+        return modelRenderer;
     }
 
     public void setRenderConfig(RenderConfig renderConfig) {

@@ -1,19 +1,22 @@
 package me.definedoddy.engine.rendering.object.model;
 
+import me.definedoddy.engine.rendering.object.mesh.Mesh;
+import me.definedoddy.engine.rendering.texture.Material;
 import me.definedoddy.engine.rendering.texture.MaterialBuilder;
 import me.definedoddy.engine.rendering.texture.Texture;
 import org.joml.Vector3f;
 
 public class ModelUtils {
-    public static Model createMesh(float[] vertices, float[] texCoords,
+    public static Model createModel(float[] vertices, float[] texCoords,
                                    float[] normals, int[] indices, Texture texture) {
-        Model model = new Model();
-        model.setVertexPositions(vertices);
-        model.setTextureCoords(texCoords);
-        model.setNormals(normals);
-        model.setIndices(indices);
-        model.setMaterial(new MaterialBuilder(texture).build());
-        return model;
+        Mesh mesh = new Mesh();
+        mesh.setVertexPositions(vertices);
+        mesh.setTextureCoords(texCoords);
+        mesh.setNormals(normals);
+        mesh.setIndices(indices);
+
+        Material material = MaterialBuilder.fromDiffuse(texture);
+        return new Model(mesh, material);
     }
 
     public static Model createQuad(Vector3f size, Texture texture) {
@@ -39,6 +42,6 @@ public class ModelUtils {
                 0, 1, 3,
                 3, 1, 2
         };
-        return createMesh(vertices, texCoords, normals, indices, texture);
+        return createModel(vertices, texCoords, normals, indices, texture);
     }
 }

@@ -24,7 +24,9 @@ public class TestWorld extends Scene {
             @Override
             protected Model defineModel() {
                 Resource obj = new Resource("obj/dragon.obj");
-                return ModelLoader.loadFromObjFile(obj, null);
+                Model model = ModelLoader.loadFromObjFile(obj, null);
+                model.getMaterial().setReflectivity(1f);
+                return model;
             }
         };
         dragon.getPosition().set(0, 0, -5);
@@ -33,7 +35,6 @@ public class TestWorld extends Scene {
         addEntity(new Stall());
 
         Light light1 = new Light(new Vector3f(0, 5, 0), Color.RED);
-
         addLight(light1);
     }
 }

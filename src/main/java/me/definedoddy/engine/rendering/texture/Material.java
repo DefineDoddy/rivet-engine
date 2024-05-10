@@ -1,8 +1,10 @@
 package me.definedoddy.engine.rendering.texture;
 
+import me.definedoddy.toolkit.memory.Disposable;
+
 import java.awt.*;
 
-public class Material {
+public class Material implements Disposable {
     private final Texture diffuse;
     private final Texture normal;
     private final Texture specular;
@@ -14,6 +16,10 @@ public class Material {
         this.diffuse = diffuse;
         this.normal = normal;
         this.specular = specular;
+    }
+
+    public static Material defaultMaterial() {
+        return new Material(null, null, null);
     }
 
     public void setTintColour(Color tintColour) {
@@ -42,5 +48,12 @@ public class Material {
 
     public Texture getSpecular() {
         return specular;
+    }
+
+    @Override
+    public void dispose() {
+        if (diffuse != null) diffuse.dispose();
+        if (normal != null) normal.dispose();
+        if (specular != null) specular.dispose();
     }
 }

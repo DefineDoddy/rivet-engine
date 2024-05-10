@@ -32,6 +32,7 @@ void main() {
         float distance = length(pass_light_directions[i]);
         vec3 unit_light_direction = normalize(pass_light_directions[i]);
 
+        // Specular lighting
         float shine_damper = 10.0;
         vec3 unit_reflection = reflect(-unit_light_direction, unit_normal);
         float specular_factor = max(dot(unit_reflection, unit_camera_direction), 0.0);
