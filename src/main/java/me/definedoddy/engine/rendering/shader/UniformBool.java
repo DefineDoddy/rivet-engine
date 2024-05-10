@@ -1,4 +1,4 @@
-package me.definedoddy.engine.rendering.entity;
+package me.definedoddy.engine.rendering.shader;
 
 import me.definedoddy.engine.rendering.shader.Uniform;
 import org.lwjgl.opengl.GL20;

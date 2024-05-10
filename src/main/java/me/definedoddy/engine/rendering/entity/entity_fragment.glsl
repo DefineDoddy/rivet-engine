@@ -9,9 +9,12 @@ uniform sampler2D tex;
 uniform bool use_texture;
 
 uniform vec3 light_colours[4];
-uniform float light_attenuations[4];
+uniform float light_inner_radii[4];
+uniform float light_outer_radii[4];
 
 out vec4 frag_colour;
+
+float calc_attenuation(float distance, float inner_radius, float outer_radius);
 
 void main() {
     vec3 unit_normal = normalize(pass_surface_normal);
@@ -20,7 +23,7 @@ void main() {
 
     for (int i = 0; i < 4; i++) {
         float distance = length(pass_light_directions[i]);
-        float attenuation = clamp(light_attenuations[i] / distance, 0.0, 1.0);
+        float attenuation = calc_attenuation(distance, light_inner_radii[i], light_outer_radii[i]);
 
         vec3 unit_light_direction = normalize(pass_light_directions[i]);
 
@@ -35,4 +38,8 @@ void main() {
     } else {
         frag_colour = vec4(total_diffuse, 1.0) * vec4(tint_colour, 1.0);
     }
+}
+
+float calc_attenuation(float distance, float inner_radius, float outer_radius) {
+    return clamp((inner_radius - distance) / (outer_radius - inner_radius), 0.0, 1.0);
 }

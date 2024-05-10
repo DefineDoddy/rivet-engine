@@ -32,11 +32,10 @@ public class TestWorld extends Scene {
 
         addEntity(new Stall());
 
-        addLight(new Light(new Vector3f(15, 5, 15), Color.RED, 10));
-/*        addLight(new Light(new Vector3f(-15, 5, -15), Color.GREEN));
-        addLight(new Light(new Vector3f(15, 5, -15), Color.BLUE));
-        addLight(new Light(new Vector3f(-15, 5, 15), Color.YELLOW));*/
+        Light light1 = new Light(new Vector3f(5, 5, 5), Color.RED);
+        light1.setInnerRadius(49);
+        light1.setOuterRadius(50);
 
-        addLight(new Light(new Vector3f(0, 5, 0), Color.GREEN, 0));
+        addLight(light1);
     }
 }

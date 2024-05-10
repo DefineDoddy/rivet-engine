@@ -43,11 +43,13 @@ public class EntityRenderer {
             if (i < lights.size()) {
                 shader.getLightPositions().loadVec3(i, lights.get(i).getPosition());
                 shader.getLightColours().loadColour(i, lights.get(i).getColour());
-                shader.getLightAttenuations().loadFloat(i, lights.get(i).getAttenuation());
+                shader.getLightInnerRadii().loadFloat(i, lights.get(i).getInnerRadius());
+                shader.getLightOuterRadii().loadFloat(i, lights.get(i).getOuterRadius());
             } else {
                 shader.getLightPositions().loadVec3(i, new Vector3f());
                 shader.getLightColours().loadColour(i, Color.BLACK);
-                shader.getLightAttenuations().loadFloat(i, 10);
+                shader.getLightInnerRadii().loadFloat(i, 0f);
+                shader.getLightOuterRadii().loadFloat(i, 10f);
             }
         }
     }
