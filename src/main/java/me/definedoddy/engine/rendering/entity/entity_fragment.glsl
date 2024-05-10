@@ -1,45 +1,51 @@
 #version 330 core
 
+// Input (texture)
 in vec2 pass_tex_coords;
 in vec3 pass_surface_normal;
-in vec3 pass_light_directions[4];
 
+// Input (lighting)
+in vec3 pass_light_directions[4];
+in vec3 pass_camera_direction;
+
+// Uniform (texture)
 uniform vec3 tint_colour;
 uniform sampler2D tex;
 uniform bool use_texture;
 
+// Uniform (lighting)
 uniform vec3 light_colours[4];
-uniform float light_inner_radii[4];
-uniform float light_outer_radii[4];
+uniform float reflectivity;
 
+// Output
 out vec4 frag_colour;
-
-float calc_attenuation(float distance, float inner_radius, float outer_radius);
 
 void main() {
     vec3 unit_normal = normalize(pass_surface_normal);
+    vec3 unit_camera_direction = normalize(pass_camera_direction);
 
     vec3 total_diffuse = vec3(0.0);
+    vec3 total_specular = vec3(0.0);
 
     for (int i = 0; i < 4; i++) {
         float distance = length(pass_light_directions[i]);
-        float attenuation = calc_attenuation(distance, light_inner_radii[i], light_outer_radii[i]);
-
         vec3 unit_light_direction = normalize(pass_light_directions[i]);
 
+        float shine_damper = 10.0;
+        vec3 unit_reflection = reflect(-unit_light_direction, unit_normal);
+        float specular_factor = max(dot(unit_reflection, unit_camera_direction), 0.0);
+        total_specular += pow(specular_factor, shine_damper) * reflectivity * light_colours[i];
+
         float brightness = max(dot(unit_normal, unit_light_direction), 0.0);
-        total_diffuse += brightness * light_colours[i] * attenuation;
+        total_diffuse += brightness * light_colours[i];
     }
 
     total_diffuse = max(total_diffuse, 0.2); // Ambient light
 
-    if (use_texture) {
-        frag_colour = vec4(total_diffuse, 1.0) * texture(tex, pass_tex_coords) * vec4(tint_colour, 1.0);
-    } else {
-        frag_colour = vec4(total_diffuse, 1.0) * vec4(tint_colour, 1.0);
-    }
-}
+    // Texture colour
+    vec3 texture_colour = vec3(1.0);
+    if (use_texture) total_diffuse *= texture(tex, pass_tex_coords).rgb;
 
-float calc_attenuation(float distance, float inner_radius, float outer_radius) {
-    return clamp((inner_radius - distance) / (outer_radius - inner_radius), 0.0, 1.0);
+    vec3 output_colour = total_diffuse + total_specular;
+    frag_colour = vec4(output_colour * tint_colour, 1.0);
 }

@@ -4,7 +4,7 @@ import me.definedoddy.engine.entity.Entity;
 import me.definedoddy.engine.manager.GameManager;
 import me.definedoddy.engine.rendering.entity.EntityShader;
 import me.definedoddy.engine.rendering.object.Vao;
-import me.definedoddy.engine.rendering.texture.Texture;
+import me.definedoddy.engine.rendering.texture.Material;
 import me.definedoddy.engine.utils.maths.MathsUtils;
 import me.definedoddy.toolkit.buffer.BufferUtils;
 import me.definedoddy.toolkit.memory.Disposable;
@@ -19,7 +19,8 @@ import java.nio.IntBuffer;
 public class Model implements Disposable {
     private final Vao vao = new Vao();
     private Color colour = Color.WHITE;
-    private Texture texture;
+
+    private Material material;
 
     public void render(Entity entity) {
         EntityShader entityShader = GameManager.getRenderEngine().getEntityRenderer().getShader();
@@ -31,8 +32,8 @@ public class Model implements Disposable {
             entityShader.getTransformationMatrix().loadMatrix(transformMat);
         }
 
-        if (texture != null) {
-            GL20.glBindTexture(GL11.GL_TEXTURE_2D, texture.getId());
+        if (material != null && material.getDiffuse() != null) {
+            GL20.glBindTexture(GL11.GL_TEXTURE_2D, material.getDiffuse().getId());
             entityShader.getUseTexture().loadBoolean(true);
 
         } else {
@@ -77,8 +78,8 @@ public class Model implements Disposable {
         vao.unbind();
     }
 
-    public void setTexture(Texture texture) {
-        this.texture = texture;
+    public void setMaterial(Material material) {
+        this.material = material;
     }
 
     @Override
@@ -92,5 +93,9 @@ public class Model implements Disposable {
 
     public Color getColour() {
         return colour;
+    }
+
+    public Material getMaterial() {
+        return material;
     }
 }

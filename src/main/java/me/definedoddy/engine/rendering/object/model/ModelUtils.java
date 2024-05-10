@@ -1,5 +1,6 @@
 package me.definedoddy.engine.rendering.object.model;
 
+import me.definedoddy.engine.rendering.texture.MaterialBuilder;
 import me.definedoddy.engine.rendering.texture.Texture;
 import org.joml.Vector3f;
 
@@ -11,7 +12,7 @@ public class ModelUtils {
         model.setTextureCoords(texCoords);
         model.setNormals(normals);
         model.setIndices(indices);
-        model.setTexture(texture);
+        model.setMaterial(new MaterialBuilder(texture).build());
         return model;
     }
 

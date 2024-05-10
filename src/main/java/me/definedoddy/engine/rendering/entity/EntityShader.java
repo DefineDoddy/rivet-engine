@@ -19,8 +19,7 @@ public class EntityShader extends Shader {
 
     private final UniformArray lightPositions = new UniformArray("light_positions", UniformArray.Type.VEC3F);
     private final UniformArray lightColours = new UniformArray("light_colours", UniformArray.Type.COLOUR);
-    private final UniformArray lightInnerRadii = new UniformArray("light_inner_radii", UniformArray.Type.FLOAT);
-    private final UniformArray lightOuterRadii = new UniformArray("light_outer_radii", UniformArray.Type.FLOAT);
+    private final UniformFloat reflectivity = new UniformFloat("reflectivity");
 
     public EntityShader(ProjectFile vertexFile, ProjectFile fragmentFile) {
         super(vertexFile, fragmentFile, "position", "tex_coords", "normal");
@@ -31,7 +30,7 @@ public class EntityShader extends Shader {
         shader.setUniforms(
                 shader.colour, shader.texture, shader.useTexture,
                 shader.transformMatrix, shader.projectionMatrix, shader.viewMatrix,
-                shader.lightPositions, shader.lightColours, shader.lightInnerRadii, shader.lightOuterRadii
+                shader.lightPositions, shader.lightColours, shader.reflectivity
         );
         shader.validate();
         return shader;
@@ -69,11 +68,7 @@ public class EntityShader extends Shader {
         return lightColours;
     }
 
-    public UniformArray getLightInnerRadii() {
-        return lightInnerRadii;
-    }
-
-    public UniformArray getLightOuterRadii() {
-        return lightOuterRadii;
+    public UniformFloat getReflectivity() {
+        return reflectivity;
     }
 }
