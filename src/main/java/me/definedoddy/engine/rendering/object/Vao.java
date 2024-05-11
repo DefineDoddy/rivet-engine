@@ -67,4 +67,16 @@ public class Vao implements Disposable {
     public int getVertexCount() {
         return indicesCount;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+
+        for (int i = 0; i < vbos.size(); i++) {
+            if (!vbos.get(i).equals(((Vao) obj).vbos.get(i))) return false;
+        }
+
+        return true;
+    }
 }

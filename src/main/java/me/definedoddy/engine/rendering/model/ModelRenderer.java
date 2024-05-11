@@ -7,17 +7,17 @@ import me.definedoddy.engine.rendering.lighting.Light;
 import me.definedoddy.engine.rendering.object.mesh.Mesh;
 import me.definedoddy.engine.rendering.object.model.Model;
 import me.definedoddy.engine.scene.SceneManager;
-import me.definedoddy.engine.utils.maths.MathsUtils;
-import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ModelRenderer {
     private final ModelShader shader;
-    private final List<ModelEntity> entities = new ArrayList<>();
+    private final Map<Mesh, List<ModelEntity>> entities = new HashMap<>();
 
     public ModelRenderer(ModelShader shader) {
         this.shader = shader;
@@ -31,27 +31,21 @@ public class ModelRenderer {
 
         applyLighting();
 
-        Mesh mesh = null;
+        for (Map.Entry<Mesh, List<ModelEntity>> entry : entities.entrySet()) {
+            Mesh mesh = entry.getKey();
+            mesh.bind();
 
-        for (ModelEntity entity : entities) {
-            Model model = entity.getModel();
+            for (ModelEntity entity : entry.getValue()) {
+                Model model = entity.getModel();
+                shader.getColour().loadColour(model.getMaterial().getTintColour());
+                shader.getReflectivity().loadFloat(model.getMaterial().getReflectivity());
 
-            if (mesh != model.getMesh()) {
-                mesh = model.getMesh();
-                mesh.bind();
+                model.render(entity.getPosition(), entity.getRotation(), entity.getScale());
             }
 
-            ModelShader modelShader = GameManager.getRenderEngine().getModelRenderer().getShader();
-            shader.getColour().loadColour(model.getMaterial().getTintColour());
-            shader.getReflectivity().loadFloat(model.getMaterial().getReflectivity());
-
-            Matrix4f transformMat = MathsUtils.createTransformationMatrix(entity.getPosition(), entity.getRotation(), entity.getScale());
-            modelShader.getTransformationMatrix().loadMatrix(transformMat);
-
-            model.render();
+            mesh.unbind();
         }
 
-        if (mesh != null) mesh.unbind();
         shader.unbind();
     }
 
@@ -76,10 +70,30 @@ public class ModelRenderer {
     }
 
     public void addEntity(ModelEntity entity) {
-        entities.add(entity);
+        // Ensure that entities with the same mesh are rendered together
+        Mesh mesh = entity.getModel().getMesh();
+        List<ModelEntity> batch = entities.computeIfAbsent(mesh, k -> new ArrayList<>());
+        batch.add(entity);
     }
 
     public void removeEntity(ModelEntity entity) {
-        entities.remove(entity);
+        Mesh mesh = entity.getModel().getMesh();
+        List<ModelEntity> batch = entities.get(mesh);
+        if (batch != null) {
+            batch.remove(entity);
+            if (batch.isEmpty()) {
+                entities.remove(mesh);
+            }
+        }
+    }
+
+    public void stop() {
+        shader.dispose();
+
+        for (List<ModelEntity> batch : entities.values()) {
+            for (ModelEntity entity : batch) {
+                entity.getModel().dispose();
+            }
+        }
     }
 }

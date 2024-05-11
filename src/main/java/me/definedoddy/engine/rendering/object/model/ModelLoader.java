@@ -12,6 +12,10 @@ import java.util.List;
 
 public class ModelLoader {
     public static Model loadFromObjFile(Resource objFile, Resource textureFile) {
+        String key = objFile.getPath() + (textureFile != null ? textureFile.getPath() : "");
+        Model cachedModel = ModelCache.getInstance().getModel(key);
+        if (cachedModel != null) return cachedModel;
+
         BufferedReader reader = objFile.getReader();
         String line = null;
 
@@ -97,7 +101,10 @@ public class ModelLoader {
         }
 
         Texture texture = textureFile != null ? TextureLoader.loadTexture(textureFile) : null;
-        return ModelUtils.createModel(verticesArray, texturesArray, normalsArray, indicesArray, texture);
+        Model model = ModelUtils.createModel(verticesArray, texturesArray, normalsArray, indicesArray, texture);
+
+        ModelCache.getInstance().addModel(key, model);
+        return model;
     }
 
     private static void processVertex(String[] vertexData, List<Integer> indices, List<Vector2f> textures,

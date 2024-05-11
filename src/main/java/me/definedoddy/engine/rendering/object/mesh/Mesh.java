@@ -8,7 +8,7 @@ import org.lwjgl.opengl.GL11;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
-public class Mesh implements Disposable {
+public class Mesh implements Disposable, Comparable<Mesh> {
     private final Vao vao = new Vao();
 
     public void render() {
@@ -62,5 +62,19 @@ public class Mesh implements Disposable {
     @Override
     public void dispose() {
         vao.dispose();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+        if (obj == null || obj.getClass() != this.getClass()) return false;
+        return vao.equals(((Mesh) obj).vao);
+    }
+
+    @Override
+    public int compareTo(Mesh o) {
+        if (vao.equals(o.vao)) return 0;
+        if (vao.getId() < o.vao.getId()) return -1;
+        return 1;
     }
 }

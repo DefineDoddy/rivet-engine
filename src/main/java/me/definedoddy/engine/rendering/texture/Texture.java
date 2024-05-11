@@ -30,4 +30,11 @@ public class Texture implements Disposable {
     public void dispose() {
         GL20.glDeleteTextures(id);
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+        if (!(obj instanceof Texture texture)) return false;
+        return texture.id == id && texture.width == width && texture.height == height;
+    }
 }

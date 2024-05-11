@@ -31,6 +31,10 @@ public class GameManager {
         Mouse.postUpdateAll();
     }
 
+    public static void stop() {
+        renderEngine.stop();
+    }
+
     public static RenderEngine getRenderEngine() {
         return renderEngine;
     }

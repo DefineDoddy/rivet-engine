@@ -56,4 +56,21 @@ public class Material implements Disposable {
         if (normal != null) normal.dispose();
         if (specular != null) specular.dispose();
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Material material) {
+            return material.getDiffuse().equals(diffuse) &&
+                    material.getNormal().equals(normal) &&
+                    material.getSpecular().equals(specular) &&
+                    material.getTintColour().equals(tintColour) &&
+                    material.getReflectivity() == reflectivity;
+        }
+        return false;
+    }
+
+    @Override
+    public Material clone() {
+        return new Material(diffuse, normal, specular);
+    }
 }

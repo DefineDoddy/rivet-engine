@@ -28,4 +28,8 @@ public class RenderEngine {
     public RenderConfig getRenderConfig() {
         return renderConfig;
     }
+
+    public void stop() {
+        modelRenderer.stop();
+    }
 }
