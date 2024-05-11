@@ -8,6 +8,7 @@ import me.definedoddy.engine.rendering.object.mesh.Mesh;
 import me.definedoddy.engine.rendering.object.model.Model;
 import me.definedoddy.engine.scene.SceneManager;
 import org.joml.Vector3f;
+import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -40,10 +41,12 @@ public class ModelRenderer {
                 shader.getColour().loadColour(model.getMaterial().getTintColour());
                 shader.getReflectivity().loadFloat(model.getMaterial().getReflectivity());
 
+                if (model.getMaterial().isTransparent()) disableCulling();
                 model.render(entity.getPosition(), entity.getRotation(), entity.getScale());
             }
 
             mesh.unbind();
+            enableCulling();
         }
 
         shader.unbind();
@@ -63,6 +66,15 @@ public class ModelRenderer {
                 shader.getLightColours().loadColour(i, Color.BLACK);
             }
         }
+    }
+
+    private void enableCulling() {
+        GL11.glEnable(GL11.GL_CULL_FACE);
+        GL11.glCullFace(GL11.GL_BACK);
+    }
+
+    private void disableCulling() {
+        GL11.glDisable(GL11.GL_CULL_FACE);
     }
 
     public ModelShader getShader() {

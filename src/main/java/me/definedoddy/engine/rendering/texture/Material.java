@@ -12,6 +12,8 @@ public class Material implements Disposable {
     private Color tintColour = Color.WHITE;
     private float reflectivity;
 
+    private boolean isTransparent;
+
     public Material(Texture diffuse, Texture normal, Texture specular) {
         this.diffuse = diffuse;
         this.normal = normal;
@@ -20,6 +22,18 @@ public class Material implements Disposable {
 
     public static Material defaultMaterial() {
         return new Material(null, null, null);
+    }
+
+    public Texture getDiffuse() {
+        return diffuse;
+    }
+
+    public Texture getNormal() {
+        return normal;
+    }
+
+    public Texture getSpecular() {
+        return specular;
     }
 
     public void setTintColour(Color tintColour) {
@@ -38,16 +52,12 @@ public class Material implements Disposable {
         return reflectivity;
     }
 
-    public Texture getDiffuse() {
-        return diffuse;
+    public void setTransparent(boolean transparent) {
+        isTransparent = transparent;
     }
 
-    public Texture getNormal() {
-        return normal;
-    }
-
-    public Texture getSpecular() {
-        return specular;
+    public boolean isTransparent() {
+        return isTransparent;
     }
 
     @Override

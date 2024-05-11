@@ -48,6 +48,9 @@ void main() {
     vec3 texture_colour = vec3(1.0);
     if (use_texture) total_diffuse *= texture(tex, pass_tex_coords).rgb;
 
+    // Transparency
+    if (texture_colour.a < 0.5) discard;
+
     vec3 output_colour = total_diffuse + total_specular;
     frag_colour = vec4(output_colour * tint_colour, 1.0);
 }

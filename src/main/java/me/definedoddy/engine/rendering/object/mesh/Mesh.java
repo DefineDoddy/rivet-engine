@@ -59,6 +59,10 @@ public class Mesh implements Disposable, Comparable<Mesh> {
         vao.unbind();
     }
 
+    public int getVertexCount() {
+        return vao.getVertexCount();
+    }
+
     @Override
     public void dispose() {
         vao.dispose();

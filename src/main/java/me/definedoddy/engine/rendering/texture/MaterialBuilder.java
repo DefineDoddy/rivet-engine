@@ -8,6 +8,8 @@ public class MaterialBuilder {
 
     private float reflectivity = 0.5f;
 
+    private boolean isTransparent;
+
     public MaterialBuilder(Texture diffuse) {
         this.diffuse = diffuse;
     }
@@ -31,9 +33,15 @@ public class MaterialBuilder {
         return this;
     }
 
+    public MaterialBuilder transparent() {
+        isTransparent = true;
+        return this;
+    }
+
     public Material build() {
         Material material = new Material(diffuse, normal, specular);
         material.setReflectivity(reflectivity);
+        material.setTransparent(isTransparent);
         return material;
     }
 }
