@@ -32,15 +32,14 @@ public class TestWorld extends Scene {
         dragon.getPosition().set(0, 0, -5);
         addEntity(dragon);
 
-        Stall stall = new Stall();
-        stall.getPosition().set(50, 5, 0);
-        addEntity(stall);
-
-        Light skyLight = new Light(new Vector3f(), Color.GREEN);
-        addLight(skyLight);
+        addEntity(new Stall());
 
         Light light1 = new Light(new Vector3f(0, 5, 0), Color.RED);
         light1.setAttenuation(1, 0.01f, 0.002f);
         addLight(light1);
+
+        Light light2 = new Light(new Vector3f(0, 2, 0), Color.GREEN.darker());
+        light2.setAttenuation(1, 0.01f, 0.002f);
+        addLight(light2);
     }
 }

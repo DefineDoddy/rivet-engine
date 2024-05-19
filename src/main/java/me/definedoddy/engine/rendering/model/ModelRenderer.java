@@ -56,14 +56,14 @@ public class ModelRenderer {
         RenderConfig renderConfig = GameManager.getRenderEngine().getRenderConfig();
         List<Light> lights = SceneManager.getCurrentScene().getLights();
 
-        shader.getNumLights().loadInt(lights.size());
-        shader.getAmbientLight().loadFloat(renderConfig.getAmbientLight());
-
         int maxLights = renderConfig.getMaxLightsOnMesh();
         if (lights.size() > maxLights) {
             lights = lights.subList(0, maxLights);
             DebugLog.error("Too many lights on mesh, only the first " + maxLights + " lights will be used");
         }
+
+        shader.getNumLights().loadInt(lights.size());
+        shader.getAmbientLight().loadFloat(renderConfig.getAmbientLight());
 
         // Load lighting data
         for (int i = 0; i < lights.size(); i++) {
