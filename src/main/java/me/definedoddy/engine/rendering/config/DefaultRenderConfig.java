@@ -5,4 +5,9 @@ public class DefaultRenderConfig extends RenderConfig {
     public int getMaxLightsOnMesh() {
         return 4;
     }
+
+    @Override
+    public float getAmbientLight() {
+        return 0.1f;
+    }
 }

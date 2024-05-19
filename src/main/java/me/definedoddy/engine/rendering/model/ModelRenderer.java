@@ -3,14 +3,14 @@ package me.definedoddy.engine.rendering.model;
 import me.definedoddy.engine.entity.ModelEntity;
 import me.definedoddy.engine.manager.GameManager;
 import me.definedoddy.engine.rendering.camera.Camera;
+import me.definedoddy.engine.rendering.config.RenderConfig;
 import me.definedoddy.engine.rendering.lighting.Light;
 import me.definedoddy.engine.rendering.object.mesh.Mesh;
 import me.definedoddy.engine.rendering.object.model.Model;
 import me.definedoddy.engine.scene.SceneManager;
-import org.joml.Vector3f;
+import me.definedoddy.toolkit.debug.DebugLog;
 import org.lwjgl.opengl.GL11;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -53,18 +53,23 @@ public class ModelRenderer {
     }
 
     private void applyLighting() {
+        RenderConfig renderConfig = GameManager.getRenderEngine().getRenderConfig();
         List<Light> lights = SceneManager.getCurrentScene().getLights();
-        int maxLights = GameManager.getRenderEngine().getRenderConfig().getMaxLightsOnMesh();
-        shader.getNumLights().loadInt(lights.size());
 
-        for (int i = 0; i < maxLights; i++) {
-            if (i < lights.size()) {
-                shader.getLightPositions().loadVec3(i, lights.get(i).getPosition());
-                shader.getLightColours().loadColour(i, lights.get(i).getColour());
-            } else {
-                shader.getLightPositions().loadVec3(i, new Vector3f());
-                shader.getLightColours().loadColour(i, Color.BLACK);
-            }
+        shader.getNumLights().loadInt(lights.size());
+        shader.getAmbientLight().loadFloat(renderConfig.getAmbientLight());
+
+        int maxLights = renderConfig.getMaxLightsOnMesh();
+        if (lights.size() > maxLights) {
+            lights = lights.subList(0, maxLights);
+            DebugLog.error("Too many lights on mesh, only the first " + maxLights + " lights will be used");
+        }
+
+        // Load lighting data
+        for (int i = 0; i < lights.size(); i++) {
+            shader.getLightPositions().loadVec3(i, lights.get(i).getPosition());
+            shader.getLightColours().loadColour(i, lights.get(i).getColour());
+            shader.getLightAttenuations().loadVec3(i, lights.get(i).getAttenuation());
         }
     }
 

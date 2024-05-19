@@ -21,6 +21,8 @@ public class ModelShader extends Shader {
     private final UniformInt numLights = new UniformInt("num_lights");
     private final UniformArray lightPositions = new UniformArray("light_positions", UniformArray.Type.VEC3F);
     private final UniformArray lightColours = new UniformArray("light_colours", UniformArray.Type.COLOUR);
+    private final UniformArray lightAttenuations = new UniformArray("light_attenuations", UniformArray.Type.VEC3F);
+    private final UniformFloat ambientLight = new UniformFloat("ambient_light");
     private final UniformFloat reflectivity = new UniformFloat("reflectivity");
 
     public ModelShader(ProjectFile vertexFile, ProjectFile fragmentFile) {
@@ -39,7 +41,8 @@ public class ModelShader extends Shader {
         shader.setUniforms(
                 shader.colour, shader.texture, shader.useTexture,
                 shader.transformMatrix, shader.projectionMatrix, shader.viewMatrix,
-                shader.numLights, shader.lightPositions, shader.lightColours, shader.reflectivity
+                shader.numLights, shader.lightPositions, shader.lightColours, shader.lightAttenuations,
+                shader.ambientLight, shader.reflectivity
         );
 
         shader.validate();
@@ -80,6 +83,14 @@ public class ModelShader extends Shader {
 
     public UniformArray getLightColours() {
         return lightColours;
+    }
+
+    public UniformArray getLightAttenuations() {
+        return lightAttenuations;
+    }
+
+    public UniformFloat getAmbientLight() {
+        return ambientLight;
     }
 
     public UniformFloat getReflectivity() {
