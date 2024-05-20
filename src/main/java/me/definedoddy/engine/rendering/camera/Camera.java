@@ -4,7 +4,6 @@ import me.definedoddy.engine.utils.maths.MathsUtils;
 import me.definedoddy.engine.window.GameWindow;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
-import org.lwjgl.glfw.GLFW;
 
 public class Camera {
     private static Camera instance;
@@ -32,8 +31,7 @@ public class Camera {
     }
 
     public void init() {
-        GLFW.glfwSetInputMode(GameWindow.get().getWindowId(), GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_DISABLED);
-        GLFW.glfwSetCursorPos(GameWindow.get().getWindowId(), GameWindow.get().getWidth() / 2f, GameWindow.get().getHeight() / 2f);
+
     }
 
     public void update() {

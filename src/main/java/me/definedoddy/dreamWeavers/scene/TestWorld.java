@@ -3,9 +3,12 @@ package me.definedoddy.dreamWeavers.scene;
 import me.definedoddy.dreamWeavers.models.Stall;
 import me.definedoddy.engine.entity.EntityFactory;
 import me.definedoddy.engine.entity.ModelEntity;
+import me.definedoddy.engine.rendering.cubemap.CubeMapLoader;
 import me.definedoddy.engine.rendering.lighting.Light;
 import me.definedoddy.engine.rendering.object.model.Model;
 import me.definedoddy.engine.rendering.object.model.ModelLoader;
+import me.definedoddy.engine.rendering.skybox.Skybox;
+import me.definedoddy.engine.rendering.texture.TextureLoader;
 import me.definedoddy.engine.scene.Scene;
 import me.definedoddy.toolkit.file.Resource;
 import org.joml.Vector3f;
@@ -41,5 +44,14 @@ public class TestWorld extends Scene {
         Light light2 = new Light(new Vector3f(0, 2, 0), Color.GREEN.darker());
         light2.setAttenuation(1, 0.01f, 0.002f);
         addLight(light2);
+
+        setSkybox(new Skybox(CubeMapLoader.load(
+                TextureLoader.loadTextureCubeMap(new Resource("skybox/right.png")),
+                TextureLoader.loadTextureCubeMap(new Resource("skybox/left.png")),
+                TextureLoader.loadTextureCubeMap(new Resource("skybox/top.png")),
+                TextureLoader.loadTextureCubeMap(new Resource("skybox/bottom.png")),
+                TextureLoader.loadTextureCubeMap(new Resource("skybox/back.png")),
+                TextureLoader.loadTextureCubeMap(new Resource("skybox/front.png"))
+        )));
     }
 }

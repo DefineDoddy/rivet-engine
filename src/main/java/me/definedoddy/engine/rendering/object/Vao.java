@@ -13,13 +13,16 @@ public class Vao implements Disposable {
     private final int id;
     private final List<Vbo> vbos = new ArrayList<>();
 
-    private int indicesCount;
+    private int indicesCount = -1;
+    private int maxIndex;
 
     public Vao() {
         id = glGenVertexArrays();
     }
 
     public void storeData(int index, FloatBuffer data, int componentSize) {
+        this.maxIndex = Math.max(this.maxIndex, index);
+
         Vbo vbo = new Vbo(false);
         vbo.bind();
         vbo.storeData(data, componentSize);
@@ -39,19 +42,16 @@ public class Vao implements Disposable {
 
     public void bind() {
         glBindVertexArray(id);
+
         for (Vbo vbo : vbos) if (vbo.isIndices()) vbo.bind();
-        glEnableVertexAttribArray(0);
-        glEnableVertexAttribArray(1);
-        glEnableVertexAttribArray(2);
-        glActiveTexture(GL_TEXTURE0);
+        for (int i = 0; i <= maxIndex; i++) glEnableVertexAttribArray(i);
     }
 
     public void unbind() {
         glBindVertexArray(0);
+
         for (Vbo vbo : vbos) if (vbo.isIndices()) vbo.unbind();
-        glDisableVertexAttribArray(0);
-        glDisableVertexAttribArray(1);
-        glDisableVertexAttribArray(2);
+        for (int i = 0; i <= maxIndex; i++) glDisableVertexAttribArray(i);
     }
 
     @Override
@@ -65,18 +65,16 @@ public class Vao implements Disposable {
     }
 
     public int getVertexCount() {
-        return indicesCount;
+        if (indicesCount != -1) return indicesCount;
+
+        Vbo vbo = vbos.getFirst();
+        return vbo.getData().limit() / vbo.getComponentSize();
     }
 
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-
-        for (int i = 0; i < vbos.size(); i++) {
-            if (!vbos.get(i).equals(((Vao) obj).vbos.get(i))) return false;
-        }
-
-        return true;
+        if (!(obj instanceof Vao vao)) return false;
+        return vao.id == id;
     }
 }

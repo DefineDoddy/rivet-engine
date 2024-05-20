@@ -1,0 +1,51 @@
+package me.definedoddy.engine.rendering.skybox;
+
+import me.definedoddy.engine.rendering.camera.Camera;
+import me.definedoddy.toolkit.debug.DebugLog;
+import org.joml.Matrix4f;
+
+public class SkyboxRenderer {
+    private final SkyboxShader shader;
+    private Skybox skybox;
+
+    public SkyboxRenderer(SkyboxShader shader) {
+        this.shader = shader;
+    }
+
+    public void render() {
+        shader.bind();
+        DebugLog.info("Rendering skybox");
+
+        shader.getProjectionMatrix().loadMatrix(Camera.get().getProjectionMatrix());
+        shader.getViewMatrix().loadMatrix(getViewMatrix());
+        shader.getRotation().loadFloat(skybox.getRotation());
+
+        skybox.getCubemap().render();
+
+        shader.unbind();
+    }
+
+    private Matrix4f getViewMatrix() {
+        Matrix4f viewMatrix = new Matrix4f(Camera.get().getViewMatrix());
+        viewMatrix.m30(0);
+        viewMatrix.m31(0);
+        viewMatrix.m32(0);
+        return viewMatrix;
+    }
+
+    public void setSkybox(Skybox skybox) {
+        this.skybox = skybox;
+    }
+
+    public Skybox getSkybox() {
+        return skybox;
+    }
+
+    public void stop() {
+        shader.dispose();
+
+        if (skybox != null) {
+            skybox.dispose();
+        }
+    }
+}

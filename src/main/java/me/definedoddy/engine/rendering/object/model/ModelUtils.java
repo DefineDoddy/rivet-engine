@@ -7,6 +7,69 @@ import me.definedoddy.engine.rendering.texture.Texture;
 import org.joml.Vector3f;
 
 public class ModelUtils {
+    public static float[] genCubeMapVertices(float size) {
+        return new float[] {
+                // Front
+                -size, size, size,
+                -size, -size, size,
+                size, -size, size,
+                size, size, size,
+                // Back
+                size, size, -size,
+                size, -size, -size,
+                -size, -size, -size,
+                -size, size, -size,
+                // Top
+                -size, size, -size,
+                -size, size, size,
+                size, size, size,
+                size, size, -size,
+                // Bottom
+                -size, -size, size,
+                -size, -size, -size,
+                size, -size, -size,
+                size, -size, size,
+                // Right
+                size, size, size,
+                size, -size, size,
+                size, -size, -size,
+                size, size, -size,
+                // Left
+                -size, size, -size,
+                -size, -size, -size,
+                -size, -size, size,
+                -size, size, size
+        };
+    }
+
+    public static float[] generateQuadVertices(Vector3f size) {
+        return new float[] {
+                -size.x / 2, size.y / 2, 0,
+                -size.x / 2, -size.y / 2, 0,
+                size.x / 2, -size.y / 2, 0,
+                size.x / 2, size.y / 2, 0
+        };
+    }
+
+    public static final float[] QUAD_TEX_COORDS = new float[] {
+            0, 0,
+            0, 1,
+            1, 1,
+            1, 0
+    };
+
+    public static final float[] QUAD_NORMALS = new float[] {
+            0, 0, 1,
+            0, 0, 1,
+            0, 0, 1,
+            0, 0, 1
+    };
+
+    public static final int[] QUAD_INDICES = new int[] {
+            0, 1, 3,
+            3, 1, 2
+    };
+
     public static Model createModel(float[] vertices, float[] texCoords,
                                    float[] normals, int[] indices, Texture texture) {
         Mesh mesh = new Mesh();
@@ -20,28 +83,6 @@ public class ModelUtils {
     }
 
     public static Model createQuad(Vector3f size, Texture texture) {
-        float[] vertices = new float[] {
-                -size.x / 2, size.y / 2, 0,
-                -size.x / 2, -size.y / 2, 0,
-                size.x / 2, -size.y / 2, 0,
-                size.x / 2, size.y / 2, 0
-        };
-        float[] texCoords = new float[] {
-                0, 0,
-                0, 1,
-                1, 1,
-                1, 0
-        };
-        float[] normals = new float[] {
-                0, 0, 1,
-                0, 0, 1,
-                0, 0, 1,
-                0, 0, 1
-        };
-        int[] indices = new int[] {
-                0, 1, 3,
-                3, 1, 2
-        };
-        return createModel(vertices, texCoords, normals, indices, texture);
+        return createModel(generateQuadVertices(size), QUAD_TEX_COORDS, QUAD_NORMALS, QUAD_INDICES, texture);
     }
 }

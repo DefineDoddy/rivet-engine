@@ -2,6 +2,7 @@ package me.definedoddy.engine.rendering.object.model;
 
 import me.definedoddy.engine.rendering.texture.Texture;
 import me.definedoddy.engine.rendering.texture.TextureLoader;
+import me.definedoddy.engine.rendering.texture.TextureType;
 import me.definedoddy.toolkit.file.Resource;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
@@ -100,7 +101,7 @@ public class ModelLoader {
             indicesArray[i] = indices.get(i);
         }
 
-        Texture texture = textureFile != null ? TextureLoader.loadTexture(textureFile) : null;
+        Texture texture = textureFile != null ? TextureLoader.loadTexture2D(textureFile, TextureType.DIFFUSE) : null;
         Model model = ModelUtils.createModel(verticesArray, texturesArray, normalsArray, indicesArray, texture);
 
         ModelCache.getInstance().addModel(key, model);

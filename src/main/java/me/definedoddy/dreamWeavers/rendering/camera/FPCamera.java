@@ -4,6 +4,7 @@ import me.definedoddy.engine.input.KeyCode;
 import me.definedoddy.engine.input.Keyboard;
 import me.definedoddy.engine.input.Mouse;
 import me.definedoddy.engine.rendering.camera.Camera;
+import me.definedoddy.engine.window.GameWindow;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
@@ -13,8 +14,12 @@ public class FPCamera extends Camera {
 
     @Override
     public void init() {
+        Mouse.get().setCursorPosition(GameWindow.get().getWidth() / 2f, GameWindow.get().getHeight() / 2f);
+        Mouse.get().setCursorVisible(false);
+
         setPosition(new Vector3f(0f, 3f, -3f));
         setYaw(90f);
+
         super.init();
     }
 
@@ -52,6 +57,6 @@ public class FPCamera extends Camera {
         vector.normalize();
         vector.mul(movementSpeed);
 
-        getPosition().add(vector);
+        move(vector);
     }
 }

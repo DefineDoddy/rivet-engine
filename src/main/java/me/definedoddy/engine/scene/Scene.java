@@ -3,8 +3,9 @@ package me.definedoddy.engine.scene;
 import me.definedoddy.engine.entity.Entity;
 import me.definedoddy.engine.entity.ModelEntity;
 import me.definedoddy.engine.manager.GameManager;
-import me.definedoddy.engine.rendering.model.ModelRenderer;
 import me.definedoddy.engine.rendering.lighting.Light;
+import me.definedoddy.engine.rendering.model.ModelRenderer;
+import me.definedoddy.engine.rendering.skybox.Skybox;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,5 +54,9 @@ public class Scene {
 
     public List<Light> getLights() {
         return lights;
+    }
+
+    public void setSkybox(Skybox skybox) {
+        GameManager.getRenderEngine().getSkyboxRenderer().setSkybox(skybox);
     }
 }

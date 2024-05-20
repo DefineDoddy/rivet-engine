@@ -1,5 +1,6 @@
 package me.definedoddy.engine.input;
 
+import me.definedoddy.engine.rendering.icon.Icon;
 import me.definedoddy.engine.window.GameWindow;
 import org.joml.Vector2f;
 import org.lwjgl.glfw.GLFW;
@@ -118,5 +119,18 @@ public class Mouse {
 
     public boolean isDragging() {
         return isDragging;
+    }
+
+    public void setCursorVisible(boolean visible) {
+        GLFW.glfwSetInputMode(GameWindow.get().getWindowId(), GLFW.GLFW_CURSOR, visible ? GLFW.GLFW_CURSOR_NORMAL : GLFW.GLFW_CURSOR_DISABLED);
+    }
+
+    public void setCursorPosition(float x, float y) {
+        GLFW.glfwSetCursorPos(GameWindow.get().getWindowId(), x, y);
+    }
+
+    public void setCursorIcon(Icon icon, int originX, int originY) {
+        long cursor = GLFW.glfwCreateCursor(icon.createGlfwImage(), originX, originY);
+        GLFW.glfwSetCursor(GameWindow.get().getWindowId(), cursor);
     }
 }
