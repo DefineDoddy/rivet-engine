@@ -13,6 +13,8 @@ import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL.createCapabilities;
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL13.GL_TEXTURE_CUBE_MAP;
+import static org.lwjgl.opengl.GL32.GL_TEXTURE_CUBE_MAP_SEAMLESS;
 
 public class GameWindow implements Disposable {
     private static GameWindow instance;
@@ -81,15 +83,18 @@ public class GameWindow implements Disposable {
 
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        glEnable(GL_TEXTURE_2D);
+
         glEnable(GL_DEPTH_TEST);
-        glDepthFunc(GL_LEQUAL);
+
+        glEnable(GL_TEXTURE_2D);
+        glEnable(GL_TEXTURE_CUBE_MAP);
+        glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
+
         glEnable(GL_CULL_FACE);
         glCullFace(GL_BACK);
-        //glFrontFace(GL_CCW);
-        //glEnable(GL_SCISSOR_TEST);
 
-        glfwSetWindowSize(windowId, width, height);
+        // FIXME: maximise not working properly on startup
+        if (!fullScreen && !maximized) glfwSetWindowSize(windowId, width, height);
 
         glfwSetWindowCloseCallback(windowId, win -> glfwSetWindowShouldClose(win, true));
 

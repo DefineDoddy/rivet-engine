@@ -22,13 +22,18 @@ public class Vao implements Disposable {
 
     public void storeData(int index, FloatBuffer data, int componentSize) {
         this.maxIndex = Math.max(this.maxIndex, index);
+        bind();
 
         Vbo vbo = new Vbo(false);
         vbo.bind();
+
         vbo.storeData(data, componentSize);
         glVertexAttribPointer(index, componentSize, GL_FLOAT, false, 0, 0);
+
         vbo.unbind();
         vbos.add(vbo);
+
+        unbind();
     }
 
     public void storeIndices(IntBuffer indices) {

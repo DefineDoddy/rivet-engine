@@ -37,7 +37,8 @@ public class TestWorld extends Scene {
 
         addEntity(new Stall());
 
-        Light light1 = new Light(new Vector3f(0, 5, 0), Color.RED);
+        // Add lighting
+        Light light1 = new Light(new Vector3f(0, 3, 0), Color.RED);
         light1.setAttenuation(1, 0.01f, 0.002f);
         addLight(light1);
 
@@ -45,6 +46,7 @@ public class TestWorld extends Scene {
         light2.setAttenuation(1, 0.01f, 0.002f);
         addLight(light2);
 
+        // Set skybox
         setSkybox(new Skybox(CubeMapLoader.load(
                 TextureLoader.loadTextureCubeMap(new Resource("skybox/right.png")),
                 TextureLoader.loadTextureCubeMap(new Resource("skybox/left.png")),
@@ -53,5 +55,11 @@ public class TestWorld extends Scene {
                 TextureLoader.loadTextureCubeMap(new Resource("skybox/back.png")),
                 TextureLoader.loadTextureCubeMap(new Resource("skybox/front.png"))
         )));
+    }
+
+    @Override
+    public void update() {
+        super.update();
+        getSkybox().setRotation(getSkybox().getRotation() + 0.0005f);
     }
 }

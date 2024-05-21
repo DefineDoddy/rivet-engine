@@ -59,4 +59,8 @@ public class Scene {
     public void setSkybox(Skybox skybox) {
         GameManager.getRenderEngine().getSkyboxRenderer().setSkybox(skybox);
     }
+
+    public Skybox getSkybox() {
+        return GameManager.getRenderEngine().getSkyboxRenderer().getSkybox();
+    }
 }

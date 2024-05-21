@@ -6,6 +6,7 @@ import org.lwjgl.opengl.GL11;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL12.GL_CLAMP_TO_EDGE;
+import static org.lwjgl.opengl.GL12.GL_TEXTURE_WRAP_R;
 import static org.lwjgl.opengl.GL13.GL_TEXTURE_CUBE_MAP_POSITIVE_X;
 
 public class CubeMapLoader {
@@ -20,15 +21,16 @@ public class CubeMapLoader {
         for (int i = 0; i < textures.length; i++) {
             Texture texture = textures[i];
 
-            glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB,
+            glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGBA,
                     texture.getWidth(), texture.getHeight(),
-                    0, GL_RGB, GL_UNSIGNED_BYTE, texture.getData()
+                    0, GL_RGBA, GL_UNSIGNED_BYTE, texture.getData()
             );
         }
 
         int glType = TextureType.CUBEMAP.getGlType();
         glTexParameteri(glType, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
         glTexParameteri(glType, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        glTexParameteri(glType, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
         glTexParameteri(glType, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         glTexParameteri(glType, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 

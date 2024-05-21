@@ -43,23 +43,14 @@ public class TextureLoader {
             return textures.get(resource.getPath());
         }
 
-        TextureType type = TextureType.CUBEMAP;
-
         BufferedImage image = ImageUtils.readImage(resource.getStream());
         int width = image.getWidth();
         int height = image.getHeight();
 
         int textureId = glGenTextures();
-
-        glBindTexture(type.getGlType(), textureId);
-        glTexParameteri(type.getGlType(), GL_TEXTURE_WRAP_S, GL_REPEAT);
-        glTexParameteri(type.getGlType(), GL_TEXTURE_WRAP_T, GL_REPEAT);
-        glTexParameteri(type.getGlType(), GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(type.getGlType(), GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
         ByteBuffer buf = ImageUtils.createByteBuffer(image);
 
-        Texture tex = new Texture(textureId, type, buf, width, height);
+        Texture tex = new Texture(textureId, TextureType.CUBEMAP, buf, width, height);
         textures.put(resource.getPath(), tex);
 
         return tex;

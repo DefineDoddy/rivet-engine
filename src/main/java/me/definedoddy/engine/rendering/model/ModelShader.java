@@ -11,7 +11,6 @@ public class ModelShader extends Shader {
 
     // Uniform variables
     private final UniformColour colour = new UniformColour("tint_colour");
-    private final UniformTexture texture = new UniformTexture("tex");
     private final UniformBool useTexture = new UniformBool("use_texture");
 
     private final UniformMatrix4f transformMatrix = new UniformMatrix4f("transform_matrix");
@@ -39,7 +38,7 @@ public class ModelShader extends Shader {
         shader.compile();
 
         shader.setUniforms(
-                shader.colour, shader.texture, shader.useTexture,
+                shader.colour, shader.useTexture,
                 shader.transformMatrix, shader.projectionMatrix, shader.viewMatrix,
                 shader.numLights, shader.lightPositions, shader.lightColours, shader.lightAttenuations,
                 shader.ambientLight, shader.reflectivity
@@ -51,10 +50,6 @@ public class ModelShader extends Shader {
 
     public UniformColour getColour() {
         return colour;
-    }
-
-    public UniformTexture getTexture() {
-        return texture;
     }
 
     public UniformBool getUseTexture() {

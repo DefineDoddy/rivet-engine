@@ -1,7 +1,12 @@
 package me.definedoddy.engine.rendering.texture;
 
+import me.definedoddy.engine.manager.GameManager;
+import me.definedoddy.engine.rendering.config.RenderConfig;
 import me.definedoddy.toolkit.memory.Disposable;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL14;
 import org.lwjgl.opengl.GL20;
+import org.lwjgl.opengl.GL30;
 
 import java.nio.ByteBuffer;
 
@@ -18,6 +23,21 @@ public class Texture implements Disposable {
         this.data = data;
         this.width = width;
         this.height = height;
+
+        generateMipmaps();
+    }
+
+    private void generateMipmaps() {
+        RenderConfig renderConfig = GameManager.getRenderEngine().getRenderConfig();
+        bind();
+
+        if (renderConfig.useMipmapping()) {
+            GL30.glGenerateMipmap(type.getGlType());
+            GL11.glTexParameteri(type.getGlType(), GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR_MIPMAP_LINEAR);
+            GL11.glTexParameterf(type.getGlType(), GL14.GL_TEXTURE_LOD_BIAS, renderConfig.getLODBias());
+        }
+
+        unbind();
     }
 
     public int getId() {
@@ -42,6 +62,10 @@ public class Texture implements Disposable {
 
     public void bind() {
         bind(id, type);
+    }
+
+    public void unbind() {
+        unbind(type);
     }
 
     public static void bind(int id, TextureType type) {
