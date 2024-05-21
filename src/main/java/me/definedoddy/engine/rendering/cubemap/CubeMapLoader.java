@@ -20,9 +20,9 @@ public class CubeMapLoader {
         for (int i = 0; i < textures.length; i++) {
             Texture texture = textures[i];
 
-            glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGBA,
+            glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB,
                     texture.getWidth(), texture.getHeight(),
-                    0, GL_RGBA, GL_UNSIGNED_BYTE, texture.getData()
+                    0, GL_RGB, GL_UNSIGNED_BYTE, texture.getData()
             );
         }
 
@@ -31,6 +31,8 @@ public class CubeMapLoader {
         glTexParameteri(glType, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
         glTexParameteri(glType, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         glTexParameteri(glType, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
+        Texture.unbind(TextureType.CUBEMAP);
 
         return new CubeMap(textureId, textures);
     }

@@ -1,6 +1,6 @@
 package me.definedoddy.engine.scene;
 
-import me.definedoddy.toolkit.debug.DebugLog;
+import me.definedoddy.toolkit.debug.Debug;
 
 public class SceneManager {
     private static Scene currentScene;
@@ -22,7 +22,7 @@ public class SceneManager {
 
         currentScene = createScene(scene);
         currentScene.load();
-        DebugLog.info("Loaded scene: " + scene.getSimpleName());
+        Debug.log("Loaded scene: " + scene.getSimpleName());
 
         return scene.cast(currentScene);
     }

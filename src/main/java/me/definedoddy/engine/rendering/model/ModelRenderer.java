@@ -8,7 +8,7 @@ import me.definedoddy.engine.rendering.lighting.Light;
 import me.definedoddy.engine.rendering.object.mesh.Mesh;
 import me.definedoddy.engine.rendering.object.model.Model;
 import me.definedoddy.engine.scene.SceneManager;
-import me.definedoddy.toolkit.debug.DebugLog;
+import me.definedoddy.toolkit.debug.Debug;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
@@ -59,7 +59,7 @@ public class ModelRenderer {
         int maxLights = renderConfig.getMaxLightsOnMesh();
         if (lights.size() > maxLights) {
             lights = lights.subList(0, maxLights);
-            DebugLog.error("Too many lights on mesh, only the first " + maxLights + " lights will be used");
+            Debug.logError("Too many lights on mesh, only the first " + maxLights + " lights will be used");
         }
 
         shader.getNumLights().loadInt(lights.size());

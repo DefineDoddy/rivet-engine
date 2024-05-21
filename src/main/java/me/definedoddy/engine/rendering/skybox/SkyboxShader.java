@@ -1,8 +1,6 @@
 package me.definedoddy.engine.rendering.skybox;
 
-import me.definedoddy.engine.rendering.shader.Shader;
-import me.definedoddy.engine.rendering.shader.UniformFloat;
-import me.definedoddy.engine.rendering.shader.UniformMatrix4f;
+import me.definedoddy.engine.rendering.shader.*;
 import me.definedoddy.toolkit.file.ProjectFile;
 
 public class SkyboxShader extends Shader {
@@ -12,6 +10,7 @@ public class SkyboxShader extends Shader {
 
     private final UniformMatrix4f projectionMatrix = new UniformMatrix4f("projection_matrix");
     private final UniformMatrix4f viewMatrix = new UniformMatrix4f("view_matrix");
+    private final UniformTexture cubeMap = new UniformTexture("cube_map");
     private final UniformFloat rotation = new UniformFloat("rotation");
 
     public SkyboxShader(ProjectFile vertexFile, ProjectFile fragmentFile) {
@@ -20,11 +19,14 @@ public class SkyboxShader extends Shader {
 
     public static SkyboxShader create() {
         SkyboxShader shader = new SkyboxShader(VERTEX_SHADER, FRAGMENT_SHADER);
-
         shader.compile();
-        shader.setUniforms(shader.projectionMatrix, shader.viewMatrix, shader.rotation);
-        shader.validate();
 
+        shader.setUniforms(
+                shader.projectionMatrix, shader.viewMatrix,
+                shader.cubeMap, shader.rotation
+        );
+
+        shader.validate();
         return shader;
     }
 
@@ -34,6 +36,10 @@ public class SkyboxShader extends Shader {
 
     public UniformMatrix4f getViewMatrix() {
         return viewMatrix;
+    }
+
+    public UniformTexture getCubeMap() {
+        return cubeMap;
     }
 
     public UniformFloat getRotation() {

@@ -1,7 +1,7 @@
 package me.definedoddy.engine.rendering.skybox;
 
 import me.definedoddy.engine.rendering.camera.Camera;
-import me.definedoddy.toolkit.debug.DebugLog;
+import me.definedoddy.toolkit.debug.Debug;
 import org.joml.Matrix4f;
 
 public class SkyboxRenderer {
@@ -14,10 +14,11 @@ public class SkyboxRenderer {
 
     public void render() {
         shader.bind();
-        DebugLog.info("Rendering skybox");
+        Debug.log("Rendering skybox");
 
         shader.getProjectionMatrix().loadMatrix(Camera.get().getProjectionMatrix());
         shader.getViewMatrix().loadMatrix(getViewMatrix());
+        shader.getCubeMap().loadTexUnit(skybox.getCubemap().getTextureID());
         shader.getRotation().loadFloat(skybox.getRotation());
 
         skybox.getCubemap().render();

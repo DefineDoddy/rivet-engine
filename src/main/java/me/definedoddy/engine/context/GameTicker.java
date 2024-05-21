@@ -4,7 +4,7 @@ import me.definedoddy.engine.manager.GameManager;
 import me.definedoddy.engine.physics.Time;
 import me.definedoddy.engine.window.GameWindow;
 import me.definedoddy.engine.utils.errors.ErrorWindowPopup;
-import me.definedoddy.toolkit.debug.DebugLog;
+import me.definedoddy.toolkit.debug.Debug;
 
 public class GameTicker {
     private final GameWindow window;
@@ -33,7 +33,7 @@ public class GameTicker {
         GameManager.init();
         GameContext.get().init();
 
-        DebugLog.info("Process started");
+        Debug.log("Process started");
     }
 
     public void update() {
@@ -46,6 +46,6 @@ public class GameTicker {
 
     public void close() {
         GameManager.stop();
-        DebugLog.info("Process stopped");
+        Debug.log("Process stopped");
     }
 }

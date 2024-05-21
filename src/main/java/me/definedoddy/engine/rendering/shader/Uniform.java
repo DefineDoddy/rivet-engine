@@ -1,6 +1,6 @@
 package me.definedoddy.engine.rendering.shader;
 
-import me.definedoddy.toolkit.debug.DebugLog;
+import me.definedoddy.toolkit.debug.Debug;
 import org.lwjgl.opengl.GL20;
 
 public abstract class Uniform {
@@ -15,7 +15,7 @@ public abstract class Uniform {
     public void storeUniformLocation(int programID) {
         this.programID = programID;
         location = GL20.glGetUniformLocation(programID, name);
-        if (location == -1) DebugLog.error("No uniform variable called %s found!", name);
+        if (location == -1) Debug.logError("No uniform variable called %s found!", name);
     }
 
     public String getName() {

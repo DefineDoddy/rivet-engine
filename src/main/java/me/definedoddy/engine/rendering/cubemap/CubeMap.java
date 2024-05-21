@@ -5,7 +5,7 @@ import me.definedoddy.engine.rendering.object.model.ModelUtils;
 import me.definedoddy.engine.rendering.texture.Texture;
 import me.definedoddy.engine.rendering.texture.TextureType;
 import me.definedoddy.toolkit.buffer.BufferUtils;
-import me.definedoddy.toolkit.debug.DebugLog;
+import me.definedoddy.toolkit.debug.Debug;
 import me.definedoddy.toolkit.memory.Disposable;
 import org.lwjgl.opengl.GL30;
 
@@ -35,8 +35,12 @@ public class CubeMap implements Disposable {
     }
 
     public void render() {
-        DebugLog.info("Rendering cubemap");
+        Debug.log("Rendering cubemap");
         vao.bind();
+        //Debug.log("Bound cubemap VAO");
+        Debug.log("Texture ID: " + textureID);
+        Debug.log("Vertex count: " + vao.getVertexCount());
+        Debug.log("Size: " + size);
 
         Texture.bind(textureID, TextureType.CUBEMAP);
         GL30.glDrawArrays(GL30.GL_TRIANGLES, 0, vao.getVertexCount());

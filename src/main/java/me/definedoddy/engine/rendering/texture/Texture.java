@@ -41,8 +41,7 @@ public class Texture implements Disposable {
     }
 
     public void bind() {
-        GL20.glActiveTexture(GL20.GL_TEXTURE0);
-        GL20.glBindTexture(type.getGlType(), id);
+        bind(id, type);
     }
 
     public static void bind(int id, TextureType type) {

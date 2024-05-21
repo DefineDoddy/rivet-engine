@@ -9,36 +9,47 @@ import org.joml.Vector3f;
 public class ModelUtils {
     public static float[] genCubeMapVertices(float size) {
         return new float[] {
-                // Front
-                -size, size, size,
-                -size, -size, size,
-                size, -size, size,
-                size, size, size,
-                // Back
-                size, size, -size,
-                size, -size, -size,
-                -size, -size, -size,
-                -size, size, -size,
-                // Top
-                -size, size, -size,
-                -size, size, size,
-                size, size, size,
-                size, size, -size,
-                // Bottom
-                -size, -size, size,
+                -size,  size, -size,
                 -size, -size, -size,
                 size, -size, -size,
-                size, -size, size,
-                // Right
-                size, size, size,
-                size, -size, size,
                 size, -size, -size,
-                size, size, -size,
-                // Left
-                -size, size, -size,
+                size,  size, -size,
+                -size,  size, -size,
+
+                -size, -size,  size,
                 -size, -size, -size,
-                -size, -size, size,
-                -size, size, size
+                -size,  size, -size,
+                -size,  size, -size,
+                -size,  size,  size,
+                -size, -size,  size,
+
+                size, -size, -size,
+                size, -size,  size,
+                size,  size,  size,
+                size,  size,  size,
+                size,  size, -size,
+                size, -size, -size,
+
+                -size, -size,  size,
+                -size,  size,  size,
+                size,  size,  size,
+                size,  size,  size,
+                size, -size,  size,
+                -size, -size,  size,
+
+                -size,  size, -size,
+                size,  size, -size,
+                size,  size,  size,
+                size,  size,  size,
+                -size,  size,  size,
+                -size,  size, -size,
+
+                -size, -size, -size,
+                -size, -size,  size,
+                size, -size, -size,
+                size, -size, -size,
+                -size, -size,  size,
+                size, -size,  size
         };
     }
 
