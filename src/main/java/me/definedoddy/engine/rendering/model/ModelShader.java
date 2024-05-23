@@ -7,7 +7,7 @@ import me.definedoddy.toolkit.file.ProjectFile;
 public class ModelShader extends Shader {
     private static final ProjectFile FOLDER = new ProjectFile("engine/rendering/model");
     private static final ProjectFile VERTEX_SHADER = new ProjectFile(FOLDER, "model_vertex.glsl");
-    private static final ProjectFile FRAGMENT_SHADER = new ProjectFile(FOLDER, "model_fragment.glsl");
+    private static final ProjectFile FRAGMENT_SHADER = new ProjectFile(FOLDER, "model_fragment_old.glsl");
 
     // Uniform variables
     private final UniformColour colour = new UniformColour("tint_colour");
