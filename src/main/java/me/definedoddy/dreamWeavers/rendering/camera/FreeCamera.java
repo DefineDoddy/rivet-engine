@@ -8,7 +8,7 @@ import me.definedoddy.engine.window.GameWindow;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
-public class FPCamera extends Camera {
+public class FreeCamera extends Camera {
     private final float movementSpeed = 0.15f;
     private final float mouseSensitivity = 0.15f;
 
@@ -26,6 +26,7 @@ public class FPCamera extends Camera {
     @Override
     public void update() {
         calcMovement();
+        calcRotation();
         super.update();
     }
 
@@ -39,10 +40,13 @@ public class FPCamera extends Camera {
         if (Keyboard.get().isKeyPressed(KeyCode.SHIFT)) getPosition().y -= movementSpeed;
 
         travel(forward, strafe);
+    }
 
+    private void calcRotation() {
         Vector2f mouseDelta = Mouse.get().getDelta();
         float rotX = mouseDelta.y * mouseSensitivity;
         float rotY = mouseDelta.x * mouseSensitivity;
+
         rotate(rotX, rotY, 0f);
     }
 
@@ -58,5 +62,12 @@ public class FPCamera extends Camera {
         vector.mul(movementSpeed);
 
         move(vector);
+    }
+
+    @Override
+    public void setPitch(float pitch) {
+        super.setPitch(pitch);
+        if (getPitch() > 90) setPitch(90);
+        if (getPitch() < -90) setPitch(-90);
     }
 }

@@ -4,9 +4,10 @@ import me.definedoddy.dreamWeavers.models.Stall;
 import me.definedoddy.engine.entity.EntityFactory;
 import me.definedoddy.engine.entity.ModelEntity;
 import me.definedoddy.engine.rendering.cubemap.CubeMapLoader;
-import me.definedoddy.engine.rendering.lighting.Light;
+import me.definedoddy.engine.rendering.lighting.PointLight;
 import me.definedoddy.engine.rendering.object.model.Model;
 import me.definedoddy.engine.rendering.object.model.ModelLoader;
+import me.definedoddy.engine.rendering.object.model.ModelUtils;
 import me.definedoddy.engine.rendering.skybox.Skybox;
 import me.definedoddy.engine.rendering.texture.TextureLoader;
 import me.definedoddy.engine.scene.Scene;
@@ -28,7 +29,7 @@ public class TestWorld extends Scene {
             protected Model defineModel() {
                 Resource obj = new Resource("obj/dragon.obj");
                 Model model = ModelLoader.loadFromObjFile(obj, null);
-                model.getMaterial().setReflectivity(1f);
+                model.getMaterial().setShininess(1f);
                 return model;
             }
         };
@@ -37,13 +38,23 @@ public class TestWorld extends Scene {
 
         addEntity(new Stall());
 
+
+        ModelEntity cube = new ModelEntity() {
+            @Override
+            protected Model defineModel() {
+                return ModelUtils.createCube(new Vector3f(2, 2, 2), null);
+            }
+        };
+        cube.getPosition().set(0, 8, 0);
+        addEntity(cube);
+
         // Add lighting
-        Light light1 = new Light(new Vector3f(0, 3, 0), Color.RED);
-        light1.setAttenuation(1, 0.01f, 0.002f);
+        PointLight light1 = new PointLight(new Vector3f(0, 3, 0), Color.RED);
+        light1.setRadius(10f);
         addLight(light1);
 
-        Light light2 = new Light(new Vector3f(0, 2, 0), Color.GREEN.darker());
-        light2.setAttenuation(1, 0.01f, 0.002f);
+        PointLight light2 = new PointLight(new Vector3f(0, 2, 0), Color.GREEN.darker());
+        light2.setRadius(2f);
         addLight(light2);
 
         // Set skybox

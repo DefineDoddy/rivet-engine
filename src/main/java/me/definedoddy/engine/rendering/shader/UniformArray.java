@@ -93,11 +93,15 @@ public class UniformArray extends Uniform {
         GL20.glUniform1f(getLocationOf(index), value);
     }
 
+
     private int getLocationOf(int index) {
         return GL20.glGetUniformLocation(getProgramID(), getName() + "[" + index + "]");
     }
 
     public enum Type {
-        VEC3F, COLOUR, INT, FLOAT
+        VEC3F,
+        COLOUR,
+        INT,
+        FLOAT
     }
 }

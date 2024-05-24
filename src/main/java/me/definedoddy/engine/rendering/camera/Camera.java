@@ -66,9 +66,9 @@ public class Camera {
     }
 
     public void rotate(float pitch, float yaw, float roll) {
-        this.pitch += pitch;
-        this.yaw += yaw;
-        this.roll += roll;
+        setPitch(this.pitch + pitch);
+        setYaw(this.yaw + yaw);
+        setRoll(this.roll + roll);
     }
 
     public void setPosition(Vector3f position) {

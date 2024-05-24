@@ -16,21 +16,25 @@ public class Mesh implements Disposable, Comparable<Mesh> {
     }
 
     public void setVertexPositions(float[] vertPositions) {
+        if (vertPositions == null) return;
         FloatBuffer buffer = BufferUtils.createFloatBuffer(vertPositions);
         vao.storeData(0, buffer, 3);
     }
 
     public void setTextureCoords(float[] texCoords) {
+        if (texCoords == null) return;
         FloatBuffer buffer = BufferUtils.createFloatBuffer(texCoords);
         vao.storeData(1, buffer, 2);
     }
 
     public void setNormals(float[] normals) {
+        if (normals == null) return;
         FloatBuffer buffer = BufferUtils.createFloatBuffer(normals);
         vao.storeData(2, buffer, 3);
     }
 
     public void setIndices(int[] indices) {
+        if (indices == null) return;
         IntBuffer buffer = BufferUtils.createIntBuffer(indices);
         vao.storeIndices(buffer);
     }

@@ -16,7 +16,7 @@ public class CubeMapLoader {
         }
 
         int textureId = GL11.glGenTextures();
-        Texture.bind(textureId, TextureType.CUBEMAP);
+        Texture.bind(textureId, TextureType.CUBEMAP, 0);
 
         for (int i = 0; i < textures.length; i++) {
             Texture texture = textures[i];

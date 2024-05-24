@@ -6,11 +6,11 @@ import java.awt.*;
 
 public class PointLight extends Light {
     private final Vector3f position;
-    private float range = 10f;
+    private float radius = 10f;
 
     public PointLight(Vector3f position, Color colour) {
         this.position = position;
-        this.colour = colour;
+        this.diffuseColour = colour;
     }
 
     public Vector3f getPosition() {
@@ -21,11 +21,11 @@ public class PointLight extends Light {
         this.position.set(position);
     }
 
-    public float getRange() {
-        return range;
+    public float getRadius() {
+        return radius;
     }
 
-    public void setRange(float range) {
-        this.range = range;
+    public void setRadius(float radius) {
+        this.radius = radius;
     }
 }

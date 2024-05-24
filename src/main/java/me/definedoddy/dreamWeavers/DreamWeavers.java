@@ -1,6 +1,6 @@
 package me.definedoddy.dreamWeavers;
 
-import me.definedoddy.dreamWeavers.rendering.camera.FPCamera;
+import me.definedoddy.dreamWeavers.rendering.camera.FreeCamera;
 import me.definedoddy.dreamWeavers.scene.TestWorld;
 import me.definedoddy.engine.context.GameContext;
 import me.definedoddy.engine.input.KeyCode;
@@ -22,7 +22,7 @@ public class DreamWeavers extends GameContext {
         window.setBackgroundColour(Color.CYAN);
         instance.attachWindow(window);
 
-        Camera.set(new FPCamera());
+        Camera.set(new FreeCamera());
 
         instance.startProcess(); // Must be the last line in the main method
     }

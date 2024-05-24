@@ -6,7 +6,7 @@ public class MaterialBuilder {
     private Texture normal;
     private Texture specular;
 
-    private float reflectivity = 0.5f;
+    private float shininess = 0.5f;
 
     private boolean isTransparent;
 
@@ -28,8 +28,8 @@ public class MaterialBuilder {
         return this;
     }
 
-    public MaterialBuilder reflectivity(float reflectivity) {
-        this.reflectivity = reflectivity;
+    public MaterialBuilder shininess(float shininess) {
+        this.shininess = shininess;
         return this;
     }
 
@@ -40,7 +40,7 @@ public class MaterialBuilder {
 
     public Material build() {
         Material material = new Material(diffuse, normal, specular);
-        material.setReflectivity(reflectivity);
+        material.setShininess(shininess);
         material.setTransparent(isTransparent);
         return material;
     }

@@ -2,23 +2,32 @@ package me.definedoddy.engine.rendering.lighting;
 
 import java.awt.*;
 
-public class Light {
-    protected Color colour = Color.WHITE;
-    protected float intensity = 1f;
+public abstract class Light {
+    protected Color diffuseColour = Color.WHITE;
+    protected Color ambientColour = Color.BLACK;
+    protected Color specularColour = Color.WHITE;
 
-    public Color getColour() {
-        return colour;
+    public Color getDiffuseColour() {
+        return diffuseColour;
     }
 
-    public void setColour(Color colour) {
-        this.colour = colour;
+    public void setDiffuseColour(Color diffuseColour) {
+        this.diffuseColour = diffuseColour;
     }
 
-    public float getIntensity() {
-        return intensity;
+    public Color getAmbientColour() {
+        return ambientColour;
     }
 
-    public void setIntensity(float intensity) {
-        this.intensity = intensity;
+    public void setAmbientColour(Color ambientColour) {
+        this.ambientColour = ambientColour;
+    }
+
+    public Color getSpecularColour() {
+        return specularColour;
+    }
+
+    public void setSpecularColour(Color specularColour) {
+        this.specularColour = specularColour;
     }
 }

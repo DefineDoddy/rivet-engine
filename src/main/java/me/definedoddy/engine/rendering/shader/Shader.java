@@ -58,7 +58,7 @@ public class Shader implements Disposable {
     public void setUniforms(Uniform... uniforms) {
         this.uniforms = List.of(uniforms);
         for (Uniform uniform : uniforms) {
-            uniform.storeUniformLocation(programId);
+            uniform.setProgramId(programId);
         }
     }
 

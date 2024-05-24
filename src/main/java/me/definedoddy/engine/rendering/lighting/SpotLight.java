@@ -6,12 +6,14 @@ import java.awt.*;
 
 public class SpotLight extends Light {
     private Vector3f position;
+    private Vector3f direction;
     private float outerRadius = 10f;
     private float innerRadius;
 
-    public SpotLight(Vector3f position, Color colour) {
+    public SpotLight(Vector3f position, Vector3f direction, Color colour) {
         this.position = position;
-        this.colour = colour;
+        this.direction = direction;
+        this.diffuseColour = colour;
     }
 
     public Vector3f getPosition() {
@@ -20,6 +22,14 @@ public class SpotLight extends Light {
 
     public void setPosition(Vector3f position) {
         this.position = position;
+    }
+
+    public Vector3f getDirection() {
+        return direction;
+    }
+
+    public void setDirection(Vector3f direction) {
+        this.direction = direction;
     }
 
     public float getOuterRadius() {

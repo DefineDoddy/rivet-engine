@@ -38,9 +38,6 @@ public class ModelRenderer {
 
             for (ModelEntity entity : entry.getValue()) {
                 Model model = entity.getModel();
-                shader.getColour().loadColour(model.getMaterial().getTintColour());
-                shader.getReflectivity().loadFloat(model.getMaterial().getReflectivity());
-
                 if (model.getMaterial().isTransparent()) disableCulling();
                 model.render(entity.getPosition(), entity.getRotation(), entity.getScale());
             }
@@ -54,23 +51,21 @@ public class ModelRenderer {
 
     private void applyLighting() {
         RenderConfig renderConfig = GameManager.getRenderEngine().getRenderConfig();
+        int maxLights = renderConfig.getMaxDirectionalLights();
+
         List<Light> lights = SceneManager.getCurrentScene().getLights();
 
-        int maxLights = renderConfig.getMaxLightsOnMesh();
         if (lights.size() > maxLights) {
+            Debug.logError("Too many lights in scene, only " + maxLights + " lights will be used");
             lights = lights.subList(0, maxLights);
-            Debug.logError("Too many lights on mesh, only the first " + maxLights + " lights will be used");
         }
 
-        shader.getNumLights().loadInt(lights.size());
-        shader.getAmbientLight().loadFloat(renderConfig.getAmbientLight());
-
-        // Load lighting data
         for (int i = 0; i < lights.size(); i++) {
-            shader.getLightPositions().loadVec3(i, lights.get(i).getPosition());
-            shader.getLightColours().loadColour(i, lights.get(i).getColour());
-            shader.getLightAttenuations().loadVec3(i, lights.get(i).getAttenuation());
+            Light light = lights.get(i);
+            shader.getLights().loadLight(i, light);
         }
+
+        shader.getLightCount().loadInt(lights.size());
     }
 
     private void enableCulling() {

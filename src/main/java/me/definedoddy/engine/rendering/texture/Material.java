@@ -10,7 +10,7 @@ public class Material implements Disposable {
     private final Texture specular;
 
     private Color tintColour = Color.WHITE;
-    private float reflectivity;
+    private float shininess;
 
     private boolean isTransparent;
 
@@ -22,6 +22,18 @@ public class Material implements Disposable {
 
     public static Material defaultMaterial() {
         return new Material(null, null, null);
+    }
+
+    public void bind() {
+        if (diffuse != null) diffuse.bind(0);
+        if (normal != null) normal.bind(1);
+        if (specular != null) specular.bind(2);
+    }
+
+    public void unbind() {
+        if (diffuse != null) diffuse.unbind();
+        if (normal != null) normal.unbind();
+        if (specular != null) specular.unbind();
     }
 
     public Texture getDiffuse() {
@@ -44,12 +56,12 @@ public class Material implements Disposable {
         return tintColour;
     }
 
-    public void setReflectivity(float reflectivity) {
-        this.reflectivity = reflectivity;
+    public void setShininess(float shininess) {
+        this.shininess = shininess;
     }
 
-    public float getReflectivity() {
-        return reflectivity;
+    public float getShininess() {
+        return shininess;
     }
 
     public void setTransparent(boolean transparent) {
@@ -74,7 +86,7 @@ public class Material implements Disposable {
                     material.getNormal().equals(normal) &&
                     material.getSpecular().equals(specular) &&
                     material.getTintColour().equals(tintColour) &&
-                    material.getReflectivity() == reflectivity;
+                    material.getShininess() == shininess;
         }
         return false;
     }

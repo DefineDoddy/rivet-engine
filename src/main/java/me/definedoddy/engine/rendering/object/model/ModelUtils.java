@@ -7,6 +7,161 @@ import me.definedoddy.engine.rendering.texture.Texture;
 import org.joml.Vector3f;
 
 public class ModelUtils {
+    public static Model createCube(Vector3f size, Texture texture) {
+        // 3d cube with vertices, tex coords, normals, indices
+        float[] vertices = new float[] {
+                // Right face
+                size.x / 2, size.y / 2, size.z / 2,
+                size.x / 2, -size.y / 2, size.z / 2,
+                size.x / 2, -size.y / 2, -size.z / 2,
+                size.x / 2, size.y / 2, -size.z / 2,
+
+                // Left face
+                -size.x / 2, size.y / 2, -size.z / 2,
+                -size.x / 2, -size.y / 2, -size.z / 2,
+                -size.x / 2, -size.y / 2, size.z / 2,
+                -size.x / 2, size.y / 2, size.z / 2,
+
+                // Top face
+                -size.x / 2, size.y / 2, size.z / 2,
+                size.x / 2, size.y / 2, size.z / 2,
+                size.x / 2, size.y / 2, -size.z / 2,
+                -size.x / 2, size.y / 2, -size.z / 2,
+
+                // Bottom face
+                -size.x / 2, -size.y / 2, size.z / 2,
+                -size.x / 2, -size.y / 2, -size.z / 2,
+                size.x / 2, -size.y / 2, -size.z / 2,
+                size.x / 2, -size.y / 2, size.z / 2,
+
+                // Back face
+                -size.x / 2, size.y / 2, -size.z / 2,
+                -size.x / 2, -size.y / 2, -size.z / 2,
+                size.x / 2, -size.y / 2, -size.z / 2,
+                size.x / 2, size.y / 2, -size.z / 2,
+
+                // Front face
+                -size.x / 2, size.y / 2, size.z / 2,
+                -size.x / 2, -size.y / 2, size.z / 2,
+                size.x / 2, -size.y / 2, size.z / 2,
+                size.x / 2, size.y / 2, size.z / 2
+        };
+
+        float[] texCoords = new float[] {
+                0, 0,
+                0, 1,
+                1, 1,
+                1, 0,
+
+                0, 0,
+                0, 1,
+                1, 1,
+                1, 0,
+
+                0, 0,
+                0, 1,
+                1, 1,
+                1, 0,
+
+                0, 0,
+                0, 1,
+                1, 1,
+                1, 0,
+
+                0, 0,
+                0, 1,
+                1, 1,
+                1, 0,
+
+                0, 0,
+                0, 1,
+                1, 1,
+                1, 0
+        };
+
+        float[] normals = new float[] {
+                // Right face
+                1, 0, 0,
+                1, 0, 0,
+                1, 0, 0,
+                1, 0, 0,
+
+                // Left face
+                -1, 0, 0,
+                -1, 0, 0,
+                -1, 0, 0,
+                -1, 0, 0,
+
+                // Top face
+                0, 1, 0,
+                0, 1, 0,
+                0, 1, 0,
+                0, 1, 0,
+
+                // Bottom face
+                0, -1, 0,
+                0, -1, 0,
+                0, -1, 0,
+                0, -1, 0,
+
+                // Back face
+                0, 0, -1,
+                0, 0, -1,
+                0, 0, -1,
+                0, 0, -1,
+
+                // Front face
+                0, 0, 1,
+                0, 0, 1,
+                0, 0, 1,
+                0, 0, 1
+        };
+
+        int[] indices = new int[] {
+                // Right face
+                0, 1, 2,
+                2, 3, 0,
+
+                // Left face
+                4, 5, 6,
+                6, 7, 4,
+
+                // Top face
+                8, 9, 10,
+                10, 11, 8,
+
+                // Bottom face
+                12, 13, 14,
+                14, 15, 12,
+
+                // Back face
+                16, 17, 18,
+                18, 19, 16,
+
+                // Front face
+                20, 21, 22,
+                22, 23, 20
+        };
+
+        return createModel(vertices, texCoords, normals, indices, texture);
+    }
+
+    public static Model createModel(float[] vertices, float[] texCoords,
+                                   float[] normals, int[] indices, Texture texture) {
+        Mesh mesh = new Mesh();
+        mesh.setVertexPositions(vertices);
+        mesh.setTextureCoords(texCoords);
+        mesh.setNormals(normals);
+        mesh.setIndices(indices);
+
+        Material material = MaterialBuilder.fromDiffuse(texture);
+        return new Model(mesh, material);
+    }
+
+    public static Model createQuad(Vector3f size, Texture texture) {
+        return createModel(generateQuadVertices(size), QUAD_TEX_COORDS, QUAD_NORMALS, QUAD_INDICES, texture);
+    }
+
     public static float[] genCubeMapVertices(float size) {
         return new float[] {
                 -size,  size, -size,
@@ -80,20 +235,4 @@ public class ModelUtils {
             0, 1, 3,
             3, 1, 2
     };
-
-    public static Model createModel(float[] vertices, float[] texCoords,
-                                   float[] normals, int[] indices, Texture texture) {
-        Mesh mesh = new Mesh();
-        mesh.setVertexPositions(vertices);
-        mesh.setTextureCoords(texCoords);
-        mesh.setNormals(normals);
-        mesh.setIndices(indices);
-
-        Material material = MaterialBuilder.fromDiffuse(texture);
-        return new Model(mesh, material);
-    }
-
-    public static Model createQuad(Vector3f size, Texture texture) {
-        return createModel(generateQuadVertices(size), QUAD_TEX_COORDS, QUAD_NORMALS, QUAD_INDICES, texture);
-    }
 }
