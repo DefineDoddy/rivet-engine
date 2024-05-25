@@ -10,7 +10,7 @@ public class PointLight extends Light {
 
     public PointLight(Vector3f position, Color colour) {
         this.position = position;
-        this.diffuseColour = colour;
+        this.colour = colour;
     }
 
     public Vector3f getPosition() {

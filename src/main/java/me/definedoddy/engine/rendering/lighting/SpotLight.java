@@ -13,7 +13,7 @@ public class SpotLight extends Light {
     public SpotLight(Vector3f position, Vector3f direction, Color colour) {
         this.position = position;
         this.direction = direction;
-        this.diffuseColour = colour;
+        this.colour = colour;
     }
 
     public Vector3f getPosition() {

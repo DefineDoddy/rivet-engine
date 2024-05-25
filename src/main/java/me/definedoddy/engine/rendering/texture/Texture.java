@@ -69,7 +69,11 @@ public class Texture implements Disposable {
     }
 
     public void unbind() {
-        unbind(type);
+        unbind(0);
+    }
+
+    public void unbind(int unit) {
+        unbind(type, unit);
     }
 
     public static void bind(int id, TextureType type, int unit) {
@@ -77,8 +81,8 @@ public class Texture implements Disposable {
         GL20.glBindTexture(type.getGlType(), id);
     }
 
-    public static void unbind(TextureType type) {
-        GL20.glBindTexture(type.getGlType(), 0);
+    public static void unbind(TextureType type, int unit) {
+        GL20.glBindTexture(type.getGlType(), unit);
     }
 
     @Override

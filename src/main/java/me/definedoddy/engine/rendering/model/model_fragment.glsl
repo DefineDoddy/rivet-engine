@@ -1,19 +1,19 @@
 #version 330 core
 
+in vec3 frag_position;
 in vec2 frag_tex_coords;
 in vec3 frag_normal;
-in vec3 frag_world_position;
+in vec3 frag_view_position;
 
 out vec4 frag_colour;
 
 struct Material {
     sampler2D diffuse;
-    bool has_diffuse;
-
     sampler2D normal;
-    bool has_normal;
-
     sampler2D specular;
+
+    bool has_diffuse;
+    bool has_normal;
     bool has_specular;
 
     float shininess;
@@ -23,9 +23,7 @@ struct Light {
     vec3 position; // Position for point and spot lights
     vec3 direction; // Direction for directional lights
 
-    vec3 ambient;
-    vec3 diffuse;
-    vec3 specular;
+    vec3 colour;
 
     float constant;
     float linear;
@@ -41,49 +39,100 @@ uniform Material material;
 uniform Light lights[_MAX_LIGHTS_];
 uniform int light_count;
 
-vec3 calc_light(Light light, vec3 normal, vec3 fragPos, vec3 viewDir);
+vec3 calc_dir_light(Light light, vec3 normal, vec3 view_dir);
+vec3 calc_point_light(Light light, vec3 normal, vec3 view_dir);
+vec3 calc_spot_light(Light light, vec3 normal, vec3 view_dir);
 
 void main() {
-    vec4 diffuse_colour = vec4(1.0);
-    if (material.has_diffuse) diffuse_colour = texture(material.diffuse, frag_tex_coords);
-    if (diffuse_colour.a < 0.1) discard; // Discard fully transparent pixels
-
     vec3 normal = normalize(frag_normal);
-    vec3 viewDir = normalize(-frag_world_position);
+    vec3 view_dir = normalize(frag_view_position - frag_position);
 
     vec3 result = vec3(0.0);
-
-    for (int i = 0; i < light_count; ++i) {
-        result += calc_light(lights[i], normal, frag_world_position, viewDir);
+    for (int i = 0; i < light_count; i++) {
+        Light light = lights[i];
+        if (light.type == 0) {
+            result += calc_dir_light(light, normal, view_dir);
+        } else if (light.type == 1) {
+            result += calc_point_light(light, normal, view_dir);
+        } else if (light.type == 2) {
+            result += calc_spot_light(light, normal, view_dir);
+        }
     }
 
-    frag_colour = vec4(result, 1.0) * diffuse_colour;
+    frag_colour = vec4(result, 1.0);
 }
 
-vec3 calc_light(Light light, vec3 normal, vec3 fragPos, vec3 viewDir) {
-    vec4 diffuse_colour = texture(material.diffuse, frag_tex_coords);
-    vec4 specular_colour = texture(material.specular, frag_tex_coords);
+vec3 calc_dir_light(Light light, vec3 normal, vec3 view_dir) {
+    vec3 light_dir = normalize(-light.direction);
 
-    vec3 lightDir = normalize(light.position - fragPos);
+    float brightness = max(dot(normal, light_dir), 0.0);
+    vec3 diffuse = brightness * light.colour;
 
-    vec3 ambient = light.ambient * vec3(diffuse_colour);
+    float shine_damper = 10.0;
+    vec3 unit_reflection = reflect(-light_dir, normal);
+    float specular_factor = max(dot(unit_reflection, view_dir), 0.0);
+    vec3 specular = pow(specular_factor, shine_damper) * material.shininess * light.colour;
 
-    float diff = max(dot(normal, lightDir), 0.0);
-    vec3 diffuse = light.diffuse * diff * vec3(diffuse_colour);
-
-    vec3 reflectDir = reflect(-lightDir, normal);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
-    vec3 specular = light.specular * spec * vec3(specular_colour);
-
-    float distance = length(light.position - fragPos);
-    float attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * (distance * distance));
-
-    if (light.type == 2) { // Spot light
-        float theta = dot(lightDir, normalize(-light.direction));
-        float epsilon = light.inner_radius - light.outer_radius;
-        float intensity = clamp((theta - light.outer_radius) / epsilon, 0.0, 1.0);
-        attenuation *= intensity;
+    if (material.has_diffuse) {
+        diffuse *= texture(material.diffuse, frag_tex_coords).rgb;
     }
 
-    return (ambient + diffuse + specular) * attenuation;
+    if (material.has_specular) {
+        specular *= texture(material.specular, frag_tex_coords).rgb;
+    }
+
+    return diffuse + specular;
+}
+
+vec3 calc_point_light(Light light, vec3 normal, vec3 view_dir) {
+    vec3 light_dir = normalize(light.position - frag_position);
+    float distance = length(light.position - frag_position);
+    float attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * (distance * distance));
+
+    float brightness = max(dot(normal, light_dir), 0.0);
+    vec3 diffuse = brightness * light.colour * attenuation;
+
+    float shine_damper = 10.0;
+    vec3 unit_reflection = reflect(-light_dir, normal);
+    float specular_factor = max(dot(unit_reflection, view_dir), 0.0);
+    vec3 specular = pow(specular_factor, shine_damper) * material.shininess * light.colour * attenuation;
+
+    if (material.has_diffuse) {
+        diffuse *= texture(material.diffuse, frag_tex_coords).rgb;
+    }
+
+    if (material.has_specular) {
+        specular *= texture(material.specular, frag_tex_coords).rgb;
+    }
+
+    return diffuse + specular;
+}
+
+vec3 calc_spot_light(Light light, vec3 normal, vec3 view_dir) {
+    vec3 light_dir = normalize(light.position - frag_position);
+    float distance = length(light.position - frag_position);
+    float attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * (distance * distance));
+
+    float spot_factor = dot(normalize(light.direction), -light_dir);
+    float inner_cutoff = cos(radians(light.inner_radius));
+    float outer_cutoff = cos(radians(light.outer_radius));
+    float spot_brightness = clamp((spot_factor - outer_cutoff) / (inner_cutoff - outer_cutoff), 0.0, 1.0);
+
+    float brightness = max(dot(normal, light_dir), 0.0);
+    vec3 diffuse = brightness * light.colour * attenuation * spot_brightness;
+
+    float shine_damper = 10.0;
+    vec3 unit_reflection = reflect(-light_dir, normal);
+    float specular_factor = max(dot(unit_reflection, view_dir), 0.0);
+    vec3 specular = pow(specular_factor, shine_damper) * material.shininess * light.colour * attenuation * spot_brightness;
+
+    if (material.has_diffuse) {
+        diffuse *= texture(material.diffuse, frag_tex_coords).rgb;
+    }
+
+    if (material.has_specular) {
+        specular *= texture(material.specular, frag_tex_coords).rgb;
+    }
+
+    return diffuse + specular;
 }

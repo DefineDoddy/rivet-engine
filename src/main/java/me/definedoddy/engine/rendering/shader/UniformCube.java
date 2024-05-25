@@ -14,6 +14,6 @@ public class UniformCube extends Uniform {
     }
 
     private int getLocationOf(int index) {
-        return GL20.glGetUniformLocation(getProgramID(), getName() + "[" + index + "]");
+        return GL20.glGetUniformLocation(getProgramId(), getName() + "[" + index + "]");
     }
 }

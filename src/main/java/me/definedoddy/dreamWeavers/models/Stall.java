@@ -3,14 +3,18 @@ package me.definedoddy.dreamWeavers.models;
 import me.definedoddy.engine.entity.ModelEntity;
 import me.definedoddy.engine.rendering.object.model.Model;
 import me.definedoddy.engine.rendering.object.model.ModelLoader;
+import me.definedoddy.engine.rendering.texture.*;
 import me.definedoddy.toolkit.file.Resource;
 
 public class Stall extends ModelEntity {
     @Override
     protected Model defineModel() {
         Resource obj = new Resource("obj/stall.obj");
-        Resource texture = new Resource("obj/stallTexture.png");
 
-        return ModelLoader.loadFromObjFile(obj, texture);
+        Resource texPath = new Resource("obj/stallTexture.png");
+        Texture texture = TextureLoader.loadTexture2D(texPath, TextureType.DIFFUSE);
+        Material material = new MaterialBuilder(texture).build();
+
+        return ModelLoader.loadFromObjFile(obj, material);
     }
 }

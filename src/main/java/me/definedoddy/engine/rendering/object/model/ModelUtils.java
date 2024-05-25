@@ -2,12 +2,10 @@ package me.definedoddy.engine.rendering.object.model;
 
 import me.definedoddy.engine.rendering.object.mesh.Mesh;
 import me.definedoddy.engine.rendering.texture.Material;
-import me.definedoddy.engine.rendering.texture.MaterialBuilder;
-import me.definedoddy.engine.rendering.texture.Texture;
 import org.joml.Vector3f;
 
 public class ModelUtils {
-    public static Model createCube(Vector3f size, Texture texture) {
+    public static Model createCube(Vector3f size, Material material) {
         // 3d cube with vertices, tex coords, normals, indices
         float[] vertices = new float[] {
                 // Right face
@@ -143,23 +141,22 @@ public class ModelUtils {
                 22, 23, 20
         };
 
-        return createModel(vertices, texCoords, normals, indices, texture);
+        return createModel(vertices, texCoords, normals, indices, material);
     }
 
     public static Model createModel(float[] vertices, float[] texCoords,
-                                   float[] normals, int[] indices, Texture texture) {
+                                   float[] normals, int[] indices, Material material) {
         Mesh mesh = new Mesh();
         mesh.setVertexPositions(vertices);
         mesh.setTextureCoords(texCoords);
         mesh.setNormals(normals);
         mesh.setIndices(indices);
 
-        Material material = MaterialBuilder.fromDiffuse(texture);
         return new Model(mesh, material);
     }
 
-    public static Model createQuad(Vector3f size, Texture texture) {
-        return createModel(generateQuadVertices(size), QUAD_TEX_COORDS, QUAD_NORMALS, QUAD_INDICES, texture);
+    public static Model createQuad(Vector3f size, Material material) {
+        return createModel(generateQuadVertices(size), QUAD_TEX_COORDS, QUAD_NORMALS, QUAD_INDICES, material);
     }
 
     public static float[] genCubeMapVertices(float size) {

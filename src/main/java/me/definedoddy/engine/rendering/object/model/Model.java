@@ -4,8 +4,6 @@ import me.definedoddy.engine.manager.GameManager;
 import me.definedoddy.engine.rendering.model.ModelShader;
 import me.definedoddy.engine.rendering.object.mesh.Mesh;
 import me.definedoddy.engine.rendering.texture.Material;
-import me.definedoddy.engine.rendering.texture.Texture;
-import me.definedoddy.engine.rendering.texture.TextureType;
 import me.definedoddy.engine.utils.maths.MathsUtils;
 import me.definedoddy.toolkit.memory.Disposable;
 import org.joml.Matrix4f;
@@ -26,13 +24,12 @@ public class Model implements Disposable {
         Matrix4f transformMat = MathsUtils.createTransformationMatrix(position, rotation, scale);
         modelShader.getTransformMatrix().loadMatrix(transformMat);
 
-        if (material != null && material.getDiffuse() != null) {
-            modelShader.getMaterial().loadMaterial(material);
-        } else {
-            Texture.unbind(TextureType.DIFFUSE);
-        }
+        material.bind();
+
+        modelShader.getMaterial().loadMaterial(material);
 
         mesh.render();
+        material.unbind();
     }
 
     public Mesh getMesh() {

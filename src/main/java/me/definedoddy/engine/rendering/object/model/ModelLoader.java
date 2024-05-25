@@ -1,8 +1,6 @@
 package me.definedoddy.engine.rendering.object.model;
 
-import me.definedoddy.engine.rendering.texture.Texture;
-import me.definedoddy.engine.rendering.texture.TextureLoader;
-import me.definedoddy.engine.rendering.texture.TextureType;
+import me.definedoddy.engine.rendering.texture.Material;
 import me.definedoddy.toolkit.file.Resource;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
@@ -12,9 +10,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ModelLoader {
-    public static Model loadFromObjFile(Resource objFile, Resource textureFile) {
-        String key = objFile.getPath() + (textureFile != null ? textureFile.getPath() : "");
-        Model cachedModel = ModelCache.getInstance().getModel(key);
+    public static Model loadFromObjFile(Resource objFile) {
+        return loadFromObjFile(objFile, Material.defaultMaterial());
+    }
+
+    public static Model loadFromObjFile(Resource objFile, Material material) {
+        String cacheKey = objFile.getPath();
+        Model cachedModel = ModelCache.getInstance().getModel(cacheKey);
         if (cachedModel != null) return cachedModel;
 
         BufferedReader reader = objFile.getReader();
@@ -101,10 +103,9 @@ public class ModelLoader {
             indicesArray[i] = indices.get(i);
         }
 
-        Texture texture = textureFile != null ? TextureLoader.loadTexture2D(textureFile, TextureType.DIFFUSE) : null;
-        Model model = ModelUtils.createModel(verticesArray, texturesArray, normalsArray, indicesArray, texture);
+        Model model = ModelUtils.createModel(verticesArray, texturesArray, normalsArray, indicesArray, material);
 
-        ModelCache.getInstance().addModel(key, model);
+        ModelCache.getInstance().addModel(cacheKey, model);
         return model;
     }
 

@@ -20,7 +20,7 @@ public abstract class Uniform {
         return name;
     }
 
-    public int getProgramID() {
+    public int getProgramId() {
         return programID;
     }
 

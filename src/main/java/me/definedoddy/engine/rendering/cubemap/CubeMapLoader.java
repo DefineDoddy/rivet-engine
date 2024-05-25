@@ -34,7 +34,7 @@ public class CubeMapLoader {
         glTexParameteri(glType, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         glTexParameteri(glType, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
-        Texture.unbind(TextureType.CUBEMAP);
+        Texture.unbind(TextureType.CUBEMAP, 0);
 
         return new CubeMap(textureId, textures);
     }

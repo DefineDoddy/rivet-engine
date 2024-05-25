@@ -41,7 +41,7 @@ public class CubeMap implements Disposable {
 
         GL30.glDrawArrays(GL30.GL_TRIANGLES, 0, vao.getVertexCount());
 
-        Texture.unbind(TextureType.CUBEMAP);
+        Texture.unbind(TextureType.CUBEMAP, 0);
         GL30.glDepthMask(true);
 
         vao.unbind();

@@ -9,7 +9,7 @@ public class DirectionalLight extends Light {
 
     public DirectionalLight(Vector3f direction, Color colour) {
         this.direction = direction;
-        this.diffuseColour = colour;
+        this.colour = colour;
     }
 
     public Vector3f getDirection() {
