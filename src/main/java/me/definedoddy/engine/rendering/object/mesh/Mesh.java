@@ -10,9 +10,24 @@ import java.nio.IntBuffer;
 
 public class Mesh implements Disposable, Comparable<Mesh> {
     private final Vao vao = new Vao();
+    private boolean renderQuads;
 
     public void render() {
-        GL11.glDrawElements(GL11.GL_TRIANGLES, vao.getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
+        int renderMode = renderQuads ? GL11.GL_QUADS : GL11.GL_TRIANGLES;
+
+        if (vao.hasIndices()) {
+            GL11.glDrawElements(renderMode, vao.getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
+        } else {
+            GL11.glDrawArrays(renderMode, 0, vao.getVertexCount());
+        }
+    }
+
+    public void setRenderQuads(boolean renderQuads) {
+        this.renderQuads = renderQuads;
+    }
+
+    public boolean isRenderQuads() {
+        return renderQuads;
     }
 
     public void setVertexPositions(float[] vertPositions) {

@@ -9,7 +9,6 @@ import me.definedoddy.engine.rendering.lighting.PointLight;
 import me.definedoddy.engine.rendering.lighting.SpotLight;
 import me.definedoddy.engine.rendering.object.model.Model;
 import me.definedoddy.engine.rendering.object.model.ModelLoader;
-import me.definedoddy.engine.rendering.object.model.ModelUtils;
 import me.definedoddy.engine.rendering.skybox.Skybox;
 import me.definedoddy.engine.rendering.texture.*;
 import me.definedoddy.engine.scene.Scene;
@@ -46,7 +45,7 @@ public class TestWorld extends Scene {
                 Texture diffuse = TextureLoader.loadTexture2D(new Resource("obj/box/diffuse.png"), TextureType.DIFFUSE);
                 Texture normal = TextureLoader.loadTexture2D(new Resource("obj/box/normal.png"), TextureType.NORMAL);
                 Texture specular = TextureLoader.loadTexture2D(new Resource("obj/box/specular.png"), TextureType.SPECULAR);
-                Material material = new MaterialBuilder(diffuse).normal(normal).specular(specular).build();
+                Material material = new MaterialBuilder().diffuse(diffuse).normal(normal).specular(specular).shininess(1f).build();
 
                 return ModelLoader.loadFromObjFile(obj, material);
             }
@@ -57,28 +56,24 @@ public class TestWorld extends Scene {
         addEntity(new Stall());
 
 
-        ModelEntity cube = new ModelEntity() {
-            @Override
-            protected Model defineModel() {
-                return ModelUtils.createCube(new Vector3f(2, 2, 2), Material.defaultMaterial());
-            }
-        };
-        cube.getPosition().set(0, 8, 0);
+        ModelEntity cube = EntityFactory.createCube(new Vector3f(1, 1, 1), new MaterialBuilder().shininess(1f).build());
+        cube.getPosition().set(8, 3, 0);
         addEntity(cube);
 
-        DirectionalLight sun = new DirectionalLight(new Vector3f(1, -1, 0), Color.DARK_GRAY.darker());
+        DirectionalLight sun = new DirectionalLight(new Vector3f(1, -1, 0), Color.WHITE);
+        sun.setIntensity(0.1f);
         addLight(sun);
 
         // Add lighting
-        PointLight light1 = new PointLight(new Vector3f(0, 3, 0), Color.WHITE.darker());
+        PointLight light1 = new PointLight(new Vector3f(0, 3, 0), Color.WHITE);
         light1.setRadius(100f);
         addLight(light1);
 
-        PointLight light2 = new PointLight(new Vector3f(0, 3, 5), Color.GREEN.darker());
+        PointLight light2 = new PointLight(new Vector3f(0, 3, 5), Color.GREEN);
         light2.setRadius(20f);
         addLight(light2);
 
-        SpotLight light3 = new SpotLight(new Vector3f(0, 3, -10), new Vector3f(1, -1, 0), Color.RED.darker());
+        SpotLight light3 = new SpotLight(new Vector3f(8, 6, 0), new Vector3f(0, -1, 0), Color.RED);
         light3.setInnerRadius(15f);
         light3.setOuterRadius(30f);
         addLight(light3);

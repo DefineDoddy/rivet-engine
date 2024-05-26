@@ -11,8 +11,6 @@ public class UniformMaterial extends Uniform {
     }
 
     public void loadMaterial(Material material) {
-        //material.bind();
-
         // Load textures
         int diffuseId = material.getDiffuse() != null ? material.getDiffuse().getId() : -1;
         //GL20.glUniform1i(getLocationOf(getProgramID(), "diffuse"), diffuseId);
@@ -20,22 +18,21 @@ public class UniformMaterial extends Uniform {
 
         int normalId = material.getNormal() != null ? material.getNormal().getId() : -1;
         //GL20.glUniform1i(getLocationOf(getProgramID(), "normal"), normalId);
-        GL20.glUniform1i(getLocationOf(getProgramId(), "has_normal"), normalId != -1 ? 1 : 0);
+        //GL20.glUniform1i(getLocationOf(getProgramId(), "has_normal"), normalId != -1 ? 1 : 0);
 
         int specularId = material.getSpecular() != null ? material.getSpecular().getId() : -1;
         //GL20.glUniform1i(getLocationOf(getProgramID(), "specular"), specularId);
         GL20.glUniform1i(getLocationOf(getProgramId(), "has_specular"), specularId != -1 ? 1 : 0);
 
         // Load properties
-        /*GL20.glUniform3f(getLocationOf(getProgramID(), "tint_colour"),
-                material.getTintColour().getRed(),
-                material.getTintColour().getGreen(),
-                material.getTintColour().getBlue()
-        );*/
+        GL20.glUniform3f(getLocationOf(getProgramId(), "tint_colour"),
+                material.getTintColour().getRed() / 255f,
+                material.getTintColour().getGreen() / 255f,
+                material.getTintColour().getBlue() / 255f
+        );
 
+        GL20.glUniform1i(getLocationOf(getProgramId(), "transparent"), material.isTransparent() ? 1 : 0);
         GL20.glUniform1f(getLocationOf(getProgramId(), "shininess"), material.getShininess());
-
-        //material.unbind();
     }
 
     private int getLocationOf(int programID, String property) {

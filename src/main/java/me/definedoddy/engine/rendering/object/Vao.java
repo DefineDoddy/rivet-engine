@@ -76,6 +76,10 @@ public class Vao implements Disposable {
         return vbo.getData().limit() / vbo.getComponentSize();
     }
 
+    public boolean hasIndices() {
+        return indicesCount != -1;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;

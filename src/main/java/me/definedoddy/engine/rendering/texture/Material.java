@@ -11,8 +11,7 @@ public class Material implements Disposable {
 
     private Color tintColour = Color.WHITE;
     private float shininess;
-
-    private boolean isTransparent;
+    private boolean transparent;
 
     public Material(Texture diffuse, Texture normal, Texture specular) {
         this.diffuse = diffuse;
@@ -65,11 +64,11 @@ public class Material implements Disposable {
     }
 
     public void setTransparent(boolean transparent) {
-        isTransparent = transparent;
+        this.transparent = transparent;
     }
 
     public boolean isTransparent() {
-        return isTransparent;
+        return transparent;
     }
 
     @Override
