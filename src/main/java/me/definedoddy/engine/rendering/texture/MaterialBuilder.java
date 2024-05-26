@@ -1,21 +1,21 @@
 package me.definedoddy.engine.rendering.texture;
 
 public class MaterialBuilder {
-    private final Texture diffuse;
-
+    private Texture diffuse;
     private Texture normal;
     private Texture specular;
 
     private float shininess = 0.5f;
 
-    private boolean isTransparent;
-
-    public MaterialBuilder(Texture diffuse) {
-        this.diffuse = diffuse;
-    }
+    private boolean transparent;
 
     public static Material fromDiffuse(Texture diffuse) {
-        return new MaterialBuilder(diffuse).build();
+        return new MaterialBuilder().diffuse(diffuse).build();
+    }
+
+    public MaterialBuilder diffuse(Texture diffuse) {
+        this.diffuse = diffuse;
+        return this;
     }
 
     public MaterialBuilder normal(Texture normal) {
@@ -34,14 +34,14 @@ public class MaterialBuilder {
     }
 
     public MaterialBuilder transparent() {
-        isTransparent = true;
+        transparent = true;
         return this;
     }
 
     public Material build() {
         Material material = new Material(diffuse, normal, specular);
         material.setShininess(shininess);
-        material.setTransparent(isTransparent);
+        material.setTransparent(transparent);
         return material;
     }
 }

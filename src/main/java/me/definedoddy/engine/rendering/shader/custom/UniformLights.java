@@ -5,7 +5,6 @@ import me.definedoddy.engine.rendering.lighting.Light;
 import me.definedoddy.engine.rendering.lighting.PointLight;
 import me.definedoddy.engine.rendering.lighting.SpotLight;
 import me.definedoddy.engine.rendering.shader.Uniform;
-import me.definedoddy.toolkit.debug.Debug;
 import org.lwjgl.opengl.GL20;
 
 public class UniformLights extends Uniform {
@@ -29,14 +28,16 @@ public class UniformLights extends Uniform {
     }
 
     private void loadProperties(int index, Light light) {
-        // Store the colour
+        // Store base values
         GL20.glUniform3f(getLocationOf(getProgramId(), index, "colour"),
                 light.getColour().getRed() / 255f,
                 light.getColour().getGreen() / 255f,
                 light.getColour().getBlue() / 255f
         );
 
-        // Store the position
+        GL20.glUniform1f(getLocationOf(getProgramId(), index, "intensity"), light.getIntensity());
+
+        // Store position
         if (light instanceof DirectionalLight directionalLight) {
             GL20.glUniform3f(getLocationOf(getProgramId(), index, "direction"),
                     directionalLight.getDirection().x,
@@ -85,7 +86,6 @@ public class UniformLights extends Uniform {
     }
 
     private int getLocationOf(int programID, int index, String property) {
-        Debug.log("Adding uniform: " + getName() + "[" + index + "]." + property);
         return GL20.glGetUniformLocation(programID, getName() + "[" + index + "]." + property);
     }
 }

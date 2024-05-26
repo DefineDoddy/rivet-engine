@@ -11,7 +11,7 @@ import org.joml.Vector3f;
 
 public class Model implements Disposable {
     private final Mesh mesh;
-    private final Material material;
+    private Material material;
 
     public Model(Mesh mesh, Material material) {
         this.mesh = mesh;
@@ -19,6 +19,11 @@ public class Model implements Disposable {
     }
 
     public void render(Vector3f position, Vector3f rotation, Vector3f scale) {
+        if (material == null) {
+            material = Material.defaultMaterial();
+            throw new IllegalStateException("Material is null, applied default material.");
+        }
+
         ModelShader modelShader = GameManager.getRenderEngine().getModelRenderer().getShader();
 
         Matrix4f transformMat = MathsUtils.createTransformationMatrix(position, rotation, scale);
@@ -27,8 +32,8 @@ public class Model implements Disposable {
         material.bind();
 
         modelShader.getMaterial().loadMaterial(material);
-
         mesh.render();
+
         material.unbind();
     }
 

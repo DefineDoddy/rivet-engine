@@ -13,7 +13,7 @@ public class Stall extends ModelEntity {
 
         Resource texPath = new Resource("obj/stallTexture.png");
         Texture texture = TextureLoader.loadTexture2D(texPath, TextureType.DIFFUSE);
-        Material material = new MaterialBuilder(texture).build();
+        Material material = new MaterialBuilder().diffuse(texture).build();
 
         return ModelLoader.loadFromObjFile(obj, material);
     }
