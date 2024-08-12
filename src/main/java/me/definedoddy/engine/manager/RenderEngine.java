@@ -2,8 +2,8 @@ package me.definedoddy.engine.manager;
 
 import me.definedoddy.engine.rendering.config.DefaultRenderConfig;
 import me.definedoddy.engine.rendering.config.RenderConfig;
-import me.definedoddy.engine.rendering.model.ModelRenderer;
-import me.definedoddy.engine.rendering.model.ModelShader;
+import me.definedoddy.engine.rendering.shader.model.ModelRenderer;
+import me.definedoddy.engine.rendering.shader.model.ModelShader;
 import me.definedoddy.engine.rendering.skybox.SkyboxRenderer;
 import me.definedoddy.engine.rendering.skybox.SkyboxShader;
 

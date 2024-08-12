@@ -1,5 +1,6 @@
 package me.definedoddy.engine.rendering.shader;
 
+import me.definedoddy.engine.rendering.shader.uniform.Uniform;
 import me.definedoddy.toolkit.file.ProjectFile;
 import me.definedoddy.toolkit.memory.Disposable;
 
@@ -18,6 +19,12 @@ public class Shader implements Disposable {
     private final HashMap<String, String> variables = new HashMap<>();
 
     private List<Uniform> uniforms;
+
+    private static Shader current;
+
+    public static Shader getCurrent() {
+        return current;
+    }
 
     public Shader(ProjectFile vertexFile, ProjectFile fragmentFile, String... attributes) {
         this.vertexFile = vertexFile;
@@ -49,10 +56,12 @@ public class Shader implements Disposable {
 
     public void bind() {
         glUseProgram(programId);
+        current = this;
     }
 
     public void unbind() {
         glUseProgram(0);
+        current = null;
     }
 
     public void setUniforms(Uniform... uniforms) {

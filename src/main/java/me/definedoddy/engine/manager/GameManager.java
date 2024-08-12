@@ -4,15 +4,16 @@ import me.definedoddy.engine.input.Keyboard;
 import me.definedoddy.engine.input.Mouse;
 import me.definedoddy.engine.rendering.camera.Camera;
 import me.definedoddy.engine.scene.SceneManager;
+import me.definedoddy.toolkit.debug.Debug;
 
 public class GameManager {
     private static final RenderEngine renderEngine = new RenderEngine();
 
     public static void init() {
+        renderEngine.init();
         Keyboard.initAll();
         Mouse.initAll();
         Camera.get().init();
-        renderEngine.init();
     }
 
     public static void update() {
@@ -33,6 +34,7 @@ public class GameManager {
 
     public static void stop() {
         renderEngine.stop();
+        Debug.stop();
     }
 
     public static RenderEngine getRenderEngine() {

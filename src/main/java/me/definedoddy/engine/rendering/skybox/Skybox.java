@@ -23,6 +23,10 @@ public class Skybox implements Disposable {
         this.rotation = rotation;
     }
 
+    public void rotate(float amount) {
+        rotation += amount;
+    }
+
     @Override
     public void dispose() {
         cubemap.dispose();

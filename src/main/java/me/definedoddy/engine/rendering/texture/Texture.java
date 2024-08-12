@@ -96,4 +96,14 @@ public class Texture implements Disposable {
         if (!(obj instanceof Texture texture)) return false;
         return texture.id == id;
     }
+
+    @Override
+    public String toString() {
+        return "Texture{" +
+                "id=" + id +
+                ", width=" + width +
+                ", height=" + height +
+                ", type=" + type +
+                '}';
+    }
 }

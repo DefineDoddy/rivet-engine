@@ -1,11 +1,16 @@
 package me.definedoddy.engine.rendering.texture;
 
+import java.awt.*;
+
 public class MaterialBuilder {
+    private final Material ref = new Material();
+
     private Texture diffuse;
     private Texture normal;
     private Texture specular;
 
-    private float shininess = 0.5f;
+    private Color colour = Color.WHITE;
+    private float shininess = ref.getShininess();
 
     private boolean transparent;
 
@@ -28,6 +33,11 @@ public class MaterialBuilder {
         return this;
     }
 
+    public MaterialBuilder colour(Color colour) {
+        this.colour = colour;
+        return this;
+    }
+
     public MaterialBuilder shininess(float shininess) {
         this.shininess = shininess;
         return this;
@@ -39,7 +49,11 @@ public class MaterialBuilder {
     }
 
     public Material build() {
-        Material material = new Material(diffuse, normal, specular);
+        Material material = new Material();
+        material.setDiffuseMap(diffuse);
+        material.setNormalMap(normal);
+        material.setSpecularMap(specular);
+        material.setColour(colour);
         material.setShininess(shininess);
         material.setTransparent(transparent);
         return material;

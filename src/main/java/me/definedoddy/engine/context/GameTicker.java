@@ -39,8 +39,8 @@ public class GameTicker {
     public void update() {
         GameContext.get().update();
         window.preUpdate();
-        GameManager.update();
         Time.update();
+        GameManager.update();
         window.postUpdate();
     }
 

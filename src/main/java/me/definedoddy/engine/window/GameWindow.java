@@ -153,7 +153,9 @@ public class GameWindow implements Disposable {
 
     public void setIcon(Icon icon) {
         this.icon = icon;
-        if (isCreated()) glfwSetWindowIcon(windowId, icon.createGlfwImageBuffer());
+        if (isCreated()) {
+            glfwSetWindowIcon(windowId, icon.createGlfwImageBuffer());
+        }
     }
 
     public void setVisible(boolean visible) {
@@ -168,28 +170,43 @@ public class GameWindow implements Disposable {
 
     public void setResizable(boolean resizable) {
         this.resizable = resizable;
-        if (isCreated()) glfwWindowHint(GLFW_RESIZABLE, GlfwMappings.toGlfwBoolean(resizable));
+        if (isCreated()) {
+            glfwSetWindowAttrib(windowId, GLFW_RESIZABLE, GlfwMappings.toGlfwBoolean(resizable));
+        }
     }
 
     public void setMaximized(boolean maximized) {
         this.maximized = maximized;
-        if (isCreated()) glfwWindowHint(GLFW_MAXIMIZED, GlfwMappings.toGlfwBoolean(maximized));
+        if (isCreated()) {
+            if (maximized) glfwMaximizeWindow(windowId);
+            else glfwRestoreWindow(windowId);
+        }
+    }
+
+    public boolean isMaximized() {
+        return maximized;
     }
 
     public void setFullScreen(boolean fullScreen) {
         this.fullScreen = fullScreen;
-        if (isCreated()) glfwSetWindowMonitor(windowId, fullScreen ? glfwGetPrimaryMonitor() : 0,
-                0, 0, width, height, GLFW_DONT_CARE);
+        if (isCreated()) {
+            glfwSetWindowMonitor(windowId, fullScreen ? glfwGetPrimaryMonitor() : 0,
+                    0, 0, width, height, GLFW_DONT_CARE);
+        }
     }
 
     public void setDecorated(boolean decorated) {
         this.decorated = decorated;
-        if (isCreated()) glfwWindowHint(GLFW_DECORATED, GlfwMappings.toGlfwBoolean(decorated));
+        if (isCreated()) {
+            glfwSetWindowAttrib(windowId, GLFW_DECORATED, GlfwMappings.toGlfwBoolean(decorated));
+        }
     }
 
     public void setAlwaysOnTop(boolean alwaysOnTop) {
         this.alwaysOnTop = alwaysOnTop;
-        if (isCreated()) glfwWindowHint(GLFW_FLOATING, GlfwMappings.toGlfwBoolean(alwaysOnTop));
+        if (isCreated()) {
+            glfwSetWindowAttrib(windowId, GLFW_FLOATING, GlfwMappings.toGlfwBoolean(alwaysOnTop));
+        }
     }
 
     public void setTitle(String title) {

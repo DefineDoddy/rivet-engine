@@ -3,7 +3,7 @@ plugins {
 }
 
 group = 'me.definedoddy'
-version = '0.0.1-DEV'
+version = '0.0.1'
 
 project.ext.lwjglVersion = "3.3.3"
 project.ext.jomlVersion = "1.10.5"
@@ -12,11 +12,17 @@ project.ext.steamworks4jServerVersion = "1.9.0"
 project.ext.lwjgl3AwtVersion = "0.1.8"
 project.ext.lwjglNatives = "natives-windows"
 
+jar {
+    archiveFileName = "${project.name} v${project.version}.jar"
+}
+
 repositories {
     mavenCentral()
 }
 
 dependencies {
+    implementation 'org.jetbrains:annotations:20.1.0'
+
     testImplementation platform('org.junit:junit-bom:5.9.1')
     testImplementation 'org.junit.jupiter:junit-jupiter'
 

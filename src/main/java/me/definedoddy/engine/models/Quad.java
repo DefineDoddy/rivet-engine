@@ -1,6 +1,6 @@
 package me.definedoddy.engine.models;
 
-import me.definedoddy.engine.rendering.object.mesh.Mesh;
+import me.definedoddy.engine.rendering.object.mesh.OldMesh;
 import me.definedoddy.engine.rendering.object.model.Model;
 import me.definedoddy.engine.rendering.texture.Material;
 import org.joml.Vector3f;
@@ -9,12 +9,12 @@ public class Quad extends Model {
     private final Vector3f size;
 
     public Quad(Vector3f size, Material material) {
-        super(createMesh(size), material);
+        super(null, material);
         this.size = size;
     }
 
-    private static Mesh createMesh(Vector3f size) {
-        Mesh mesh = new Mesh();
+    private static OldMesh createMesh(Vector3f size) {
+        OldMesh mesh = new OldMesh();
         mesh.setVertexPositions(genVertexPositions(size));
         mesh.setNormals(NORMALS);
         mesh.setTextureCoords(TEXTURE_COORDS);

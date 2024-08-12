@@ -4,7 +4,7 @@ import me.definedoddy.engine.entity.Entity;
 import me.definedoddy.engine.entity.ModelEntity;
 import me.definedoddy.engine.manager.GameManager;
 import me.definedoddy.engine.rendering.lighting.Light;
-import me.definedoddy.engine.rendering.model.ModelRenderer;
+import me.definedoddy.engine.rendering.shader.model.ModelRenderer;
 import me.definedoddy.engine.rendering.skybox.Skybox;
 
 import java.util.ArrayList;

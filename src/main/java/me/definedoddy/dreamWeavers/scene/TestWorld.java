@@ -1,18 +1,18 @@
 package me.definedoddy.dreamWeavers.scene;
 
-import me.definedoddy.dreamWeavers.models.Stall;
-import me.definedoddy.engine.entity.EntityFactory;
 import me.definedoddy.engine.entity.ModelEntity;
+import me.definedoddy.engine.physics.Time;
 import me.definedoddy.engine.rendering.cubemap.CubeMapLoader;
 import me.definedoddy.engine.rendering.lighting.DirectionalLight;
 import me.definedoddy.engine.rendering.lighting.PointLight;
 import me.definedoddy.engine.rendering.lighting.SpotLight;
 import me.definedoddy.engine.rendering.object.model.Model;
-import me.definedoddy.engine.rendering.object.model.ModelLoader;
+import me.definedoddy.engine.rendering.object.model.ModelRegistry;
 import me.definedoddy.engine.rendering.skybox.Skybox;
-import me.definedoddy.engine.rendering.texture.*;
+import me.definedoddy.engine.rendering.texture.TextureLoader;
 import me.definedoddy.engine.scene.Scene;
 import me.definedoddy.toolkit.file.Resource;
+import me.definedoddy.toolkit.model.obj.importer.ModelImporter;
 import org.joml.Vector3f;
 
 import java.awt.*;
@@ -21,51 +21,68 @@ public class TestWorld extends Scene {
     @Override
     public void load() {
         // Create environment
-        ModelEntity groundQuad = EntityFactory.createQuad(new Vector3f(100, 100, 0), Material.defaultMaterial());
+        /*ModelEntity groundQuad = EntityFactory.createQuad(new Vector3f(100, 100, 0), new Material());
         groundQuad.getRotation().set(90, 180, 0);
-        addEntity(groundQuad);
+        addEntity(groundQuad);*/
 
-        ModelEntity dragon = new ModelEntity() {
+       /* ModelEntity dragon = new ModelEntity() {
             @Override
             protected Model defineModel() {
-                Resource obj = new Resource("obj/dragon.obj");
-                Model model = ModelLoader.loadFromObjFile(obj);
+                Resource obj = new Resource("assets/obj/dragon.obj");
+                Model model = ModelImporter.importModel(obj);
                 model.getMaterial().setShininess(1f);
+                model.getMaterial().setColour(Color.BLUE);
                 return model;
             }
         };
         dragon.getPosition().set(0, 0, -5);
-        addEntity(dragon);
+        addEntity(dragon);*/
 
-        ModelEntity box = new ModelEntity() {
+        /*ModelEntity box = new ModelEntity() {
             @Override
             protected Model defineModel() {
-                Resource obj = new Resource("obj/box/model.obj");
+                Resource obj = new Resource("assets/obj/box/model.obj");
 
-                Texture diffuse = TextureLoader.loadTexture2D(new Resource("obj/box/diffuse.png"), TextureType.DIFFUSE);
-                Texture normal = TextureLoader.loadTexture2D(new Resource("obj/box/normal.png"), TextureType.NORMAL);
-                Texture specular = TextureLoader.loadTexture2D(new Resource("obj/box/specular.png"), TextureType.SPECULAR);
+                Texture diffuse = TextureLoader.loadTexture2D(new Resource("assets/obj/box/diffuse.png"), TextureType.DIFFUSE);
+                Texture normal = TextureLoader.loadTexture2D(new Resource("assets/obj/box/normal.png"), TextureType.NORMAL);
+                Texture specular = TextureLoader.loadTexture2D(new Resource("assets/obj/box/specular.png"), TextureType.SPECULAR);
                 Material material = new MaterialBuilder().diffuse(diffuse).normal(normal).specular(specular).shininess(1f).build();
 
-                return ModelLoader.loadFromObjFile(obj, material);
+                return ModelImporter.importModel(obj);
             }
         };
         box.getPosition().set(0, 0, 10);
-        addEntity(box);
+        addEntity(box);*/
 
-        addEntity(new Stall());
+        //ModelRegistry.register("trimm", ModelImporter.importModel(new Resource("assets/obj/trimm/Trimm_Textures_Map.obj")));
+        //ModelRegistry.register("cube", ModelImporter.importModel(new Resource("assets/obj/cube.obj")));
+        //ModelRegistry.register("stall", ModelImporter.importModel(new Resource("assets/obj/stall/stall.obj")));
+        ModelRegistry.register("shuttle", ModelImporter.importModel(new Resource("assets/obj/shuttle/shuttle.obj")));
+
+        ModelEntity stall = new ModelEntity() {
+            @Override
+            protected Model defineModel() {
+                return ModelRegistry.getModel("shuttle");
+            }
+        };
+
+        addEntity(stall);
 
 
-        ModelEntity cube = EntityFactory.createCube(new Vector3f(1, 1, 1), new MaterialBuilder().shininess(1f).build());
+        /*ModelEntity cube = EntityFactory.createCube(new Vector3f(1, 1, 1), new MaterialBuilder()
+                        .diffuse(TextureLoader.loadTexture2D(new Resource("assets/icon.png"), TextureType.DIFFUSE))
+                        .shininess(0.2f)
+                        .build());
         cube.getPosition().set(8, 3, 0);
-        addEntity(cube);
+        addEntity(cube);*/
 
         DirectionalLight sun = new DirectionalLight(new Vector3f(1, -1, 0), Color.WHITE);
-        sun.setIntensity(0.1f);
+        sun.setIntensity(0.2f);
         addLight(sun);
 
         // Add lighting
         PointLight light1 = new PointLight(new Vector3f(0, 3, 0), Color.WHITE);
+        light1.setIntensity(0.5f);
         light1.setRadius(100f);
         addLight(light1);
 
@@ -80,18 +97,34 @@ public class TestWorld extends Scene {
 
         // Set skybox
         setSkybox(new Skybox(CubeMapLoader.load(
-                TextureLoader.loadTextureCubeMap(new Resource("skybox/right.png")),
-                TextureLoader.loadTextureCubeMap(new Resource("skybox/left.png")),
-                TextureLoader.loadTextureCubeMap(new Resource("skybox/top.png")),
-                TextureLoader.loadTextureCubeMap(new Resource("skybox/bottom.png")),
-                TextureLoader.loadTextureCubeMap(new Resource("skybox/back.png")),
-                TextureLoader.loadTextureCubeMap(new Resource("skybox/front.png"))
+                TextureLoader.loadTextureCubeMap(new Resource("assets/skybox/right.png")),
+                TextureLoader.loadTextureCubeMap(new Resource("assets/skybox/left.png")),
+                TextureLoader.loadTextureCubeMap(new Resource("assets/skybox/top.png")),
+                TextureLoader.loadTextureCubeMap(new Resource("assets/skybox/bottom.png")),
+                TextureLoader.loadTextureCubeMap(new Resource("assets/skybox/back.png")),
+                TextureLoader.loadTextureCubeMap(new Resource("assets/skybox/front.png"))
         )));
+
+        /*Model model = ModelLoader.loadFromObjFile(null);
+        ModelEntity entity = new ModelEntity() {
+            @Override
+            protected Model defineModel() {
+                return model;
+            }
+        };
+        entity.getPosition().set(8, 5, 0);
+        addEntity(entity);
+        Debug.log("Vertex positions: " + Arrays.toString(model.getMesh().getVertexPositions()));
+        Debug.log("Normals: " + Arrays.toString(model.getMesh().getNormals()));
+        Debug.log("Texture coords: " + Arrays.toString(model.getMesh().getTextureCoords()));
+        Debug.log("Indices: " + Arrays.toString(model.getMesh().getIndices()));*/
+
+        //Debug.setRenderNormals(true);
     }
 
     @Override
     public void update() {
         super.update();
-        getSkybox().setRotation(getSkybox().getRotation() + 0.0005f);
+        getSkybox().rotate((float) Time.getDeltaTime() * 0.02f);
     }
 }

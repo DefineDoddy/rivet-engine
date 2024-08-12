@@ -1,7 +1,7 @@
 package me.definedoddy.engine.rendering.texture;
 
 import me.definedoddy.toolkit.buffer.ImageUtils;
-import me.definedoddy.toolkit.file.Resource;
+import me.definedoddy.toolkit.file.File;
 
 import java.awt.image.BufferedImage;
 import java.nio.ByteBuffer;
@@ -12,12 +12,12 @@ import static org.lwjgl.opengl.GL11.*;
 public class TextureLoader {
     private static final HashMap<String, Texture> textures = new HashMap<>();
 
-    public static Texture loadTexture2D(Resource resource, TextureType type) {
-        if (textures.containsKey(resource.getPath())) {
-            return textures.get(resource.getPath());
+    public static Texture loadTexture2D(File file, TextureType type) {
+        if (textures.containsKey(file.getPath())) {
+            return textures.get(file.getPath());
         }
 
-        BufferedImage image = ImageUtils.readImage(resource.getStream());
+        BufferedImage image = ImageUtils.readImage(file.getStream());
         int width = image.getWidth();
         int height = image.getHeight();
 
@@ -33,17 +33,17 @@ public class TextureLoader {
         glTexImage2D(type.getGlType(), 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, buf);
 
         Texture tex = new Texture(textureId, type, buf, width, height);
-        textures.put(resource.getPath(), tex);
+        textures.put(file.getPath(), tex);
 
         return tex;
     }
 
-    public static Texture loadTextureCubeMap(Resource resource) {
-        if (textures.containsKey(resource.getPath())) {
-            return textures.get(resource.getPath());
+    public static Texture loadTextureCubeMap(File file) {
+        if (textures.containsKey(file.getPath())) {
+            return textures.get(file.getPath());
         }
 
-        BufferedImage image = ImageUtils.readImage(resource.getStream());
+        BufferedImage image = ImageUtils.readImage(file.getStream());
         int width = image.getWidth();
         int height = image.getHeight();
 
@@ -51,7 +51,7 @@ public class TextureLoader {
         ByteBuffer buf = ImageUtils.createByteBuffer(image);
 
         Texture tex = new Texture(textureId, TextureType.CUBEMAP, buf, width, height);
-        textures.put(resource.getPath(), tex);
+        textures.put(file.getPath(), tex);
 
         return tex;
     }

@@ -9,9 +9,9 @@ import me.definedoddy.toolkit.file.Resource;
 public class Stall extends ModelEntity {
     @Override
     protected Model defineModel() {
-        Resource obj = new Resource("obj/stall.obj");
+        Resource obj = new Resource("assets/obj/stall/stall.obj");
 
-        Resource texPath = new Resource("obj/stallTexture.png");
+        Resource texPath = new Resource("assets/obj/stall/stallTexture.png");
         Texture texture = TextureLoader.loadTexture2D(texPath, TextureType.DIFFUSE);
         Material material = new MaterialBuilder().diffuse(texture).build();
 

@@ -18,10 +18,6 @@ public class Camera {
     private Matrix4f projectionMatrix;
     private Matrix4f viewMatrix;
 
-    public Camera() {
-        calcMatrices();
-    }
-
     public static Camera get() {
         return instance;
     }
@@ -31,7 +27,7 @@ public class Camera {
     }
 
     public void init() {
-
+        calcMatrices();
     }
 
     public void update() {
@@ -81,7 +77,7 @@ public class Camera {
 
     public void setFieldOfView(float fieldOfView) {
         this.fieldOfView = fieldOfView;
-        calcMatrices();
+        calcProjectionMatrix();
     }
 
     public float getNearPlane() {
@@ -90,7 +86,7 @@ public class Camera {
 
     public void setNearPlane(float nearPlane) {
         this.nearPlane = nearPlane;
-        calcMatrices();
+        calcProjectionMatrix();
     }
 
     public float getFarPlane() {
@@ -99,7 +95,7 @@ public class Camera {
 
     public void setFarPlane(float farPlane) {
         this.farPlane = farPlane;
-        calcMatrices();
+        calcProjectionMatrix();
     }
 
     public Vector3f getPosition() {
@@ -111,7 +107,7 @@ public class Camera {
     }
 
     public void setPitch(float pitch) {
-        this.pitch = pitch;
+        this.pitch = pitch % 360;
     }
 
     public float getYaw() {
@@ -119,7 +115,7 @@ public class Camera {
     }
 
     public void setYaw(float yaw) {
-        this.yaw = yaw;
+        this.yaw = yaw % 360;
     }
 
     public float getRoll() {
@@ -127,6 +123,6 @@ public class Camera {
     }
 
     public void setRoll(float roll) {
-        this.roll = roll;
+        this.roll = roll % 360;
     }
 }

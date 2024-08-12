@@ -11,7 +11,7 @@ import java.util.List;
 
 public class ModelLoader {
     public static Model loadFromObjFile(Resource objFile) {
-        return loadFromObjFile(objFile, Material.defaultMaterial());
+        return loadFromObjFile(objFile, Material.DEFAULT);
     }
 
     public static Model loadFromObjFile(Resource objFile, Material material) {

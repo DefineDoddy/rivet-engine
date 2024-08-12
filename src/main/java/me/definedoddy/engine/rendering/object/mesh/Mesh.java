@@ -2,15 +2,30 @@ package me.definedoddy.engine.rendering.object.mesh;
 
 import me.definedoddy.engine.rendering.object.Vao;
 import me.definedoddy.toolkit.buffer.BufferUtils;
+import me.definedoddy.toolkit.debug.Debug;
 import me.definedoddy.toolkit.memory.Disposable;
+import me.definedoddy.toolkit.model.obj.Vertex;
 import org.lwjgl.opengl.GL11;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+import java.util.ArrayList;
+import java.util.List;
 
-public class Mesh implements Disposable, Comparable<Mesh> {
+public class Mesh implements Disposable {
+    private final String id;
+    private final int indicesOffset;
+
     private final Vao vao = new Vao();
     private boolean renderQuads;
+
+    private final List<Vertex> vertices = new ArrayList<>();
+    private final List<Integer> indices = new ArrayList<>();
+
+    public Mesh(String id, int indicesOffset) {
+        this.id = id;
+        this.indicesOffset = indicesOffset;
+    }
 
     public void render() {
         int renderMode = renderQuads ? GL11.GL_QUADS : GL11.GL_TRIANGLES;
@@ -22,42 +37,6 @@ public class Mesh implements Disposable, Comparable<Mesh> {
         }
     }
 
-    public void setRenderQuads(boolean renderQuads) {
-        this.renderQuads = renderQuads;
-    }
-
-    public boolean isRenderQuads() {
-        return renderQuads;
-    }
-
-    public void setVertexPositions(float[] vertPositions) {
-        if (vertPositions == null) return;
-        FloatBuffer buffer = BufferUtils.createFloatBuffer(vertPositions);
-        vao.storeData(0, buffer, 3);
-    }
-
-    public void setTextureCoords(float[] texCoords) {
-        if (texCoords == null) return;
-        FloatBuffer buffer = BufferUtils.createFloatBuffer(texCoords);
-        vao.storeData(1, buffer, 2);
-    }
-
-    public void setNormals(float[] normals) {
-        if (normals == null) return;
-        FloatBuffer buffer = BufferUtils.createFloatBuffer(normals);
-        vao.storeData(2, buffer, 3);
-    }
-
-    public void setIndices(int[] indices) {
-        if (indices == null) return;
-        IntBuffer buffer = BufferUtils.createIntBuffer(indices);
-        vao.storeIndices(buffer);
-    }
-
-    public Vao getVao() {
-        return vao;
-    }
-
     public void bind() {
         vao.bind();
     }
@@ -66,26 +45,84 @@ public class Mesh implements Disposable, Comparable<Mesh> {
         vao.unbind();
     }
 
+    public void process() {
+        FloatBuffer positionBuffer = BufferUtils.createFloatBuffer(getVertexPositions());
+        vao.storeData(0, positionBuffer, 3);
+
+        FloatBuffer texCoordBuffer = BufferUtils.createFloatBuffer(getTextureCoords());
+        vao.storeData(1, texCoordBuffer, 2);
+
+        FloatBuffer normalBuffer = BufferUtils.createFloatBuffer(getNormals());
+        vao.storeData(2, normalBuffer, 3);
+
+        IntBuffer buffer = BufferUtils.createIntBuffer(getIndices());
+        vao.storeIndices(buffer);
+
+        Debug.log("Processed mesh with " + getVertexCount() + " vertices and " + getIndicesCount() + " indices");
+    }
+
+    public void addVertex(Vertex vertex) {
+        vertices.add(vertex);
+    }
+
+    public void addIndex(int index) {
+        indices.add(index);
+    }
+
     public int getVertexCount() {
-        return vao.getVertexCount();
+        return vertices.size();
+    }
+
+    public int getIndicesCount() {
+        return indices.size();
+    }
+
+    public void setRenderQuads(boolean renderQuads) {
+        this.renderQuads = renderQuads;
+    }
+
+    private float[] getVertexPositions() {
+        float[] positions = new float[vertices.size() * 3];
+        for (int i = 0; i < vertices.size(); i++) {
+            Vertex vertex = vertices.get(i);
+            positions[i * 3] = vertex.getPosition().x;
+            positions[i * 3 + 1] = vertex.getPosition().y;
+            positions[i * 3 + 2] = vertex.getPosition().z;
+        }
+        return positions;
+    }
+
+    private float[] getTextureCoords() {
+        float[] textureCoords = new float[vertices.size() * 2];
+        for (int i = 0; i < vertices.size(); i++) {
+            Vertex vertex = vertices.get(i);
+            textureCoords[i * 2] = vertex.getTextureCoord().x;
+            textureCoords[i * 2 + 1] = vertex.getTextureCoord().y;
+        }
+        return textureCoords;
+    }
+
+    private float[] getNormals() {
+        float[] normals = new float[vertices.size() * 3];
+        for (int i = 0; i < vertices.size(); i++) {
+            Vertex vertex = vertices.get(i);
+            normals[i * 3] = vertex.getNormal().x;
+            normals[i * 3 + 1] = vertex.getNormal().y;
+            normals[i * 3 + 2] = vertex.getNormal().z;
+        }
+        return normals;
+    }
+
+    private int[] getIndices() {
+        int[] indices = new int[this.indices.size()];
+        for (int i = 0; i < this.indices.size(); i++) {
+            indices[i] = this.indices.get(i) + indicesOffset;
+        }
+        return indices;
     }
 
     @Override
     public void dispose() {
         vao.dispose();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == this) return true;
-        if (obj == null || obj.getClass() != this.getClass()) return false;
-        return vao.equals(((Mesh) obj).vao);
-    }
-
-    @Override
-    public int compareTo(Mesh o) {
-        if (vao.equals(o.vao)) return 0;
-        if (vao.getId() < o.vao.getId()) return -1;
-        return 1;
     }
 }

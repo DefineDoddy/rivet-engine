@@ -1,6 +1,8 @@
 package me.definedoddy.engine.rendering.skybox;
 
 import me.definedoddy.engine.rendering.shader.*;
+import me.definedoddy.engine.rendering.shader.uniform.UniformFloat;
+import me.definedoddy.engine.rendering.shader.uniform.UniformMatrix4f;
 import me.definedoddy.toolkit.file.ProjectFile;
 
 public class SkyboxShader extends Shader {
