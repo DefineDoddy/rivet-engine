@@ -6,6 +6,10 @@ public class Time {
 
     private static double targetFps = 60;
 
+    public static void init() {
+        lastFrameTime = getTime();
+    }
+
     public static void update() {
         double time = getTime();
         deltaTime = time - lastFrameTime;

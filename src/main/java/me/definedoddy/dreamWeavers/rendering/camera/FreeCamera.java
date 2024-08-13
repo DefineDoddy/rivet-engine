@@ -11,12 +11,12 @@ import org.joml.Vector3f;
 
 public class FreeCamera extends Camera {
     private final Vector3f velocity = new Vector3f();
-    private final float movementSpeed = 0.1f;
-    private final float acceleration = 0.2f;
+    private float movementSpeed = 0.05f;
+    private float acceleration = 0.15f;
 
     private Vector3f rotation = new Vector3f();
-    private final float mouseSensitivity = 10f;
-    private final float mouseSmoothing = 2f;
+    private float mouseSensitivity = 10f;
+    private float mouseSmoothing = 2f;
 
     @Override
     public void init() {
@@ -73,8 +73,8 @@ public class FreeCamera extends Camera {
         if (forward == 0 && strafe == 0 && up == 0) return;
 
         float yawRad = (float) Math.toRadians(getYaw());
-        float x = (float) (strafe * Math.cos(yawRad) + forward * Math.sin(yawRad));
-        float z = (float) (strafe * Math.sin(yawRad) - forward * Math.cos(yawRad));
+        float x = (float) (strafe * Math.cos(yawRad) + forward * Math.sin(yawRad)) * (float) Time.getDeltaTime();
+        float z = (float) (strafe * Math.sin(yawRad) - forward * Math.cos(yawRad)) * (float) Time.getDeltaTime();
 
         Vector3f vector = new Vector3f(x, up, z);
         vector.normalize().mul(movementSpeed);
@@ -94,5 +94,37 @@ public class FreeCamera extends Camera {
         super.setPitch(pitch);
         if (getPitch() > 90) setPitch(90);
         if (getPitch() < -90) setPitch(-90);
+    }
+
+    public void setMovementSpeed(float movementSpeed) {
+        this.movementSpeed = movementSpeed;
+    }
+
+    public void setAcceleration(float acceleration) {
+        this.acceleration = acceleration;
+    }
+
+    public void setMouseSensitivity(float mouseSensitivity) {
+        this.mouseSensitivity = mouseSensitivity;
+    }
+
+    public void setMouseSmoothing(float mouseSmoothing) {
+        this.mouseSmoothing = mouseSmoothing;
+    }
+
+    public float getMovementSpeed() {
+        return movementSpeed;
+    }
+
+    public float getAcceleration() {
+        return acceleration;
+    }
+
+    public float getMouseSensitivity() {
+        return mouseSensitivity;
+    }
+
+    public float getMouseSmoothing() {
+        return mouseSmoothing;
     }
 }

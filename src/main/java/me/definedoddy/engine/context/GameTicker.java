@@ -32,6 +32,7 @@ public class GameTicker {
     public void init() {
         GameManager.init();
         GameContext.get().init();
+        Time.init();
 
         Debug.log("Process started");
     }
@@ -39,8 +40,8 @@ public class GameTicker {
     public void update() {
         GameContext.get().update();
         window.preUpdate();
-        Time.update();
         GameManager.update();
+        Time.update();
         window.postUpdate();
     }
 

@@ -1,22 +1,20 @@
 package me.definedoddy.engine.rendering.camera;
 
+import me.definedoddy.engine.entity.Entity;
 import me.definedoddy.engine.utils.maths.MathsUtils;
 import me.definedoddy.engine.window.GameWindow;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
-public class Camera {
+public class Camera extends Entity {
     private static Camera instance;
 
-    private Vector3f position = new Vector3f(0, 0, 0);
-    private float pitch, yaw, roll;
+    protected float fieldOfView = 70f;
+    protected float nearPlane = 0.1f;
+    protected float farPlane = 1000f;
 
-    private float fieldOfView = 70f;
-    private float nearPlane = 0.1f;
-    private float farPlane = 1000f;
-
-    private Matrix4f projectionMatrix;
-    private Matrix4f viewMatrix;
+    protected Matrix4f projectionMatrix;
+    protected Matrix4f viewMatrix;
 
     public static Camera get() {
         return instance;
@@ -24,6 +22,13 @@ public class Camera {
 
     public static void set(Camera camera) {
         instance = camera;
+        instance.init();
+    }
+
+    public static void updateAll() {
+        if (instance != null) {
+            instance.update();
+        }
     }
 
     public void init() {
@@ -62,13 +67,13 @@ public class Camera {
     }
 
     public void rotate(float pitch, float yaw, float roll) {
-        setPitch(this.pitch + pitch);
-        setYaw(this.yaw + yaw);
-        setRoll(this.roll + roll);
+        setPitch(this.rotation.x + pitch);
+        setYaw(this.rotation.y + yaw);
+        setRoll(this.rotation.z + roll);
     }
 
     public void setPosition(Vector3f position) {
-        this.position = position;
+        this.position.set(position);
     }
 
     public float getFieldOfView() {
@@ -98,31 +103,27 @@ public class Camera {
         calcProjectionMatrix();
     }
 
-    public Vector3f getPosition() {
-        return position;
-    }
-
     public float getPitch() {
-        return pitch;
+        return rotation.x;
     }
 
     public void setPitch(float pitch) {
-        this.pitch = pitch % 360;
+        this.rotation.x = pitch % 360;
     }
 
     public float getYaw() {
-        return yaw;
+        return rotation.y;
     }
 
     public void setYaw(float yaw) {
-        this.yaw = yaw % 360;
+        this.rotation.y = yaw % 360;
     }
 
     public float getRoll() {
-        return roll;
+        return rotation.z;
     }
 
     public void setRoll(float roll) {
-        this.roll = roll % 360;
+        this.rotation.z = roll % 360;
     }
 }

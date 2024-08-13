@@ -6,6 +6,7 @@ import me.definedoddy.engine.rendering.shader.model.ModelRenderer;
 import me.definedoddy.engine.rendering.shader.model.ModelShader;
 import me.definedoddy.engine.rendering.skybox.SkyboxRenderer;
 import me.definedoddy.engine.rendering.skybox.SkyboxShader;
+import me.definedoddy.toolkit.debug.Debug;
 
 public class RenderEngine {
     private RenderConfig renderConfig = new DefaultRenderConfig();
@@ -21,6 +22,7 @@ public class RenderEngine {
     public void update() {
         modelRenderer.render();
         skyboxRenderer.render();
+        Debug.render();
     }
 
     public ModelRenderer getModelRenderer() {

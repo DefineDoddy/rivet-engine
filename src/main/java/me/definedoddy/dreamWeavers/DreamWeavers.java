@@ -1,5 +1,6 @@
 package me.definedoddy.dreamWeavers;
 
+import me.definedoddy.dreamWeavers.models.Models;
 import me.definedoddy.dreamWeavers.rendering.camera.FreeCamera;
 import me.definedoddy.dreamWeavers.scene.TestWorld;
 import me.definedoddy.engine.context.GameContext;
@@ -22,14 +23,17 @@ public class DreamWeavers extends GameContext {
         window.setBackgroundColour(Color.CYAN);
         instance.attachWindow(window);
 
-        Camera.set(new FreeCamera());
-
         instance.startProcess(); // Must be the last line in the main method
     }
 
     @Override
     public void init() {
+        Models.registerAll();
+
         SceneManager.loadScene(TestWorld.class);
+
+        Camera.set(new FreeCamera());
+        SceneManager.getCurrentScene().addEntity(Camera.get());
     }
 
     @Override

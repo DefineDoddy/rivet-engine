@@ -7,12 +7,12 @@ import java.util.List;
 import java.util.UUID;
 
 public class Entity {
-    private final UUID uuid = UUID.randomUUID();
-    private final List<Component> components = new ArrayList<>();
+    protected final UUID uuid = UUID.randomUUID();
+    protected final List<Component> components = new ArrayList<>();
 
-    private final Vector3f position;
-    private final Vector3f rotation;
-    private final Vector3f scale;
+    protected final Vector3f position;
+    protected final Vector3f rotation;
+    protected final Vector3f scale;
 
     private boolean removed;
 

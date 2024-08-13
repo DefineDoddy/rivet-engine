@@ -13,7 +13,6 @@ public class GameManager {
         renderEngine.init();
         Keyboard.initAll();
         Mouse.initAll();
-        Camera.get().init();
     }
 
     public static void update() {
@@ -24,7 +23,7 @@ public class GameManager {
         SceneManager.update();
 
         // Rendering
-        Camera.get().update();
+        Camera.updateAll();
         renderEngine.update();
 
         // Input

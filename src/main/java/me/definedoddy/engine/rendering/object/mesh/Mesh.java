@@ -2,7 +2,6 @@ package me.definedoddy.engine.rendering.object.mesh;
 
 import me.definedoddy.engine.rendering.object.Vao;
 import me.definedoddy.toolkit.buffer.BufferUtils;
-import me.definedoddy.toolkit.debug.Debug;
 import me.definedoddy.toolkit.memory.Disposable;
 import me.definedoddy.toolkit.model.obj.Vertex;
 import org.lwjgl.opengl.GL11;
@@ -57,8 +56,10 @@ public class Mesh implements Disposable {
 
         IntBuffer buffer = BufferUtils.createIntBuffer(getIndices());
         vao.storeIndices(buffer);
+    }
 
-        Debug.log("Processed mesh with " + getVertexCount() + " vertices and " + getIndicesCount() + " indices");
+    public List<Vertex> getVertices() {
+        return vertices;
     }
 
     public void addVertex(Vertex vertex) {

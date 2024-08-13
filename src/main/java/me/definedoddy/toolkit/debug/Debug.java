@@ -3,16 +3,17 @@ package me.definedoddy.toolkit.debug;
 import me.definedoddy.engine.rendering.shader.Shader;
 import me.definedoddy.engine.rendering.shader.debug.DebugRenderer;
 import me.definedoddy.engine.rendering.shader.debug.DebugShader;
-import org.joml.Vector3f;
+import me.definedoddy.toolkit.debug.draw.Line;
 import org.lwjgl.opengl.GL11;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Debug {
     private static final DebugRenderer renderer = new DebugRenderer(DebugShader.create());
     private static final List<DebugHandler> handlers = new ArrayList<>();
+
+    private static final List<Line> lines = new ArrayList<>();
 
     public static void log(String message) {
         System.out.println("[INFO] " + message);
@@ -68,26 +69,33 @@ public class Debug {
         renderer.stop();
     }
 
-    public static void drawLine(Vector3f start, Vector3f end) {
-        drawLine(start, end, Color.WHITE);
+    public static void drawLine(Line line) {
+        lines.add(line);
     }
 
-    public static void drawLine(Vector3f start, Vector3f end, Color colour) {
+    public static void render() {
         Shader shader = Shader.getCurrent();
+        if (shader != null) shader.unbind();
 
-        shader.unbind();
         renderer.preRender();
-
-        GL11.glLineWidth(2);
         GL11.glBegin(GL11.GL_LINES);
 
-        GL11.glColor3f(colour.getRed() / 255f, colour.getGreen() / 255f, colour.getBlue() / 255f);
+        for (Line line : lines) {
+            GL11.glLineWidth(line.getWidth());
 
-        GL11.glVertex3f(start.x, start.y, start.z);
-        GL11.glVertex3f(end.x, end.y, end.z);
+            GL11.glColor3f(line.getColor().getRed() / 255f,
+                    line.getColor().getGreen() / 255f,
+                    line.getColor().getBlue() / 255f
+            );
+
+            GL11.glVertex3f(line.getStart().x, line.getStart().y, line.getStart().z);
+            GL11.glVertex3f(line.getEnd().x, line.getEnd().y, line.getEnd().z);
+        }
 
         GL11.glEnd();
         renderer.postRender();
-        shader.bind();
+        lines.clear();
+
+        if (shader != null) shader.bind();
     }
 }
