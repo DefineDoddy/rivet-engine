@@ -2,7 +2,7 @@ package me.definedoddy.engine.rendering.icon;
 
 import me.definedoddy.engine.utils.glfw.GlfwImageUtils;
 import me.definedoddy.toolkit.buffer.ImageUtils;
-import me.definedoddy.toolkit.file.Resource;
+import me.definedoddy.toolkit.file.File;
 import me.definedoddy.toolkit.memory.Disposable;
 import org.lwjgl.glfw.GLFWImage;
 
@@ -16,8 +16,8 @@ public class Icon implements Disposable {
     private GLFWImage glfwImage;
     private GLFWImage.Buffer glfwImageBuffer;
 
-    public static Icon fromResource(Resource resource) {
-        BufferedImage image = ImageUtils.readImage(resource.getStream());
+    public static Icon fromFile(File file) {
+        BufferedImage image = ImageUtils.readImage(file.getStream());
         return new Icon(image, image.getWidth(), image.getHeight());
     }
 

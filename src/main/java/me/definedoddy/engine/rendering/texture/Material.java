@@ -21,6 +21,12 @@ public class Material implements Disposable {
         if (specularMap != null) specularMap.bind(2);
     }
 
+    public void bind(int index) {
+        if (diffuseMap != null) diffuseMap.bind(index * 3);
+        if (normalMap != null) normalMap.bind(index * 3 + 1);
+        if (specularMap != null) specularMap.bind(index * 3 + 2);
+    }
+
     public void unbind() {
         if (diffuseMap != null) diffuseMap.unbind();
         if (normalMap != null) normalMap.unbind();

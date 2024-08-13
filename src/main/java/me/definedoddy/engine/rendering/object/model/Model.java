@@ -50,15 +50,15 @@ public class Model implements Disposable {
 
         Matrix4f transformMat = MathsUtils.createTransformationMatrix(position, rotation, scale);
         modelShader.getTransformMatrix().loadMatrix(transformMat);
+        modelShader.getModelMaterial().loadMaterial(material);
 
-        //material.bind();
         if (wireframe) GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_LINE);
 
         for (Map.Entry<Mesh, Material> entry : meshData.entrySet()) {
             Mesh mesh = entry.getKey();
             Material material = entry.getValue();
 
-            modelShader.getMaterial().loadMaterial(material);
+            modelShader.getMeshMaterial().loadMaterial(material);
             material.bind();
 
             mesh.bind();
@@ -68,7 +68,6 @@ public class Model implements Disposable {
             material.unbind();
         }
 
-        //material.unbind();
         if (wireframe) GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_FILL);
 
         if (renderNormals) renderNormals(position, rotation, scale);

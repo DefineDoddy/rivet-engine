@@ -18,7 +18,8 @@ public class ModelShader extends Shader {
     private final UniformMatrix4f projectionMatrix = new UniformMatrix4f("projection_matrix");
     private final UniformMatrix4f viewMatrix = new UniformMatrix4f("view_matrix");
 
-    private final UniformMaterial material = new UniformMaterial("material");
+    private final UniformMaterial meshMaterial = new UniformMaterial("meshMaterial");
+    private final UniformMaterial modelMaterial = new UniformMaterial("modelMaterial");
 
     private final UniformLights lights = new UniformLights("lights");
     private final UniformInt lightCount = new UniformInt("light_count");
@@ -38,7 +39,7 @@ public class ModelShader extends Shader {
 
         shader.setUniforms(
                 shader.transformMatrix, shader.projectionMatrix, shader.viewMatrix,
-                shader.material, shader.lights, shader.lightCount
+                shader.meshMaterial, shader.modelMaterial, shader.lights, shader.lightCount
         );
 
         shader.validate();
@@ -57,8 +58,12 @@ public class ModelShader extends Shader {
         return viewMatrix;
     }
 
-    public UniformMaterial getMaterial() {
-        return material;
+    public UniformMaterial getMeshMaterial() {
+        return meshMaterial;
+    }
+
+    public UniformMaterial getModelMaterial() {
+        return modelMaterial;
     }
 
     public UniformLights getLights() {
