@@ -1,6 +1,6 @@
 package me.definedoddy.engine.scene;
 
-import me.definedoddy.toolkit.debug.Debug;
+import me.definedoddy.engine.debug.Debug;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,6 +25,7 @@ public class SceneManager {
     public static <T extends Scene> T loadScene(Class<T> scene) {
         if (currentScene != null) {
             currentScene.unload();
+            currentScene.setLoaded(false);
 
             sceneUnloadedListeners.entrySet().removeIf(entry -> {
                 entry.getKey().accept(currentScene);
@@ -34,6 +35,7 @@ public class SceneManager {
 
         currentScene = createScene(scene);
         currentScene.load();
+        currentScene.setLoaded(true);
 
         sceneLoadedListeners.entrySet().removeIf(entry -> {
             entry.getKey().accept(currentScene);

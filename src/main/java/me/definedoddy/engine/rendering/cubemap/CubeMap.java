@@ -1,7 +1,7 @@
 package me.definedoddy.engine.rendering.cubemap;
 
 import me.definedoddy.engine.rendering.object.Vao;
-import me.definedoddy.engine.rendering.object.model.ModelUtils;
+import me.definedoddy.engine.rendering.model.model.ModelUtils;
 import me.definedoddy.engine.rendering.texture.Texture;
 import me.definedoddy.engine.rendering.texture.TextureType;
 import me.definedoddy.toolkit.buffer.BufferUtils;

@@ -48,6 +48,8 @@ public class Shader implements Disposable {
         glDetachShader(programId, fragmentShaderId);
         glDeleteShader(vertexShaderId);
         glDeleteShader(fragmentShaderId);
+
+        validate();
     }
 
     public int getProgramId() {

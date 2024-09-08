@@ -1,10 +1,9 @@
 package me.definedoddy.engine.context;
 
 import me.definedoddy.engine.manager.GameManager;
-import me.definedoddy.engine.physics.Time;
 import me.definedoddy.engine.window.GameWindow;
 import me.definedoddy.engine.utils.errors.ErrorWindowPopup;
-import me.definedoddy.toolkit.debug.Debug;
+import me.definedoddy.engine.debug.Debug;
 
 public class GameTicker {
     private final GameWindow window;

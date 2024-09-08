@@ -1,7 +1,8 @@
 package me.definedoddy.toolkit.model.obj.importer;
 
-import me.definedoddy.engine.rendering.object.mesh.Mesh;
-import me.definedoddy.engine.rendering.object.model.Model;
+import me.definedoddy.engine.rendering.model.mesh.Mesh;
+import me.definedoddy.engine.rendering.model.model.MeshMap;
+import me.definedoddy.engine.rendering.model.model.Model;
 import me.definedoddy.engine.rendering.texture.Material;
 import me.definedoddy.toolkit.file.File;
 import me.definedoddy.toolkit.model.obj.Vertex;
@@ -19,6 +20,7 @@ public class ModelImporter {
 
     private final VertexData vertexData = new VertexData();
     private final Map<String, Material> materials = new HashMap<>();
+    private final Map<String, Vertex> vertexMap = new HashMap<>();
     private Mesh currentMesh;
 
     private final Map<Mesh, Material> meshData = new HashMap<>();
@@ -36,7 +38,7 @@ public class ModelImporter {
         ModelImporter importer = new ModelImporter(file);
         importer.importMaterials();
         importer.importMeshes();
-        return new Model(importer.meshData, material);
+        return new Model(new MeshMap(importer.meshData), material);
     }
 
     private void importMaterials() {
@@ -103,8 +105,9 @@ public class ModelImporter {
         Vertex[] vertexArray = new Vertex[vertices.length - 1];
 
         for (int i = 1; i < vertices.length; i++) {
-            vertexArray[i - 1] = processVertex(vertices[i]);
-            currentMesh.addVertex(vertexArray[i - 1]);
+            Vertex vertex = processVertex(vertices[i]);
+            vertexArray[i - 1] = vertex;
+            currentMesh.addVertex(vertex);
         }
 
         for (int i = 1; i < vertexArray.length - 1; i++) {
@@ -115,6 +118,7 @@ public class ModelImporter {
     }
 
     private Vertex processVertex(String vertexId) {
+        if (vertexMap.containsKey(vertexId)) return vertexMap.get(vertexId);
         String[] values = vertexId.split("/");
 
         int index = currentMesh.getVertexCount();
@@ -122,7 +126,9 @@ public class ModelImporter {
         Vector2f textureCoord = vertexData.textureCoords.get(Integer.parseInt(values[1]) - 1);
         Vector3f normal = vertexData.normals.get(Integer.parseInt(values[2]) - 1);
 
-        return new Vertex(index, position, textureCoord, normal);
+        Vertex vertex = new Vertex(index, position, textureCoord, normal);
+        vertexMap.put(vertexId, vertex);
+        return vertex;
     }
 
     private Vector3f parseVector3f(String line) {

@@ -1,6 +1,6 @@
 package me.definedoddy.engine.input;
 
-import me.definedoddy.engine.rendering.icon.Icon;
+import me.definedoddy.engine.icon.Icon;
 import me.definedoddy.engine.window.GameWindow;
 import org.joml.Vector2f;
 import org.lwjgl.glfw.GLFW;

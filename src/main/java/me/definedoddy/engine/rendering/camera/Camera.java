@@ -22,20 +22,17 @@ public class Camera extends Entity {
 
     public static void set(Camera camera) {
         instance = camera;
-        instance.init();
     }
 
-    public static void updateAll() {
-        if (instance != null) {
-            instance.update();
-        }
-    }
-
+    @Override
     public void init() {
+        super.init();
         calcMatrices();
     }
 
+    @Override
     public void update() {
+        super.update();
         calcViewMatrix();
     }
 

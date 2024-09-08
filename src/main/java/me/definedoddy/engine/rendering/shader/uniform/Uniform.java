@@ -1,6 +1,6 @@
 package me.definedoddy.engine.rendering.shader.uniform;
 
-import me.definedoddy.toolkit.debug.Debug;
+import me.definedoddy.engine.debug.Debug;
 import org.lwjgl.opengl.GL20;
 
 public abstract class Uniform {

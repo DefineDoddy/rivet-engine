@@ -2,18 +2,19 @@ package me.definedoddy.dreamWeavers.scene;
 
 import me.definedoddy.dreamWeavers.models.Dragon;
 import me.definedoddy.dreamWeavers.models.Stall;
+import me.definedoddy.engine.context.Time;
 import me.definedoddy.engine.entity.EntityFactory;
 import me.definedoddy.engine.entity.ModelEntity;
-import me.definedoddy.engine.physics.Time;
+import me.definedoddy.engine.input.KeyCode;
+import me.definedoddy.engine.input.Keyboard;
+import me.definedoddy.engine.physics.collision.BoxCollider;
+import me.definedoddy.engine.physics.simulation.Rigidbody;
 import me.definedoddy.engine.rendering.cubemap.CubeMapLoader;
 import me.definedoddy.engine.rendering.lighting.DirectionalLight;
 import me.definedoddy.engine.rendering.lighting.PointLight;
 import me.definedoddy.engine.rendering.lighting.SpotLight;
 import me.definedoddy.engine.rendering.skybox.Skybox;
-import me.definedoddy.engine.rendering.texture.Material;
-import me.definedoddy.engine.rendering.texture.MaterialBuilder;
 import me.definedoddy.engine.rendering.texture.TextureLoader;
-import me.definedoddy.engine.rendering.texture.TextureType;
 import me.definedoddy.engine.scene.Scene;
 import me.definedoddy.toolkit.file.Resource;
 import org.joml.Vector3f;
@@ -23,28 +24,19 @@ import java.awt.*;
 public class TestWorld extends Scene {
     @Override
     public void load() {
-        // Create environment
-        ModelEntity groundQuad = EntityFactory.createQuad(new Vector3f(100, 100, 0), new Material());
-        groundQuad.getRotation().set(90, 180, 0);
-        addEntity(groundQuad);
-
-        Dragon dragon = new Dragon();
-        dragon.getPosition().set(0, 0, -5);
-        addEntity(dragon);
+        ModelEntity ground = EntityFactory.createQuad(new Vector3f(100, 100, 0));
+        ground.addComponent(new BoxCollider());
+        addEntity(ground);
 
         addEntity(new Stall());
-
-        ModelEntity cube = EntityFactory.createCube(new Vector3f(1, 1, 1), new MaterialBuilder()
-                        .diffuse(TextureLoader.loadTexture2D(new Resource("assets/icon.png"), TextureType.DIFFUSE))
-                        .shininess(0.2f)
-                        .build());
-        cube.getPosition().set(8, 3, 0);
-        addEntity(cube);
+        addEntity(new Dragon(new Vector3f(0, 0, -10)));
 
         addLighting();
+        loadSkybox();
+    }
 
-        // Set skybox
-        setSkybox(new Skybox(CubeMapLoader.load(
+    private void loadSkybox() {
+        getEnvironment().setSkybox(new Skybox(CubeMapLoader.load(
                 TextureLoader.loadTextureCubeMap(new Resource("assets/skybox/right.png")),
                 TextureLoader.loadTextureCubeMap(new Resource("assets/skybox/left.png")),
                 TextureLoader.loadTextureCubeMap(new Resource("assets/skybox/top.png")),
@@ -56,7 +48,7 @@ public class TestWorld extends Scene {
 
     private void addLighting() {
         DirectionalLight sun = new DirectionalLight(new Vector3f(1, -1, 0), Color.WHITE);
-        sun.setIntensity(0.2f);
+        sun.setIntensity(0.5f);
         addLight(sun);
 
         PointLight light1 = new PointLight(new Vector3f(0, 3, 0), Color.WHITE);
@@ -77,6 +69,12 @@ public class TestWorld extends Scene {
     @Override
     public void update() {
         super.update();
-        getSkybox().rotate((float) Time.getDeltaTime() * 0.02f);
+        getEnvironment().getSkybox().rotate((float) Time.getDeltaTime() * 0.02f);
+
+        if (Keyboard.get().wasKeyPressed(KeyCode.R)) {
+            Dragon dragon = new Dragon(new Vector3f(8, 20, 0));
+            dragon.addComponent(new Rigidbody());
+            addEntity(dragon);
+        }
     }
 }

@@ -3,6 +3,7 @@ package me.definedoddy.engine.rendering.texture;
 import me.definedoddy.toolkit.memory.Disposable;
 
 import java.awt.*;
+import java.util.Objects;
 
 public class Material implements Disposable {
     private Texture diffuseMap;
@@ -92,10 +93,10 @@ public class Material implements Disposable {
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof Material material) {
-            return material.getDiffuseMap().equals(diffuseMap) &&
-                    material.getNormalMap().equals(normalMap) &&
-                    material.getSpecularMap().equals(specularMap) &&
-                    material.getColour().equals(colour) &&
+            return Objects.equals(material.getDiffuseMap(), diffuseMap) &&
+                    Objects.equals(material.getNormalMap(), normalMap) &&
+                    Objects.equals(material.getSpecularMap(), specularMap) &&
+                    Objects.equals(material.getColour(), colour) &&
                     material.getShininess() == shininess;
         }
         return false;

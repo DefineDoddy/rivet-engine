@@ -1,10 +1,10 @@
 package me.definedoddy.engine.manager;
 
+import me.definedoddy.engine.debug.Debug;
 import me.definedoddy.engine.input.Keyboard;
 import me.definedoddy.engine.input.Mouse;
-import me.definedoddy.engine.rendering.camera.Camera;
 import me.definedoddy.engine.scene.SceneManager;
-import me.definedoddy.toolkit.debug.Debug;
+import me.definedoddy.engine.ui.UI;
 
 public class GameManager {
     private static final RenderEngine renderEngine = new RenderEngine();
@@ -13,6 +13,7 @@ public class GameManager {
         renderEngine.init();
         Keyboard.initAll();
         Mouse.initAll();
+        UI.init();
     }
 
     public static void update() {
@@ -23,8 +24,9 @@ public class GameManager {
         SceneManager.update();
 
         // Rendering
-        Camera.updateAll();
         renderEngine.update();
+
+        UI.update();
 
         // Input
         Keyboard.updateAll();

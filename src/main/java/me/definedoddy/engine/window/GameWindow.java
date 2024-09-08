@@ -1,6 +1,6 @@
 package me.definedoddy.engine.window;
 
-import me.definedoddy.engine.rendering.icon.Icon;
+import me.definedoddy.engine.icon.Icon;
 import me.definedoddy.engine.utils.errors.FatalErrorWindowPopup;
 import me.definedoddy.engine.utils.glfw.GlfwMappings;
 import me.definedoddy.toolkit.memory.Disposable;
@@ -63,7 +63,10 @@ public class GameWindow implements Disposable {
         glfwWindowHint(GLFW_DECORATED, GlfwMappings.toGlfwBoolean(decorated));
         glfwWindowHint(GLFW_FLOATING, GlfwMappings.toGlfwBoolean(alwaysOnTop));
 
-        windowId = glfwCreateWindow(vidMode.width(), vidMode.height(), title, fullScreen ? glfwGetPrimaryMonitor() : 0, 0);
+        int maxWidth = Math.max(vidMode.width(), getWidth());
+        int maxHeight = Math.max(vidMode.height(), getHeight());
+
+        windowId = glfwCreateWindow(maxWidth, maxHeight, title, fullScreen ? glfwGetPrimaryMonitor() : 0, 0);
 
         if (GlfwMappings.isNull(windowId)) {
             throw new FatalErrorWindowPopup("GLFW Error", "Failed to create window");
@@ -93,8 +96,12 @@ public class GameWindow implements Disposable {
         glEnable(GL_CULL_FACE);
         glCullFace(GL_BACK);
 
-        // FIXME: maximise not working properly on startup
-        if (!fullScreen && !maximized) glfwSetWindowSize(windowId, width, height);
+        if (!fullScreen && !maximized) {
+            glfwSetWindowSize(windowId, width, height);
+        } else {
+            this.width = vidMode.width();
+            this.height = vidMode.height();
+        }
 
         glfwSetWindowCloseCallback(windowId, win -> glfwSetWindowShouldClose(win, true));
 

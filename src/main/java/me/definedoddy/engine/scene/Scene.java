@@ -4,8 +4,8 @@ import me.definedoddy.engine.entity.Entity;
 import me.definedoddy.engine.entity.ModelEntity;
 import me.definedoddy.engine.manager.GameManager;
 import me.definedoddy.engine.rendering.lighting.Light;
-import me.definedoddy.engine.rendering.shader.model.ModelRenderer;
-import me.definedoddy.engine.rendering.skybox.Skybox;
+import me.definedoddy.engine.rendering.model.shader.ModelRenderer;
+import me.definedoddy.engine.scene.environment.Environment;
 
 import java.util.*;
 
@@ -14,6 +14,8 @@ public class Scene {
     private final List<Light> lights = new ArrayList<>();
 
     private final ModelRenderer entityRenderer = GameManager.getRenderEngine().getModelRenderer();
+    private final Environment environment = new Environment(this);
+    private boolean loaded = false;
 
     public void update() {
         entities.values().forEach(Entity::update);
@@ -29,14 +31,18 @@ public class Scene {
         if (entity instanceof ModelEntity modelEntity) {
             entityRenderer.addEntity(modelEntity);
         }
+
+        entity.init();
     }
 
     public void removeEntity(Entity entity) {
-        entities.remove(entity.getUuid());
+        entity.remove();
 
         if (entity instanceof ModelEntity modelEntity) {
             entityRenderer.removeEntity(modelEntity);
         }
+
+        entities.remove(entity.getUuid());
     }
 
     public Entity getEntity(UUID uuid) {
@@ -59,11 +65,15 @@ public class Scene {
         return lights;
     }
 
-    public void setSkybox(Skybox skybox) {
-        GameManager.getRenderEngine().getSkyboxRenderer().setSkybox(skybox);
+    void setLoaded(boolean loaded) {
+        this.loaded = loaded;
     }
 
-    public Skybox getSkybox() {
-        return GameManager.getRenderEngine().getSkyboxRenderer().getSkybox();
+    public Environment getEnvironment() {
+        return environment;
+    }
+
+    public boolean isLoaded() {
+        return loaded;
     }
 }
