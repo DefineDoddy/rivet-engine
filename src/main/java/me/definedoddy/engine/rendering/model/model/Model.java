@@ -1,6 +1,7 @@
 package me.definedoddy.engine.rendering.model.model;
 
 import me.definedoddy.engine.manager.GameManager;
+import me.definedoddy.engine.physics.collision.BoundingBox;
 import me.definedoddy.engine.rendering.model.mesh.Mesh;
 import me.definedoddy.engine.rendering.model.shader.ModelShader;
 import me.definedoddy.engine.rendering.texture.Material;
@@ -24,6 +25,10 @@ public class Model implements Disposable {
     private DebugHandler debugHandler;
     private boolean renderNormals;
     private boolean wireframe;
+
+    private BoundingBox boundingBox;
+    private Vector3f origin;
+    private Vector3f normal;
 
     public Model(Mesh mesh) {
         this(mesh, new Material());
@@ -99,7 +104,9 @@ public class Model implements Disposable {
         return material;
     }
 
-    public Vector3f getBoundingBox() {
+    public BoundingBox getBoundingBox() {
+        if (boundingBox != null) return boundingBox;
+
         Vector3f min = new Vector3f(Float.MAX_VALUE);
         Vector3f max = new Vector3f(Float.MIN_VALUE);
 
@@ -111,10 +118,12 @@ public class Model implements Disposable {
             }
         }
 
-        return new Vector3f(max).sub(min);
+        return boundingBox = new BoundingBox(min, max);
     }
 
     public Vector3f getOrigin() {
+        if (origin != null) return origin;
+
         Vector3f min = new Vector3f(Float.MAX_VALUE);
         Vector3f max = new Vector3f(Float.MIN_VALUE);
 
@@ -126,7 +135,19 @@ public class Model implements Disposable {
             }
         }
 
-        return new Vector3f(min).add(new Vector3f(max).sub(min).div(2));
+        return origin = new Vector3f(min).add(new Vector3f(max).sub(min));
+    }
+
+    public Vector3f getNormal() {
+        if (normal != null) return normal;
+
+        Vector3f normal = new Vector3f();
+        for (Mesh mesh : meshMap.getData().keySet()) {
+            for (Vertex vertex : mesh.getVertices()) {
+                normal.add(vertex.getNormal());
+            }
+        }
+        return this.normal = normal.normalize();
     }
 
     @Override

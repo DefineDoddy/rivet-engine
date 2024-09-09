@@ -8,6 +8,7 @@ import me.definedoddy.engine.entity.ModelEntity;
 import me.definedoddy.engine.input.KeyCode;
 import me.definedoddy.engine.input.Keyboard;
 import me.definedoddy.engine.physics.collision.BoxCollider;
+import me.definedoddy.engine.physics.simulation.KinematicBody;
 import me.definedoddy.engine.physics.simulation.Rigidbody;
 import me.definedoddy.engine.rendering.cubemap.CubeMapLoader;
 import me.definedoddy.engine.rendering.lighting.DirectionalLight;
@@ -26,6 +27,7 @@ public class TestWorld extends Scene {
     public void load() {
         ModelEntity ground = EntityFactory.createQuad(new Vector3f(100, 100, 0));
         ground.addComponent(new BoxCollider());
+        ground.addComponent(new KinematicBody());
         addEntity(ground);
 
         addEntity(new Stall());
@@ -48,7 +50,7 @@ public class TestWorld extends Scene {
 
     private void addLighting() {
         DirectionalLight sun = new DirectionalLight(new Vector3f(1, -1, 0), Color.WHITE);
-        sun.setIntensity(0.5f);
+        sun.setIntensity(0.05f);
         addLight(sun);
 
         PointLight light1 = new PointLight(new Vector3f(0, 3, 0), Color.WHITE);

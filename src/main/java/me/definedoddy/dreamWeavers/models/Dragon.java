@@ -21,6 +21,7 @@ public class Dragon extends ModelEntity implements Collidable {
     public Dragon(Vector3f position) {
         super(position);
         addComponent(new BoxCollider());
+        scale.set(0.5, 0.5, 0.5);
     }
 
     @Override
@@ -32,9 +33,9 @@ public class Dragon extends ModelEntity implements Collidable {
             RayCastHit hit = RayCastUtils.rayCast(Camera.get().getPosition(), point);
 
             if (hit.isHit() && hit.getCollider().getEntity() == this) {
-                scale.set(1.2, 1.2, 1.2);
+                scale.set(0.7, 0.7, 0.7);
             } else {
-                scale.set(1, 1, 1);
+                scale.set(0.5, 0.5, 0.5);
             }
         }
     }

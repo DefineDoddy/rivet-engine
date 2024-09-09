@@ -58,7 +58,7 @@ public class ModelRenderer {
 
     private void applyLighting() {
         RenderConfig renderConfig = GameManager.getRenderEngine().getRenderConfig();
-        int maxLights = renderConfig.getMaxDirectionalLights();
+        int maxLights = renderConfig.getMaxLights();
 
         List<Light> lights = SceneManager.getCurrentScene().getLights();
 

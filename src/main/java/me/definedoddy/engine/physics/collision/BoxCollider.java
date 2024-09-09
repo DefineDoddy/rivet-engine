@@ -11,10 +11,7 @@ import java.util.List;
 
 public class BoxCollider extends Collider3d {
     private Vector3f scale;
-
-    private Vector3f box;
-    private Vector3f origin;
-    private Vector3f bounds;
+    private BoundingBox box;
 
     private final List<Collider> colliding = new ArrayList<>();
 
@@ -31,17 +28,12 @@ public class BoxCollider extends Collider3d {
         super.init();
 
         if (getEntity() instanceof ModelEntity modelEntity) {
-            box = new Vector3f(modelEntity.getModel().getBoundingBox()).div(2);
-            box.max(new Vector3f(0.1f));
-            origin = modelEntity.getModel().getOrigin();
-            updateBounds();
+            box = modelEntity.getBoundingBox();
         }
     }
 
     @Override
     public void update() {
-        updateBounds();
-
         for (Collider collider : PhysicsContainer.getColliders()) {
             if (collider.isColliding(this)) {
                 colliding.add(collider);
@@ -58,20 +50,9 @@ public class BoxCollider extends Collider3d {
     }
 
     private void drawBoundingBox() {
-        Vector3f pos = getPosition();
-        Vector3f size = new Vector3f(bounds).mul(2);
+        Vector3f pos = box.getCenter();
+        Vector3f size = box.getSize();
         Debug.drawCube(new Cube(pos, size));
-    }
-
-    private void updateBounds() {
-        Vector3f entityScale = getEntity().getScale();
-        bounds = new Vector3f(box).mul(entityScale).mul(scale);
-    }
-
-    private Vector3f getPosition() {
-        Vector3f entityPos = getEntity().getPosition();
-        Vector3f entityScale = getEntity().getScale();
-        return new Vector3f(entityPos).add(new Vector3f(origin).mul(entityScale));
     }
 
     @Override
@@ -85,28 +66,12 @@ public class BoxCollider extends Collider3d {
         if (!isEnabled() || !collider.isEnabled()) return false;
         if (!(collider instanceof BoxCollider boxCol)) return false;
 
-        Vector3f pos = getPosition();
-        Vector3f otherPos = boxCol.getPosition();
-
-        Vector3f min = new Vector3f(pos).sub(bounds);
-        Vector3f max = new Vector3f(pos).add(bounds);
-        Vector3f otherMin = new Vector3f(otherPos).sub(boxCol.bounds);
-        Vector3f otherMax = new Vector3f(otherPos).add(boxCol.bounds);
-
-        return min.x < otherMax.x && max.x > otherMin.x &&
-                min.y < otherMax.y && max.y > otherMin.y &&
-                min.z < otherMax.z && max.z > otherMin.z;
+        return AABBCollision.intersectBoundingBoxes(box, boxCol.getBox());
     }
 
     @Override
     public boolean containsPoint(Vector3f point) {
-        Vector3f pos = getPosition();
-        Vector3f min = new Vector3f(pos).sub(bounds);
-        Vector3f max = new Vector3f(pos).add(bounds);
-
-        return point.x > min.x && point.x < max.x &&
-                point.y > min.y && point.y < max.y &&
-                point.z > min.z && point.z < max.z;
+        return box.contains(point);
     }
 
     @Override
@@ -122,11 +87,7 @@ public class BoxCollider extends Collider3d {
         return scale;
     }
 
-    public void setBox(Vector3f box) {
-        this.box = box;
-    }
-
-    public Vector3f getBox() {
+    public BoundingBox getBox() {
         return box;
     }
 }

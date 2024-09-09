@@ -2,8 +2,8 @@ package me.definedoddy.engine.rendering.config;
 
 public class DefaultRenderConfig extends RenderConfig {
     @Override
-    public int getMaxDirectionalLights() {
-        return 4;
+    public int getMaxLights() {
+        return 20;
     }
 
     @Override

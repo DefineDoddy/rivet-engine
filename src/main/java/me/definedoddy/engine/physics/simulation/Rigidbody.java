@@ -1,94 +1,71 @@
 package me.definedoddy.engine.physics.simulation;
 
 import me.definedoddy.engine.context.Time;
-import me.definedoddy.engine.entity.Component;
 import me.definedoddy.engine.physics.Physics;
-import me.definedoddy.engine.physics.collision.Collider;
 import org.joml.Vector3f;
 
-import java.util.List;
+public class Rigidbody extends PhysicsBody {
+    public float gravityMultiplier = 1;
 
-public class Rigidbody extends Component {
-    public float mass = 1;
+    protected final Vector3f linearVelocity = new Vector3f();
+    protected final Vector3f angularVelocity = new Vector3f();
+    protected final Vector3f force = new Vector3f();
+    protected final Vector3f torque = new Vector3f();
 
-    private final Vector3f velocity = new Vector3f();
-    private final Vector3f acceleration = new Vector3f();
-    private final Vector3f force = new Vector3f();
-
-    private final Vector3f angularVelocity = new Vector3f();
-    private final Vector3f angularAcceleration = new Vector3f();
-    private final Vector3f torque = new Vector3f();
+    protected float inertia;
 
     @Override
     public void init() {
-
+        calculateInertia();
     }
 
     @Override
     public void update() {
-        float deltaTime = (float) Time.getDeltaTime();
+        super.update();
 
-        applyGravity();
-        updateRigidbody(deltaTime);
-        handleCollision();
-
-        getEntity().getPosition().add(new Vector3f(velocity).mul(deltaTime));
-        getEntity().getRotation().add(new Vector3f(angularVelocity).mul(deltaTime));
+        float deltaTime = (float) Time.getFixedDeltaTime();
+        simulate(deltaTime);
     }
 
-    public void applyForce(Vector3f force) {
-        applyForce(force, new Vector3f());
+    public void addImpulseForce(Vector3f force) {
+        force.add(new Vector3f(force).div(mass));
     }
 
-    public void applyForce(Vector3f force, Vector3f point) {
+    private void calculateInertia() {
+        if (collider == null) return;
+
+        Vector3f size = collider.getBox().getSize();
+        inertia = (1f / 12f) * mass * (size.x * size.x + size.y * size.y + size.z * size.z);
+    }
+
+    private void computeForceAndTorque() {
+        if (collider == null) return;
+
+        Vector3f force = new Vector3f(0, Physics.GRAVITY * gravityMultiplier, 0);
         this.force.add(force);
-        torque.add(new Vector3f().cross(point, force));
+
+        Vector3f box = collider.getBox().getSize();
+        Vector3f r = new Vector3f(box.x / 2, box.y / 2, box.z / 2);
+        this.torque.set(r.y * force.z - r.z * force.y, r.z * force.x - r.x * force.z, r.x * force.y - r.y * force.x);
     }
 
-    private void updateRigidbody(float deltaTime) {
-        acceleration.set(force).div(mass);
-        velocity.add(acceleration.mul(deltaTime));
-        force.zero();
+    private void simulate(float deltaTime) {
+        computeForceAndTorque();
 
-        angularAcceleration.set(torque).div(mass);
-        angularVelocity.add(angularAcceleration.mul(deltaTime));
-        torque.zero();
-    }
+        Vector3f linearAcceleration = new Vector3f(force);
+        linearVelocity.add(new Vector3f(linearAcceleration).mul(deltaTime));
+        addPos(new Vector3f(linearVelocity).mul(deltaTime));
 
-    private void applyGravity() {
-        Vector3f force = new Vector3f(0, Physics.GRAVITY * mass, 0);
-        applyForce(force);
-    }
+        Vector3f angularAcceleration = new Vector3f(torque).div(inertia);
+        angularVelocity.add(new Vector3f(angularAcceleration).mul(deltaTime));
+        addRot(new Vector3f(angularVelocity).mul(deltaTime));
 
-    private void handleCollision() {
-        Collider collider = getEntity().getComponent(Collider.class);
-        if (collider != null) {
-            List<Collider> colliding = collider.getColliding();
-            for (Collider other : colliding) {
-                if (other.getEntity().getComponent(Rigidbody.class) != null) {
-                    Rigidbody otherRigidbody = other.getEntity().getComponent(Rigidbody.class);
-                    Vector3f normal = new Vector3f(other.getEntity().getPosition()).sub(getEntity().getPosition()).normalize();
-                    float relativeVelocity = new Vector3f(velocity).sub(otherRigidbody.velocity).dot(normal);
-                    if (relativeVelocity > 0) {
-                        return;
-                    }
-                    float e = 0.5f;
-                    float j = -(1 + e) * relativeVelocity;
-                    j /= 1 / mass + 1 / otherRigidbody.mass;
-                    Vector3f impulse = new Vector3f(normal).mul(j);
-                    applyForce(impulse);
-                    otherRigidbody.applyForce(new Vector3f(impulse).negate());
-                } else {
-                    Vector3f normal = new Vector3f(other.getEntity().getPosition()).sub(getEntity().getPosition()).normalize();
-                    Vector3f point = new Vector3f(other.getEntity().getPosition());
-                    applyForce(new Vector3f(normal).mul(-1), point);
-                }
-            }
-        }
+        force.set(0);
     }
 
     @Override
     public void remove() {
 
     }
+
 }

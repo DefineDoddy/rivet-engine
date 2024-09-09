@@ -24,6 +24,10 @@ public class Time {
         return deltaTime;
     }
 
+    public static double getFixedDeltaTime() {
+        return 1 / targetFps;
+    }
+
     public static double getFps() {
         return 1 / deltaTime;
     }

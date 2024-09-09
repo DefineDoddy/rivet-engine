@@ -32,7 +32,7 @@ public class ModelShader extends Shader {
         ModelShader shader = new ModelShader(VERTEX_SHADER, FRAGMENT_SHADER);
 
         // Set shader variables
-        int maxLights = GameManager.getRenderEngine().getRenderConfig().getMaxDirectionalLights();
+        int maxLights = GameManager.getRenderEngine().getRenderConfig().getMaxLights();
         shader.setVariable("MAX_LIGHTS", String.valueOf(maxLights));
 
         shader.compile();
