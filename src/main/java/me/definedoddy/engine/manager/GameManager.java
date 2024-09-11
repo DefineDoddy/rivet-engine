@@ -3,6 +3,7 @@ package me.definedoddy.engine.manager;
 import me.definedoddy.engine.debug.Debug;
 import me.definedoddy.engine.input.Keyboard;
 import me.definedoddy.engine.input.Mouse;
+import me.definedoddy.engine.physics.PhysicsContainer;
 import me.definedoddy.engine.scene.SceneManager;
 import me.definedoddy.engine.ui.UI;
 
@@ -22,6 +23,7 @@ public class GameManager {
 
         // Logic
         SceneManager.update();
+        PhysicsContainer.update();
 
         // Rendering
         renderEngine.update();

@@ -50,7 +50,7 @@ public class TestWorld extends Scene {
 
     private void addLighting() {
         DirectionalLight sun = new DirectionalLight(new Vector3f(1, -1, 0), Color.WHITE);
-        sun.setIntensity(0.05f);
+        sun.setIntensity(0.5f);
         addLight(sun);
 
         PointLight light1 = new PointLight(new Vector3f(0, 3, 0), Color.WHITE);

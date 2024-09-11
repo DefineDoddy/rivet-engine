@@ -16,19 +16,22 @@ public class Rigidbody extends PhysicsBody {
 
     @Override
     public void init() {
+        super.init();
         calculateInertia();
     }
 
     @Override
     public void update() {
-        super.update();
-
         float deltaTime = (float) Time.getFixedDeltaTime();
         simulate(deltaTime);
+
+        super.update();
+
+        addPos(new Vector3f(linearVelocity).mul(deltaTime));
     }
 
     public void addImpulseForce(Vector3f force) {
-        force.add(new Vector3f(force).div(mass));
+        this.linearVelocity.add(force);
     }
 
     private void calculateInertia() {
@@ -52,9 +55,8 @@ public class Rigidbody extends PhysicsBody {
     private void simulate(float deltaTime) {
         computeForceAndTorque();
 
-        Vector3f linearAcceleration = new Vector3f(force);
+        Vector3f linearAcceleration = new Vector3f(force).div(mass);
         linearVelocity.add(new Vector3f(linearAcceleration).mul(deltaTime));
-        addPos(new Vector3f(linearVelocity).mul(deltaTime));
 
         Vector3f angularAcceleration = new Vector3f(torque).div(inertia);
         angularVelocity.add(new Vector3f(angularAcceleration).mul(deltaTime));
@@ -63,9 +65,7 @@ public class Rigidbody extends PhysicsBody {
         force.set(0);
     }
 
-    @Override
-    public void remove() {
-
+    public Vector3f getLinearVelocity() {
+        return linearVelocity;
     }
-
 }

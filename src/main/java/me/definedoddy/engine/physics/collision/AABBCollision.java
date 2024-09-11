@@ -9,22 +9,7 @@ public class AABBCollision {
                 a.getMin().z < b.getMax().z && a.getMax().z > b.getMin().z;
     }
 
-    public static Vector3f getCorrection(BoundingBox a, BoundingBox b) {
-        /*// calc overlap in x, y, z
-        float dx = Math.min(a.getMax().x, b.getMax().x) - Math.max(a.getMin().x, b.getMin().x);
-        float dy = Math.min(a.getMax().y, b.getMax().y) - Math.max(a.getMin().y, b.getMin().y);
-        float dz = Math.min(a.getMax().z, b.getMax().z) - Math.max(a.getMin().z, b.getMin().z);
-
-        // calc penetration depth
-        float penetration = Math.min(Math.min(dx, dy), dz);
-
-        // calc direction of penetration
-        float signX = Math.signum(b.getCenter().x - a.getCenter().x);
-        float signY = Math.signum(b.getCenter().y - a.getCenter().y);
-        float signZ = Math.signum(b.getCenter().z - a.getCenter().z);
-
-        return new Vector3f(signX * penetration, signY * penetration, signZ * penetration);*/
-
+    public static Vector3f getNormal(BoundingBox a, BoundingBox b) {
         float dx = b.getCenter().x - a.getCenter().x;
         float px = (b.getSize().x + a.getSize().x) - Math.abs(dx);
         if (px <= 0) return new Vector3f();
@@ -44,5 +29,22 @@ public class AABBCollision {
         } else {
             return new Vector3f(0, 0, pz * Math.signum(dz));
         }
+    }
+
+    public static float getDepth(BoundingBox a, BoundingBox b) {
+        float dx = b.getCenter().x - a.getCenter().x;
+        float px = (b.getSize().x + a.getSize().x) - Math.abs(dx);
+        if (px <= 0) return 0;
+
+        float dy = b.getCenter().y - a.getCenter().y;
+        float py = (b.getSize().y + a.getSize().y) - Math.abs(dy);
+        if (py <= 0) return 0;
+
+        float dz = b.getCenter().z - a.getCenter().z;
+        float pz = (b.getSize().z + a.getSize().z) - Math.abs(dz);
+        if (pz <= 0) return 0;
+
+        if (px < py && px < pz) return px;
+        else return Math.min(py, pz);
     }
 }
