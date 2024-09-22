@@ -23,28 +23,19 @@ public class AABBCollision {
         if (pz <= 0) return new Vector3f();
 
         if (px < py && px < pz) {
-            return new Vector3f(px * Math.signum(dx), 0, 0);
+            return new Vector3f(1, 0, 0);
         } else if (py < pz) {
-            return new Vector3f(0, py * Math.signum(dy), 0);
+            return new Vector3f(0, 1, 0);
         } else {
-            return new Vector3f(0, 0, pz * Math.signum(dz));
+            return new Vector3f(0, 0, 1);
         }
     }
 
     public static float getDepth(BoundingBox a, BoundingBox b) {
-        float dx = b.getCenter().x - a.getCenter().x;
-        float px = (b.getSize().x + a.getSize().x) - Math.abs(dx);
-        if (px <= 0) return 0;
-
-        float dy = b.getCenter().y - a.getCenter().y;
-        float py = (b.getSize().y + a.getSize().y) - Math.abs(dy);
-        if (py <= 0) return 0;
-
-        float dz = b.getCenter().z - a.getCenter().z;
-        float pz = (b.getSize().z + a.getSize().z) - Math.abs(dz);
-        if (pz <= 0) return 0;
-
-        if (px < py && px < pz) return px;
-        else return Math.min(py, pz);
+        float overlapX = Math.min(a.getMax().x, b.getMax().x) - Math.max(a.getMin().x, b.getMin().x);
+        float overlapY = Math.min(a.getMax().y, b.getMax().y) - Math.max(a.getMin().y, b.getMin().y);
+        if (overlapX <= 0 || overlapY <= 0) return 0f;
+        return Math.min(overlapX, overlapY);
     }
+
 }

@@ -7,7 +7,7 @@ import org.joml.Vector3f;
 
 public abstract class PhysicsBody extends Component {
     public float mass = 1;
-    public float restitution = 0.8f;
+    public float restitution = 1f;
 
     protected BoxCollider collider;
 
@@ -30,26 +30,6 @@ public abstract class PhysicsBody extends Component {
 
     protected Vector3f getPos() {
         return getEntity().getPosition();
-    }
-
-    protected void setPos(Vector3f pos) {
-        getEntity().getPosition().set(pos);
-    }
-
-    protected void addPos(Vector3f pos) {
-        getEntity().getPosition().add(pos);
-    }
-
-    protected Vector3f getRot() {
-        return getEntity().getRotation();
-    }
-
-    protected void setRot(Vector3f rot) {
-        getEntity().getRotation().set(rot);
-    }
-
-    protected void addRot(Vector3f rot) {
-        //getEntity().getRotation().add(rot);
     }
 
     public BoxCollider getCollider() {
