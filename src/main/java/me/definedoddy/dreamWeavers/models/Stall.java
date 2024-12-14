@@ -35,7 +35,7 @@ public class Stall extends ModelEntity implements Collidable {
 
         light = new PointLight(new Vector3f(getPosition()).add(0, 3.5f, 1f), Color.ORANGE);
         light.setRadius(80);
-        SceneManager.getCurrentScene().addLight(light);
+        SceneManager.getCurrent().addLight(light);
     }
 
     @Override

@@ -18,7 +18,7 @@ public class SceneManager {
         }
     }
 
-    public static Scene getCurrentScene() {
+    public static Scene getCurrent() {
         return currentScene;
     }
 

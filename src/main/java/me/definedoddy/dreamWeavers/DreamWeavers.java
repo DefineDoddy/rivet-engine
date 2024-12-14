@@ -1,13 +1,12 @@
 package me.definedoddy.dreamWeavers;
 
 import me.definedoddy.dreamWeavers.models.Models;
-import me.definedoddy.dreamWeavers.rendering.camera.TopDownCamera;
+import me.definedoddy.dreamWeavers.player.Player;
 import me.definedoddy.dreamWeavers.scene.TestWorld;
 import me.definedoddy.engine.context.GameContext;
 import me.definedoddy.engine.icon.Icon;
 import me.definedoddy.engine.input.KeyCode;
 import me.definedoddy.engine.input.Keyboard;
-import me.definedoddy.engine.rendering.camera.Camera;
 import me.definedoddy.engine.scene.SceneManager;
 import me.definedoddy.engine.window.GameWindow;
 import me.definedoddy.toolkit.file.Resource;
@@ -28,9 +27,7 @@ public class DreamWeavers extends GameContext {
         Models.registerAll();
 
         SceneManager.loadScene(TestWorld.class);
-
-        Camera.set(new TopDownCamera());
-        SceneManager.getCurrentScene().addEntity(Camera.get());
+        SceneManager.getCurrent().addEntity(new Player());
     }
 
     @Override

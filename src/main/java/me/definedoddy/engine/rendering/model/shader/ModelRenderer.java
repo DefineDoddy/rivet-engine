@@ -60,7 +60,7 @@ public class ModelRenderer {
         RenderConfig renderConfig = GameManager.getRenderEngine().getRenderConfig();
         int maxLights = renderConfig.getMaxLights();
 
-        List<Light> lights = SceneManager.getCurrentScene().getLights();
+        List<Light> lights = SceneManager.getCurrent().getLights();
 
         if (lights.size() > maxLights) {
             Debug.logError("Too many lights in scene, only " + maxLights + " lights will be used");

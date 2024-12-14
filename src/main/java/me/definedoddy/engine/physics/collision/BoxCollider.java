@@ -4,6 +4,7 @@ import me.definedoddy.engine.debug.Debug;
 import me.definedoddy.engine.debug.draw.Cube;
 import me.definedoddy.engine.entity.ModelEntity;
 import me.definedoddy.engine.physics.PhysicsContainer;
+import me.definedoddy.engine.utils.errors.ErrorWindowPopup;
 import org.joml.Vector3f;
 
 import java.util.ArrayList;
@@ -23,12 +24,21 @@ public class BoxCollider extends Collider3d {
         this.scale = scale;
     }
 
+    public BoxCollider(BoundingBox box) {
+        this.box = box;
+    }
+
     @Override
     public void init() {
         super.init();
 
         if (getEntity() instanceof ModelEntity modelEntity) {
             box = modelEntity.getBoundingBox();
+        } else if (box == null) {
+            throw new ErrorWindowPopup(
+                    "BoxCollider",
+                    "BoxCollider either needs to be attached to a ModelEntity or have manually specified bounds"
+            );
         }
     }
 
