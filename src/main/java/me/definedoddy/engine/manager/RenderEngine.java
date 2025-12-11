@@ -1,12 +1,13 @@
 package me.definedoddy.engine.manager;
 
+import me.definedoddy.engine.debug.Debug;
+import me.definedoddy.engine.rendering.camera.Camera;
 import me.definedoddy.engine.rendering.config.DefaultRenderConfig;
 import me.definedoddy.engine.rendering.config.RenderConfig;
 import me.definedoddy.engine.rendering.model.shader.ModelRenderer;
 import me.definedoddy.engine.rendering.model.shader.ModelShader;
 import me.definedoddy.engine.rendering.skybox.shader.SkyboxRenderer;
 import me.definedoddy.engine.rendering.skybox.shader.SkyboxShader;
-import me.definedoddy.engine.debug.Debug;
 import me.definedoddy.engine.ui.shader.UIRenderer;
 import me.definedoddy.engine.ui.shader.UIShader;
 
@@ -24,10 +25,13 @@ public class RenderEngine {
     }
 
     public void update() {
-        modelRenderer.render();
-        skyboxRenderer.render();
-        Debug.render();
-        uiRenderer.render();
+        if (Camera.getActive() != null) {
+            modelRenderer.render();
+            skyboxRenderer.render();
+            Debug.render();
+        }
+
+        //uiRenderer.render();
     }
 
     public ModelRenderer getModelRenderer() {

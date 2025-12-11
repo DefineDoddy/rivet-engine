@@ -3,7 +3,7 @@ package me.definedoddy.engine.rendering.config;
 public class DefaultRenderConfig extends RenderConfig {
     @Override
     public int getMaxLights() {
-        return 20;
+        return 100;
     }
 
     @Override

@@ -7,8 +7,8 @@ public class BoundingBox {
     private final Vector3f max;
 
     public BoundingBox(Vector3f min, Vector3f max) {
-        this.min = min;
-        this.max = max;
+        this.min = new Vector3f(min);
+        this.max = new Vector3f(max);
     }
 
     public Vector3f getMin() {

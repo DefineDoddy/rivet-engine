@@ -30,7 +30,7 @@ public abstract class ModelEntity extends Entity implements Disposable {
         if (boundingBox == null) boundingBox = getModel().getBoundingBox().clone();
         else boundingBox.set(getModel().getBoundingBox());
 
-        boundingBox.max(new Vector3f(0.5f));
+        boundingBox.max(new Vector3f(0.001f));
         boundingBox.scale(getScale());
         boundingBox.translate(getPosition());
     }

@@ -1,5 +1,6 @@
 package me.definedoddy.engine.rendering.camera;
 
+import me.definedoddy.engine.debug.Debug;
 import me.definedoddy.engine.entity.Entity;
 import me.definedoddy.engine.utils.maths.MathsUtils;
 import me.definedoddy.engine.window.GameWindow;
@@ -7,7 +8,7 @@ import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
 public class Camera extends Entity {
-    private static Camera instance;
+    private static Camera activeCamera;
 
     protected float fieldOfView = 70f;
     protected float nearPlane = 0.1f;
@@ -16,18 +17,28 @@ public class Camera extends Entity {
     protected Matrix4f projectionMatrix;
     protected Matrix4f viewMatrix;
 
-    public static Camera get() {
-        return instance;
+    public Camera(Vector3f position) {
+        super(position);
     }
 
-    public static void set(Camera camera) {
-        instance = camera;
+    public static <T extends Camera> T getActive(Class<T> cameraClass) {
+        return cameraClass.cast(activeCamera);
+    }
+
+    public static Camera getActive() {
+        return activeCamera;
     }
 
     @Override
     public void init() {
         super.init();
         calcMatrices();
+
+        if (activeCamera != null) {
+            Debug.logWarning("Camera instance already exists. Overriding the previous instance.");
+        }
+
+        activeCamera = this;
     }
 
     @Override
@@ -58,19 +69,10 @@ public class Camera extends Entity {
         return viewMatrix;
     }
 
-    public void move(Vector3f vector) {
-        position.add(vector);
-        calcViewMatrix();
-    }
-
     public void rotate(float pitch, float yaw, float roll) {
         setPitch(this.rotation.x + pitch);
         setYaw(this.rotation.y + yaw);
         setRoll(this.rotation.z + roll);
-    }
-
-    public void setPosition(Vector3f position) {
-        this.position.set(position);
     }
 
     public float getFieldOfView() {
@@ -105,7 +107,7 @@ public class Camera extends Entity {
     }
 
     public void setPitch(float pitch) {
-        this.rotation.x = pitch % 360;
+        setRotation(new Vector3f(pitch % 360, rotation.y, rotation.z));
     }
 
     public float getYaw() {
@@ -113,7 +115,7 @@ public class Camera extends Entity {
     }
 
     public void setYaw(float yaw) {
-        this.rotation.y = yaw % 360;
+        setRotation(new Vector3f(rotation.x, yaw % 360, rotation.z));
     }
 
     public float getRoll() {
@@ -121,6 +123,6 @@ public class Camera extends Entity {
     }
 
     public void setRoll(float roll) {
-        this.rotation.z = roll % 360;
+        setRotation(new Vector3f(rotation.x, rotation.y, roll % 360));
     }
 }

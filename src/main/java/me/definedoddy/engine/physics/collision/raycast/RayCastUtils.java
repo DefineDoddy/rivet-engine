@@ -36,13 +36,13 @@ public class RayCastUtils {
     }
 
     public static Vector4f clipToEyeCoords(Vector4f clipCoords) {
-        Matrix4f invertedProjection = new Matrix4f(Camera.get().getProjectionMatrix()).invert();
+        Matrix4f invertedProjection = new Matrix4f(Camera.getActive().getProjectionMatrix()).invert();
         Vector4f eyeCoords = invertedProjection.transform(clipCoords, new Vector4f());
         return new Vector4f(eyeCoords.x, eyeCoords.y, -1f, 0f);
     }
 
     public static Vector3f eyeToWorldPoint(Vector4f eyeCoords) {
-        Matrix4f invertedView = new Matrix4f(Camera.get().getViewMatrix()).invert();
+        Matrix4f invertedView = new Matrix4f(Camera.getActive().getViewMatrix()).invert();
         Vector4f rayWorld = invertedView.transform(eyeCoords, new Vector4f());
         Vector3f rayPoint = new Vector3f(rayWorld.x, rayWorld.y, rayWorld.z);
         rayPoint.normalize();

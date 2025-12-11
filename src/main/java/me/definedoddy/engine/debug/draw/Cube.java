@@ -63,7 +63,7 @@ public class Cube {
         new Line(new Vector3f(x2, y2, z2), new Vector3f(x, y2, z2)).setColour(colour).setWidth(width).draw();
         new Line(new Vector3f(x, y2, z2), new Vector3f(x, y, z2)).setColour(colour).setWidth(width).draw();
 
-        // Connectors
+        // Sides
         new Line(new Vector3f(x, y, z), new Vector3f(x, y, z2)).setColour(colour).setWidth(width).draw();
         new Line(new Vector3f(x2, y, z), new Vector3f(x2, y, z2)).setColour(colour).setWidth(width).draw();
         new Line(new Vector3f(x2, y2, z), new Vector3f(x2, y2, z2)).setColour(colour).setWidth(width).draw();

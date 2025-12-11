@@ -10,7 +10,6 @@ import static org.lwjgl.opengl.GL12.GL_TEXTURE_WRAP_R;
 import static org.lwjgl.opengl.GL13.GL_TEXTURE_CUBE_MAP_POSITIVE_X;
 
 public class CubeMapLoader {
-
     /**
      * Load a cube map from a set of 6 textures.
      * <br>

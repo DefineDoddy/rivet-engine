@@ -12,8 +12,8 @@ public class DebugRenderer {
     public void preRender() {
         shader.bind();
 
-        shader.getProjectionMatrix().loadMatrix(Camera.get().getProjectionMatrix());
-        shader.getViewMatrix().loadMatrix(Camera.get().getViewMatrix());
+        shader.getProjectionMatrix().loadMatrix(Camera.getActive().getProjectionMatrix());
+        shader.getViewMatrix().loadMatrix(Camera.getActive().getViewMatrix());
 
         /*// Position attribute
         GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, 0, 0);

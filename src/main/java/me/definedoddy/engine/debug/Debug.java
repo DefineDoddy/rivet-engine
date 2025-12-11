@@ -66,6 +66,10 @@ public class Debug {
         handlers.forEach(handler -> handler.setWireframe(wireframe));
     }
 
+    public static void setRenderBoundingBoxes(boolean renderBoundingBoxes) {
+        handlers.forEach(handler -> handler.setRenderBoundingBoxes(renderBoundingBoxes));
+    }
+
     public static void stop() {
         renderer.stop();
     }

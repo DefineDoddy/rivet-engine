@@ -16,7 +16,7 @@ public class SkyboxRenderer {
         if (skybox == null) return;
         shader.bind();
 
-        shader.getProjectionMatrix().loadMatrix(Camera.get().getProjectionMatrix());
+        shader.getProjectionMatrix().loadMatrix(Camera.getActive().getProjectionMatrix());
         shader.getViewMatrix().loadMatrix(getViewMatrix());
         shader.getRotation().loadFloat(skybox.getRotation());
 
@@ -26,7 +26,7 @@ public class SkyboxRenderer {
     }
 
     private Matrix4f getViewMatrix() {
-        Matrix4f viewMatrix = new Matrix4f(Camera.get().getViewMatrix());
+        Matrix4f viewMatrix = new Matrix4f(Camera.getActive().getViewMatrix());
         viewMatrix.m30(0);
         viewMatrix.m31(0);
         viewMatrix.m32(0);

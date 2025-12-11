@@ -8,6 +8,14 @@ public class Rigidbody extends PhysicsBody {
 
     protected final Vector3f linearVelocity = new Vector3f();
 
+    public Rigidbody() {
+        this(1);
+    }
+
+    public Rigidbody(float mass) {
+        super(mass);
+    }
+
     public void move(Vector3f vector) {
         this.linearVelocity.add(vector);
     }
@@ -17,7 +25,7 @@ public class Rigidbody extends PhysicsBody {
     }
 
     public void step(float deltaTime) {
-        linearVelocity.add(0, Physics.GRAVITY * gravityMultiplier * deltaTime, 0);
+        linearVelocity.add(0, Physics.GRAVITY * gravityMultiplier * deltaTime / mass, 0);
     }
 
     public void simulate(float deltaTime) {
@@ -26,5 +34,13 @@ public class Rigidbody extends PhysicsBody {
 
     public Vector3f getLinearVelocity() {
         return linearVelocity;
+    }
+
+    public void addForce(Vector3f force) {
+        linearVelocity.add(force);
+    }
+
+    public void setGravityMultiplier(float gravityMultiplier) {
+        this.gravityMultiplier = gravityMultiplier;
     }
 }

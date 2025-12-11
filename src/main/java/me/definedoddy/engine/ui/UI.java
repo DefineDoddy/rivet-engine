@@ -7,7 +7,7 @@ public class UI {
     private static int height = 1080;
 
     public static void init() {
-        //container.addChild(new UIBlock());
+        // container.addChild(new UIBlock());
     }
 
     public static void update() {

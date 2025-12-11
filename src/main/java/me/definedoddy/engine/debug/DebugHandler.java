@@ -33,4 +33,13 @@ public class DebugHandler implements Disposable {
     public void setWireframe(boolean visible) {
         wireframeConsumers.forEach(consumer -> consumer.accept(visible));
     }
+
+    private final List<Consumer<Boolean>> boundingBoxesVisibleConsumers = new ArrayList<>();
+    public void createRenderBoundingBoxesCallback(Consumer<Boolean> consumer) {
+        boundingBoxesVisibleConsumers.add(consumer);
+    }
+
+    public void setRenderBoundingBoxes(boolean visible) {
+        boundingBoxesVisibleConsumers.forEach(consumer -> consumer.accept(visible));
+    }
 }

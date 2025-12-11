@@ -32,7 +32,7 @@ public class Scene {
             entityRenderer.addEntity(modelEntity);
         }
 
-        entity.init();
+        entity.init(null);
     }
 
     public void removeEntity(Entity entity) {
@@ -75,5 +75,11 @@ public class Scene {
 
     public boolean isLoaded() {
         return loaded;
+    }
+
+    public List<Entity> getEntitiesWithTag(String tag) {
+        return entities.values().stream()
+                .filter(entity -> entity.getTags().contains(tag))
+                .toList();
     }
 }

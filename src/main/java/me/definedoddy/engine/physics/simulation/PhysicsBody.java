@@ -11,6 +11,15 @@ public abstract class PhysicsBody extends Component {
 
     protected BoxCollider collider;
 
+    public PhysicsBody() {
+        this(1);
+    }
+
+    public PhysicsBody(float mass) {
+        this.mass = mass;
+        this.restitution = mass;
+    }
+
     @Override
     public void init() {
         PhysicsContainer.addPhysicsBody(this);

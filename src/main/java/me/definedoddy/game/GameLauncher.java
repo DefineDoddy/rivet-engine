@@ -1,22 +1,24 @@
-package me.definedoddy.dreamWeavers;
+package me.definedoddy.game;
 
-import me.definedoddy.dreamWeavers.models.Models;
-import me.definedoddy.dreamWeavers.rendering.camera.TopDownCamera;
-import me.definedoddy.dreamWeavers.scene.TestWorld;
 import me.definedoddy.engine.context.GameContext;
+import me.definedoddy.engine.context.Time;
+import me.definedoddy.engine.debug.Debug;
 import me.definedoddy.engine.icon.Icon;
 import me.definedoddy.engine.input.KeyCode;
 import me.definedoddy.engine.input.Keyboard;
-import me.definedoddy.engine.rendering.camera.Camera;
 import me.definedoddy.engine.scene.SceneManager;
 import me.definedoddy.engine.window.GameWindow;
+import me.definedoddy.game.entity.player.Player;
+import me.definedoddy.game.models.Models;
+import me.definedoddy.game.scene.TestWorld;
 import me.definedoddy.toolkit.file.Resource;
+import org.joml.Vector3f;
 
-public class DreamWeavers extends GameContext {
+public class GameLauncher extends GameContext {
     public static void main(String[] args) {
-        DreamWeavers instance = new DreamWeavers();
+        GameLauncher instance = new GameLauncher();
 
-        GameWindow window = new GameWindow("Dream Weavers", 1280, 720);
+        GameWindow window = new GameWindow("Untitled Game", 1280, 720);
         window.setIcon(Icon.fromFile(new Resource("assets/icon.png")));
         instance.attachWindow(window);
 
@@ -28,9 +30,7 @@ public class DreamWeavers extends GameContext {
         Models.registerAll();
 
         SceneManager.loadScene(TestWorld.class);
-
-        Camera.set(new TopDownCamera());
-        SceneManager.getCurrentScene().addEntity(Camera.get());
+        SceneManager.getCurrentScene().addEntity(new Player(new Vector3f()));
     }
 
     @Override
@@ -41,6 +41,11 @@ public class DreamWeavers extends GameContext {
 
         if (Keyboard.get().wasKeyPressed(KeyCode.F11)) {
             getWindow().setMaximized(!getWindow().isMaximized());
+        }
+
+        if (Keyboard.get().wasKeyPressed(KeyCode.F1)) {
+            Debug.log("FPS: " + Time.getFps());
+            Debug.log("Entities: " + SceneManager.getCurrentScene().getEntities().size());
         }
     }
 }

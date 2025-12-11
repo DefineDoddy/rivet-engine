@@ -8,6 +8,12 @@ public class EnumFlag<T extends Enum<T>> {
         for (T flag : flags) add(flag);
     }
 
+    public EnumFlag(Class<T> classType) {
+        for (T flag : classType.getEnumConstants()) {
+            add(flag);
+        }
+    }
+
     public void add(T flag) {
         value |= 1 << flag.ordinal();
     }
@@ -30,5 +36,14 @@ public class EnumFlag<T extends Enum<T>> {
 
     public void setValue(int value) {
         this.value = value;
+    }
+
+    @SafeVarargs
+    public final void set(T... flags) {
+        clear();
+
+        for (T flag : flags) {
+            add(flag);
+        }
     }
 }

@@ -10,7 +10,6 @@ import me.definedoddy.engine.rendering.model.model.MeshMap;
 import me.definedoddy.engine.rendering.model.model.Model;
 import me.definedoddy.engine.rendering.texture.Material;
 import me.definedoddy.engine.scene.SceneManager;
-import me.definedoddy.engine.debug.Debug;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
@@ -29,8 +28,8 @@ public class ModelRenderer {
     public void render() {
         shader.bind();
 
-        shader.getProjectionMatrix().loadMatrix(Camera.get().getProjectionMatrix());
-        shader.getViewMatrix().loadMatrix(Camera.get().getViewMatrix());
+        shader.getProjectionMatrix().loadMatrix(Camera.getActive().getProjectionMatrix());
+        shader.getViewMatrix().loadMatrix(Camera.getActive().getViewMatrix());
 
         applyLighting();
 
@@ -63,7 +62,7 @@ public class ModelRenderer {
         List<Light> lights = SceneManager.getCurrentScene().getLights();
 
         if (lights.size() > maxLights) {
-            Debug.logError("Too many lights in scene, only " + maxLights + " lights will be used");
+            // Debug.logError("Too many lights in scene, only " + maxLights + " lights will be used");
             lights = lights.subList(0, maxLights);
         }
 
