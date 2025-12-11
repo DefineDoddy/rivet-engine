@@ -1,7 +1,10 @@
 package me.definedoddy.engine.rendering.cubemap;
 
 import me.definedoddy.engine.rendering.texture.Texture;
+import me.definedoddy.engine.rendering.texture.TextureLoader;
 import me.definedoddy.engine.rendering.texture.TextureType;
+import me.definedoddy.toolkit.file.Resource;
+
 import org.lwjgl.opengl.GL11;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -10,6 +13,30 @@ import static org.lwjgl.opengl.GL12.GL_TEXTURE_WRAP_R;
 import static org.lwjgl.opengl.GL13.GL_TEXTURE_CUBE_MAP_POSITIVE_X;
 
 public class CubeMapLoader {
+    public static CubeMap load(String folderPath) {
+        return load(
+                loadFace(folderPath + "/right.png"),
+                loadFace(folderPath + "/left.png"),
+                loadFace(folderPath + "/top.png"),
+                loadFace(folderPath + "/bottom.png"),
+                loadFace(folderPath + "/back.png"),
+                loadFace(folderPath + "/front.png"));
+    }
+
+    public static CubeMap load(String basePath, String extension) {
+        return load(
+                loadFace(basePath + "_right." + extension),
+                loadFace(basePath + "_left." + extension),
+                loadFace(basePath + "_top." + extension),
+                loadFace(basePath + "_bottom." + extension),
+                loadFace(basePath + "_back." + extension),
+                loadFace(basePath + "_front." + extension));
+    }
+
+    private static Texture loadFace(String path) {
+        return TextureLoader.loadTextureCubeMap(new Resource(path));
+    }
+
     /**
      * Load a cube map from a set of 6 textures.
      * <br>
@@ -31,8 +58,7 @@ public class CubeMapLoader {
 
             glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGBA,
                     texture.getWidth(), texture.getHeight(),
-                    0, GL_RGBA, GL_UNSIGNED_BYTE, texture.getData()
-            );
+                    0, GL_RGBA, GL_UNSIGNED_BYTE, texture.getData());
         }
 
         int glType = TextureType.CUBEMAP.getGlType();

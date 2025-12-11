@@ -1,8 +1,9 @@
 package me.definedoddy.engine.utils.maths;
 
-import me.definedoddy.engine.rendering.camera.Camera;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
+
+import me.definedoddy.engine.entity.components.Camera;
 
 public class MathsUtils {
     public static Matrix4f createTransformationMatrix(Vector3f position, Vector3f rotation, Vector3f scale) {

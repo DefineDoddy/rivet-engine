@@ -1,12 +1,12 @@
 package me.definedoddy.game.entity.player;
 
-import me.definedoddy.engine.entity.Entity;
+import me.definedoddy.engine.entity.EntityOld;
 import me.definedoddy.engine.physics.collision.BoxCollider;
 import me.definedoddy.engine.physics.simulation.Rigidbody;
 import me.definedoddy.game.entity.player.camera.FPCamera;
 import org.joml.Vector3f;
 
-public class Player extends Entity {
+public class Player extends EntityOld {
     private final FPCamera camera;
     private final PlayerController controller;
 

@@ -1,7 +1,7 @@
 package me.definedoddy.game.entity.player.camera.shake;
 
-import me.definedoddy.engine.context.Time;
-import me.definedoddy.engine.rendering.camera.Camera;
+import me.definedoddy.engine.core.Time;
+import me.definedoddy.engine.entity.components.Camera;
 import me.definedoddy.toolkit.maths.Axis3d;
 
 import java.util.ArrayList;
@@ -20,19 +20,26 @@ public class ShakeController {
         for (int i = shakes.size() - 1; i >= 0; i--) {
             CameraShake shake = shakes.get(i);
 
-            if (!shake.isStarted()) shake.startShake();
+            if (!shake.isStarted())
+                shake.startShake();
             shake.update((float) Time.getDeltaTime());
 
             float posX = 0f, posY = 0f, posZ = 0f;
             float rotX = 0f, rotY = 0f, rotZ = 0f;
 
-            if (shake.getPosAxis().has(Axis3d.X)) posX = shake.getShakeOffset();
-            if (shake.getPosAxis().has(Axis3d.Y)) posY = shake.getShakeOffset();
-            if (shake.getPosAxis().has(Axis3d.Z)) posZ = shake.getShakeOffset();
+            if (shake.getPosAxis().has(Axis3d.X))
+                posX = shake.getShakeOffset();
+            if (shake.getPosAxis().has(Axis3d.Y))
+                posY = shake.getShakeOffset();
+            if (shake.getPosAxis().has(Axis3d.Z))
+                posZ = shake.getShakeOffset();
 
-            if (shake.getRotAxis().has(Axis3d.X)) rotX = shake.getShakeOffset();
-            if (shake.getRotAxis().has(Axis3d.Y)) rotY = shake.getShakeOffset();
-            if (shake.getRotAxis().has(Axis3d.Z)) rotZ = shake.getShakeOffset();
+            if (shake.getRotAxis().has(Axis3d.X))
+                rotX = shake.getShakeOffset();
+            if (shake.getRotAxis().has(Axis3d.Y))
+                rotY = shake.getShakeOffset();
+            if (shake.getRotAxis().has(Axis3d.Z))
+                rotZ = shake.getShakeOffset();
 
             camera.setLocalPosition(camera.getPosition().add(posX, posY, posZ));
             camera.setLocalRotation(camera.getRotation().add(rotX, rotY, rotZ));

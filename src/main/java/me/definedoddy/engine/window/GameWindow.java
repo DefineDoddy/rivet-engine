@@ -1,9 +1,12 @@
 package me.definedoddy.engine.window;
 
+import me.definedoddy.engine.file.Assets;
 import me.definedoddy.engine.icon.Icon;
 import me.definedoddy.engine.utils.errors.FatalErrorWindowPopup;
 import me.definedoddy.engine.utils.glfw.GlfwMappings;
 import me.definedoddy.toolkit.memory.Disposable;
+import me.definedoddy.toolkit.memory.Handle;
+
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 
@@ -27,11 +30,11 @@ public class GameWindow implements Disposable {
     // Options
     private boolean vSync = true;
     private boolean resizable = true;
-    private boolean maximized = false;
+    private boolean maximised = false;
     private boolean fullScreen = false;
     private boolean decorated = true;
     private boolean alwaysOnTop = false;
-    private Icon icon;
+    private Handle<Icon> iconHandle;
 
     private Color backgroundColor = Color.BLACK;
 
@@ -59,7 +62,7 @@ public class GameWindow implements Disposable {
 
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
         glfwWindowHint(GLFW_RESIZABLE, GlfwMappings.toGlfwBoolean(resizable));
-        glfwWindowHint(GLFW_MAXIMIZED, GlfwMappings.toGlfwBoolean(maximized));
+        glfwWindowHint(GLFW_MAXIMIZED, GlfwMappings.toGlfwBoolean(maximised));
         glfwWindowHint(GLFW_DECORATED, GlfwMappings.toGlfwBoolean(decorated));
         glfwWindowHint(GLFW_FLOATING, GlfwMappings.toGlfwBoolean(alwaysOnTop));
 
@@ -96,7 +99,7 @@ public class GameWindow implements Disposable {
         glEnable(GL_CULL_FACE);
         glCullFace(GL_BACK);
 
-        if (!fullScreen && !maximized) {
+        if (!fullScreen && !maximised) {
             glfwSetWindowSize(windowId, width, height);
         } else {
             this.width = vidMode.width();
@@ -110,17 +113,22 @@ public class GameWindow implements Disposable {
             this.height = h;
         });
 
-        if (!maximized && !fullScreen) {
-            glfwSetWindowPos(windowId,(vidMode.width() - width) / 2, (vidMode.height() - height) / 2);
+        if (!maximised && !fullScreen) {
+            glfwSetWindowPos(windowId, (vidMode.width() - width) / 2, (vidMode.height() - height) / 2);
         }
 
-        if (icon != null) glfwSetWindowIcon(windowId, icon.createGlfwImageBuffer());
+        if (iconHandle != null) {
+            Icon resolved = Assets.get(iconHandle);
+
+            if (resolved != null) {
+                glfwSetWindowIcon(windowId, resolved.createGlfwImageBuffer());
+            }
+        }
 
         glClearColor(backgroundColor.getRed() / 255f,
                 backgroundColor.getGreen() / 255f,
                 backgroundColor.getBlue() / 255f,
-                backgroundColor.getAlpha() / 255f
-        );
+                backgroundColor.getAlpha() / 255f);
     }
 
     public static GameWindow get() {
@@ -128,19 +136,20 @@ public class GameWindow implements Disposable {
     }
 
     public void preUpdate() {
-        if (!isCreated()) return;
+        if (!isCreated())
+            return;
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         glClearColor(backgroundColor.getRed() / 255f,
                 backgroundColor.getGreen() / 255f,
                 backgroundColor.getBlue() / 255f,
-                backgroundColor.getAlpha() / 255f
-        );
+                backgroundColor.getAlpha() / 255f);
     }
 
     public void postUpdate() {
-        if (!isCreated()) return;
+        if (!isCreated())
+            return;
 
         glfwSwapBuffers(windowId);
 
@@ -158,44 +167,60 @@ public class GameWindow implements Disposable {
         this.backgroundColor = colour;
     }
 
-    public void setIcon(Icon icon) {
-        this.icon = icon;
-        if (isCreated()) {
-            glfwSetWindowIcon(windowId, icon.createGlfwImageBuffer());
+    public void setIcon(Handle<Icon> icon) {
+        this.iconHandle = icon;
+
+        if (isCreated() && iconHandle != null) {
+            Icon resolved = Assets.get(iconHandle);
+
+            if (resolved != null) {
+                glfwSetWindowIcon(windowId, resolved.createGlfwImageBuffer());
+            }
         }
     }
 
     public void setVisible(boolean visible) {
-        if (visible) glfwShowWindow(windowId);
-        else glfwHideWindow(windowId);
+        if (visible)
+            glfwShowWindow(windowId);
+        else
+            glfwHideWindow(windowId);
     }
 
     public void setVSync(boolean vSync) {
         this.vSync = vSync;
-        if (isCreated()) glfwSwapInterval(vSync ? 1 : 0);
+
+        if (isCreated()) {
+            glfwSwapInterval(vSync ? 1 : 0);
+        }
     }
 
     public void setResizable(boolean resizable) {
         this.resizable = resizable;
+
         if (isCreated()) {
             glfwSetWindowAttrib(windowId, GLFW_RESIZABLE, GlfwMappings.toGlfwBoolean(resizable));
         }
     }
 
-    public void setMaximized(boolean maximized) {
-        this.maximized = maximized;
+    public void setMaximised(boolean maximized) {
+        this.maximised = maximized;
+
         if (isCreated()) {
-            if (maximized) glfwMaximizeWindow(windowId);
-            else glfwRestoreWindow(windowId);
+            if (maximized) {
+                glfwMaximizeWindow(windowId);
+            } else {
+                glfwRestoreWindow(windowId);
+            }
         }
     }
 
-    public boolean isMaximized() {
-        return maximized;
+    public boolean isMaximised() {
+        return maximised;
     }
 
     public void setFullScreen(boolean fullScreen) {
         this.fullScreen = fullScreen;
+
         if (isCreated()) {
             glfwSetWindowMonitor(windowId, fullScreen ? glfwGetPrimaryMonitor() : 0,
                     0, 0, width, height, GLFW_DONT_CARE);
@@ -204,6 +229,7 @@ public class GameWindow implements Disposable {
 
     public void setDecorated(boolean decorated) {
         this.decorated = decorated;
+
         if (isCreated()) {
             glfwSetWindowAttrib(windowId, GLFW_DECORATED, GlfwMappings.toGlfwBoolean(decorated));
         }
@@ -211,6 +237,7 @@ public class GameWindow implements Disposable {
 
     public void setAlwaysOnTop(boolean alwaysOnTop) {
         this.alwaysOnTop = alwaysOnTop;
+
         if (isCreated()) {
             glfwSetWindowAttrib(windowId, GLFW_FLOATING, GlfwMappings.toGlfwBoolean(alwaysOnTop));
         }
@@ -218,13 +245,19 @@ public class GameWindow implements Disposable {
 
     public void setTitle(String title) {
         this.title = title;
-        if (isCreated()) glfwSetWindowTitle(windowId, title);
+
+        if (isCreated()) {
+            glfwSetWindowTitle(windowId, title);
+        }
     }
 
     public void setSize(int width, int height) {
         this.width = width;
         this.height = height;
-        if (isCreated()) glfwSetWindowSize(windowId, width, height);
+
+        if (isCreated()) {
+            glfwSetWindowSize(windowId, width, height);
+        }
     }
 
     public int getWidth() {
@@ -257,11 +290,15 @@ public class GameWindow implements Disposable {
     }
 
     public boolean canUpdate() {
-        if (!isCreated()) return false;
+        if (!isCreated()) {
+            return false;
+        }
         return !glfwWindowShouldClose(windowId);
     }
 
     public void close() {
-        if (isCreated()) glfwSetWindowShouldClose(windowId, true);
+        if (isCreated()) {
+            glfwSetWindowShouldClose(windowId, true);
+        }
     }
 }

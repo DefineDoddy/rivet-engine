@@ -28,7 +28,7 @@ public class Texture implements Disposable {
     }
 
     private void generateMipmaps() {
-        RenderConfig renderConfig = GameManager.getRenderEngine().getRenderConfig();
+        RenderConfig renderConfig = GameManager.getRenderer().getRenderConfig();
         bind();
 
         if (renderConfig.useMipmapping()) {
@@ -92,8 +92,10 @@ public class Texture implements Disposable {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == this) return true;
-        if (!(obj instanceof Texture texture)) return false;
+        if (obj == this)
+            return true;
+        if (!(obj instanceof Texture texture))
+            return false;
         return texture.id == id;
     }
 

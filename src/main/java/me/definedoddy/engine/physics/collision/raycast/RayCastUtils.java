@@ -1,8 +1,8 @@
 package me.definedoddy.engine.physics.collision.raycast;
 
+import me.definedoddy.engine.entity.components.Camera;
 import me.definedoddy.engine.physics.PhysicsContainer;
 import me.definedoddy.engine.physics.collision.Collider;
-import me.definedoddy.engine.rendering.camera.Camera;
 import me.definedoddy.engine.window.GameWindow;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;

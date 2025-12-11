@@ -1,13 +1,13 @@
 package me.definedoddy.game.entity.player;
 
-import me.definedoddy.engine.context.Time;
+import me.definedoddy.engine.core.Time;
 import me.definedoddy.engine.debug.Debug;
-import me.definedoddy.engine.entity.Entity;
+import me.definedoddy.engine.entity.EntityOld;
+import me.definedoddy.engine.entity.components.Camera;
 import me.definedoddy.engine.input.KeyCode;
 import me.definedoddy.engine.input.Keyboard;
 import me.definedoddy.engine.physics.collision.BoxCollider;
 import me.definedoddy.engine.physics.simulation.Rigidbody;
-import me.definedoddy.engine.rendering.camera.Camera;
 import me.definedoddy.engine.scene.SceneManager;
 import me.definedoddy.game.entity.player.camera.FPCamera;
 import me.definedoddy.game.entity.player.camera.shake.CameraShake;
@@ -42,10 +42,14 @@ public class PlayerController {
 
     private void calcMovement() {
         float forward = 0f, strafe = 0f, up = 0f;
-        if (Keyboard.get().isKeyPressed(KeyCode.W)) forward += 1f;
-        if (Keyboard.get().isKeyPressed(KeyCode.S)) forward -= 1f;
-        if (Keyboard.get().isKeyPressed(KeyCode.A)) strafe -= 1f;
-        if (Keyboard.get().isKeyPressed(KeyCode.D)) strafe += 1f;
+        if (Keyboard.get().isKeyPressed(KeyCode.W))
+            forward += 1f;
+        if (Keyboard.get().isKeyPressed(KeyCode.S))
+            forward -= 1f;
+        if (Keyboard.get().isKeyPressed(KeyCode.A))
+            strafe -= 1f;
+        if (Keyboard.get().isKeyPressed(KeyCode.D))
+            strafe += 1f;
 
         if (Keyboard.get().wasKeyPressed(KeyCode.SPACE) && isOnGround()) {
             jump();
@@ -57,7 +61,8 @@ public class PlayerController {
     }
 
     private void travel(float forward, float strafe, float up) {
-        if (forward == 0 && strafe == 0 && up == 0) return;
+        if (forward == 0 && strafe == 0 && up == 0)
+            return;
 
         float yawRad = (float) Math.toRadians(player.getCamera().getYaw());
         float x = (float) (strafe * Math.cos(yawRad) + forward * Math.sin(yawRad)) * (float) Time.getDeltaTime();
@@ -76,7 +81,8 @@ public class PlayerController {
     private void calcVelocity() {
         if (velocity().lengthSquared() > 0) {
             velocity().mul(1 - acceleration);
-            if (velocity().lengthSquared() < 0.0001f) velocity().set(0);
+            if (velocity().lengthSquared() < 0.0001f)
+                velocity().set(0);
         }
 
         move(velocity());
@@ -91,7 +97,7 @@ public class PlayerController {
     }
 
     public boolean isOnGround() {
-        for (Entity entity : SceneManager.getCurrentScene().getEntitiesWithTag("ground")) {
+        for (EntityOld entity : SceneManager.getCurrentScene().getEntitiesWithTag("ground")) {
             if (collider().isColliding(entity.getComponent(BoxCollider.class))) {
                 return true;
             }

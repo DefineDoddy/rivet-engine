@@ -1,11 +1,11 @@
 package me.definedoddy.engine.physics.simulation;
 
-import me.definedoddy.engine.entity.Component;
+import me.definedoddy.engine.entity.ComponentOld;
 import me.definedoddy.engine.physics.PhysicsContainer;
 import me.definedoddy.engine.physics.collision.BoxCollider;
 import org.joml.Vector3f;
 
-public abstract class PhysicsBody extends Component {
+public abstract class PhysicsBody extends ComponentOld {
     public float mass = 1;
     public float restitution = 1f;
 

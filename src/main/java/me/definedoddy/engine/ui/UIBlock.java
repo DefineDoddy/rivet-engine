@@ -4,6 +4,6 @@ import me.definedoddy.engine.manager.GameManager;
 
 public class UIBlock extends UIComponent {
     public UIBlock() {
-        GameManager.getRenderEngine().getUIRenderer().addBlock(this);
+        GameManager.getRenderer().getUIRenderer().addBlock(this);
     }
 }

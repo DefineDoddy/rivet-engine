@@ -1,6 +1,7 @@
 package me.definedoddy.game.scene;
 
-import me.definedoddy.engine.context.Time;
+import me.definedoddy.engine.core.Scene;
+import me.definedoddy.engine.core.Time;
 import me.definedoddy.engine.entity.EntityFactory;
 import me.definedoddy.engine.entity.ModelEntity;
 import me.definedoddy.engine.physics.collision.BoxCollider;
@@ -11,7 +12,6 @@ import me.definedoddy.engine.rendering.lighting.PointLight;
 import me.definedoddy.engine.rendering.lighting.SpotLight;
 import me.definedoddy.engine.rendering.skybox.Skybox;
 import me.definedoddy.engine.rendering.texture.TextureLoader;
-import me.definedoddy.engine.scene.Scene;
 import me.definedoddy.toolkit.file.Resource;
 import org.joml.Vector3f;
 
@@ -37,8 +37,7 @@ public class TestWorld extends Scene {
                 TextureLoader.loadTextureCubeMap(new Resource("assets/skybox/top.png")),
                 TextureLoader.loadTextureCubeMap(new Resource("assets/skybox/bottom.png")),
                 TextureLoader.loadTextureCubeMap(new Resource("assets/skybox/back.png")),
-                TextureLoader.loadTextureCubeMap(new Resource("assets/skybox/front.png"))
-        )));
+                TextureLoader.loadTextureCubeMap(new Resource("assets/skybox/front.png")))));
     }
 
     private void addLighting() {

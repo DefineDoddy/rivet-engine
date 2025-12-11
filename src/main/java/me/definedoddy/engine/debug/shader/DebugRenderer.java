@@ -1,6 +1,6 @@
 package me.definedoddy.engine.debug.shader;
 
-import me.definedoddy.engine.rendering.camera.Camera;
+import me.definedoddy.engine.entity.components.Camera;
 
 public class DebugRenderer {
     private final DebugShader shader;
@@ -15,13 +15,15 @@ public class DebugRenderer {
         shader.getProjectionMatrix().loadMatrix(Camera.getActive().getProjectionMatrix());
         shader.getViewMatrix().loadMatrix(Camera.getActive().getViewMatrix());
 
-        /*// Position attribute
-        GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, 0, 0);
-        GL20.glEnableVertexAttribArray(0);
-
-        // Color attribute (make sure the location matches the shader's location)
-        GL20.glVertexAttribPointer(1, 3, GL11.GL_FLOAT, false, 0, 0);
-        GL20.glEnableVertexAttribArray(1);*/
+        /*
+         * // Position attribute
+         * GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, 0, 0);
+         * GL20.glEnableVertexAttribArray(0);
+         * 
+         * // Color attribute (make sure the location matches the shader's location)
+         * GL20.glVertexAttribPointer(1, 3, GL11.GL_FLOAT, false, 0, 0);
+         * GL20.glEnableVertexAttribArray(1);
+         */
     }
 
     public void postRender() {

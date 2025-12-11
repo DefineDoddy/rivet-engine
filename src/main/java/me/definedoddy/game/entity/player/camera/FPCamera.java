@@ -1,8 +1,8 @@
 package me.definedoddy.game.entity.player.camera;
 
-import me.definedoddy.engine.context.Time;
+import me.definedoddy.engine.core.Time;
+import me.definedoddy.engine.entity.components.Camera;
 import me.definedoddy.engine.input.Mouse;
-import me.definedoddy.engine.rendering.camera.Camera;
 import me.definedoddy.engine.window.GameWindow;
 import me.definedoddy.game.entity.player.camera.shake.CameraShake;
 import me.definedoddy.game.entity.player.camera.shake.ShakeController;
@@ -39,7 +39,8 @@ public class FPCamera extends Camera {
 
     private void calcRotation() {
         Vector2f mouseDelta = Mouse.get().getDelta();
-        if (mouseDelta.x == 0 && mouseDelta.y == 0) return;
+        if (mouseDelta.x == 0 && mouseDelta.y == 0)
+            return;
 
         if (mouseDelta.lengthSquared() > 0) {
             float rotX = mouseDelta.y * mouseSensitivity * (float) Time.getDeltaTime();
@@ -58,8 +59,10 @@ public class FPCamera extends Camera {
     @Override
     public void setPitch(float pitch) {
         super.setPitch(pitch);
-        if (getPitch() > 90) setPitch(90);
-        if (getPitch() < -90) setPitch(-90);
+        if (getPitch() > 90)
+            setPitch(90);
+        if (getPitch() < -90)
+            setPitch(-90);
     }
 
     public void shake(CameraShake shake) {

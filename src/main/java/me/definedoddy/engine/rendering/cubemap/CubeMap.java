@@ -1,7 +1,6 @@
 package me.definedoddy.engine.rendering.cubemap;
 
 import me.definedoddy.engine.rendering.object.Vao;
-import me.definedoddy.engine.rendering.model.model.ModelUtils;
 import me.definedoddy.engine.rendering.texture.Texture;
 import me.definedoddy.engine.rendering.texture.TextureType;
 import me.definedoddy.toolkit.buffer.BufferUtils;
@@ -11,23 +10,26 @@ import org.lwjgl.opengl.GL30;
 import java.nio.FloatBuffer;
 
 public class CubeMap implements Disposable {
-    private final int textureID;
+    private final int textureId;
     private final Texture[] textures;
 
     private float size = 500f;
     private Vao vao;
 
-    public CubeMap(int textureID, Texture[] textures) {
-        this.textureID = textureID;
+    public CubeMap(int textureId, Texture[] textures) {
+        this.textureId = textureId;
         this.textures = textures;
         this.vao = createVao();
     }
 
     private Vao createVao() {
-        if (vao != null) vao.dispose();
+        if (vao != null) {
+            vao.dispose();
+        }
+
         Vao vao = new Vao();
 
-        FloatBuffer vertices = BufferUtils.createFloatBuffer(ModelUtils.genCubeMapVertices(size));
+        FloatBuffer vertices = BufferUtils.createFloatBuffer(CubeMapUtils.genCubeMapVertices(size));
         vao.storeData(0, vertices, 3);
 
         return vao;
@@ -37,7 +39,7 @@ public class CubeMap implements Disposable {
         vao.bind();
 
         GL30.glDepthMask(false);
-        Texture.bind(textureID, TextureType.CUBEMAP, 0);
+        Texture.bind(textureId, TextureType.CUBEMAP, 0);
 
         GL30.glDrawArrays(GL30.GL_TRIANGLES, 0, vao.getVertexCount());
 
@@ -47,8 +49,8 @@ public class CubeMap implements Disposable {
         vao.unbind();
     }
 
-    public int getTextureID() {
-        return textureID;
+    public int getTextureId() {
+        return textureId;
     }
 
     public Texture[] getTextures() {

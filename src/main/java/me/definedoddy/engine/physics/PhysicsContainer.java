@@ -1,6 +1,6 @@
 package me.definedoddy.engine.physics;
 
-import me.definedoddy.engine.context.Time;
+import me.definedoddy.engine.core.Time;
 import me.definedoddy.engine.physics.collision.AABBCollision;
 import me.definedoddy.engine.physics.collision.Collider;
 import me.definedoddy.engine.physics.simulation.KinematicBody;
@@ -44,7 +44,8 @@ public class PhysicsContainer {
     }
 
     public static void update() {
-        if (physicsBodies.size() < 2) return;
+        if (physicsBodies.size() < 2)
+            return;
 
         float frameTime = (float) Time.getDeltaTime();
         accumulator += frameTime;
@@ -59,13 +60,15 @@ public class PhysicsContainer {
 
     private static void integrate() {
         for (PhysicsBody body : physicsBodies) {
-            if (body instanceof Rigidbody rb) rb.step(timeStep);
+            if (body instanceof Rigidbody rb)
+                rb.step(timeStep);
         }
     }
 
     private static void simulate() {
         for (PhysicsBody body : physicsBodies) {
-            if (body instanceof Rigidbody rb) rb.simulate(timeStep);
+            if (body instanceof Rigidbody rb)
+                rb.simulate(timeStep);
         }
     }
 
@@ -78,7 +81,8 @@ public class PhysicsContainer {
     }
 
     private static void resolve(PhysicsBody aBody, PhysicsBody bBody) {
-        if (aBody == null  || bBody == null) return;
+        if (aBody == null || bBody == null)
+            return;
 
         float aInvMass = aBody.mass != 0 ? 1f / aBody.mass : 1f;
         float bInvMass = bBody.mass != 0 ? 1f / bBody.mass : 1f;
@@ -94,25 +98,31 @@ public class PhysicsContainer {
         if (collidingWith(aBody, bBody)) {
             boolean aStatic = (aBody instanceof KinematicBody) || (aBody instanceof StaticBody);
             boolean bStatic = (bBody instanceof KinematicBody) || (bBody instanceof StaticBody);
-            if (aStatic && bStatic) return;
+            if (aStatic && bStatic)
+                return;
 
             // Positional correction
             if (aStatic) {
                 Vector3f bDelta = new Vector3f(normal).mul(depth);
-                if (bBody instanceof Rigidbody rb) rb.move(bDelta);
+                if (bBody instanceof Rigidbody rb)
+                    rb.move(bDelta);
             } else if (bStatic) {
                 Vector3f aDelta = new Vector3f(normal).negate().mul(depth);
-                if (aBody instanceof Rigidbody rb) rb.move(aDelta);
+                if (aBody instanceof Rigidbody rb)
+                    rb.move(aDelta);
             } else {
                 Vector3f delta = new Vector3f(normal).mul(depth / 2f);
-                if (aBody instanceof Rigidbody rb) rb.move(new Vector3f(delta).negate());
-                if (bBody instanceof Rigidbody rb) rb.move(delta);
+                if (aBody instanceof Rigidbody rb)
+                    rb.move(new Vector3f(delta).negate());
+                if (bBody instanceof Rigidbody rb)
+                    rb.move(delta);
             }
 
             // Impulse solver
             Vector3f relVelocity = new Vector3f(bLinearVelocity).sub(aLinearVelocity);
             float dot = relVelocity.dot(normal);
-            if (dot > 0f) return;
+            if (dot > 0f)
+                return;
 
             float j = -(1f + e) * dot;
             j /= aInvMass + bInvMass;
@@ -120,13 +130,16 @@ public class PhysicsContainer {
             Vector3f aImpulse = new Vector3f(normal).mul(j).mul(aInvMass).negate();
             Vector3f bImpulse = new Vector3f(normal).mul(j).mul(bInvMass);
 
-            if (aBody instanceof Rigidbody rb) rb.move(aImpulse);
-            if (bBody instanceof Rigidbody rb) rb.move(bImpulse);
+            if (aBody instanceof Rigidbody rb)
+                rb.move(aImpulse);
+            if (bBody instanceof Rigidbody rb)
+                rb.move(bImpulse);
 
             // Friction
             if (new Vector3f(relVelocity).absolute().lengthSquared() > 0) {
                 Vector3f tangent = new Vector3f(relVelocity).sub(new Vector3f(normal).mul(dot)).normalize();
-                if (Float.isNaN(tangent.x) || Float.isNaN(tangent.y) || Float.isNaN(tangent.z)) return;
+                if (Float.isNaN(tangent.x) || Float.isNaN(tangent.y) || Float.isNaN(tangent.z))
+                    return;
 
                 float jt = -relVelocity.dot(tangent);
                 jt /= aInvMass + bInvMass;
@@ -135,8 +148,10 @@ public class PhysicsContainer {
                 Vector3f aFriction = new Vector3f(tangent).mul(jt).mul(aInvMass).negate().mul(friction);
                 Vector3f bFriction = new Vector3f(tangent).mul(jt).mul(bInvMass).mul(friction);
 
-                if (aBody instanceof Rigidbody rb) rb.move(aFriction);
-                if (bBody instanceof Rigidbody rb) rb.move(bFriction);
+                if (aBody instanceof Rigidbody rb)
+                    rb.move(aFriction);
+                if (bBody instanceof Rigidbody rb)
+                    rb.move(bFriction);
             }
         }
     }
@@ -146,12 +161,14 @@ public class PhysicsContainer {
     }
 
     private static Vector3f getNormal(PhysicsBody aBody, PhysicsBody bBody) {
-        if (aBody.getCollider() == null || bBody.getCollider() == null) return new Vector3f();
+        if (aBody.getCollider() == null || bBody.getCollider() == null)
+            return new Vector3f();
         return AABBCollision.getNormal(aBody.getCollider().getBox(), bBody.getCollider().getBox());
     }
 
     private static float getDepth(PhysicsBody aBody, PhysicsBody bBody) {
-        if (aBody.getCollider() == null || bBody.getCollider() == null) return 0;
+        if (aBody.getCollider() == null || bBody.getCollider() == null)
+            return 0;
         return AABBCollision.getDepth(aBody.getCollider().getBox(), bBody.getCollider().getBox());
     }
 }

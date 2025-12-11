@@ -1,0 +1,75 @@
+package me.definedoddy.engine.core;
+
+import java.util.List;
+import java.util.ArrayList;
+
+import me.definedoddy.engine.debug.Debug;
+import me.definedoddy.engine.system.GameSystem;
+import me.definedoddy.engine.window.GameWindow;
+
+public class Game {
+    private final Process process = new Process(this);
+    private final List<GameSystem> systems = new ArrayList<>();
+
+    private GameWindow window;
+    private Scene activeScene;
+
+    public void init() {
+    }
+
+    public void update(float dt) {
+    }
+
+    public Process getProcess() {
+        return process;
+    }
+
+    public GameWindow getWindow() {
+        return window;
+    }
+
+    public void setWindow(GameWindow window) {
+        this.window = window;
+    }
+
+    public Scene getActiveScene() {
+        return activeScene;
+    }
+
+    public <T extends Scene> T loadScene(Class<T> scene) {
+        if (activeScene != null) {
+            activeScene.unload();
+
+            for (GameSystem system : systems) {
+                system.onSceneUnload(activeScene);
+            }
+        }
+
+        try {
+            activeScene = scene.getDeclaredConstructor().newInstance();
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to create scene", e);
+        }
+
+        activeScene.load();
+
+        for (GameSystem system : systems) {
+            system.onSceneLoad(activeScene);
+        }
+
+        Debug.log("Loaded scene: " + scene.getSimpleName());
+        return scene.cast(activeScene);
+    }
+
+    public void addSystem(GameSystem system) {
+        systems.add(system);
+    }
+
+    public void removeSystem(GameSystem system) {
+        systems.remove(system);
+    }
+
+    public List<GameSystem> getSystems() {
+        return systems;
+    }
+}
