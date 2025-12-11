@@ -31,6 +31,8 @@ public class Camera extends Entity {
 
     @Override
     public void init() {
+        Camera.set(this);
+
         super.init();
         calcMatrices();
 

@@ -11,6 +11,11 @@ public class BoundingBox {
         this.max = new Vector3f(max);
     }
 
+    public static BoundingBox fromCenter(Vector3f center, Vector3f size) {
+        Vector3f halfSize = new Vector3f(size).div(2);
+        return new BoundingBox(new Vector3f(center).sub(halfSize), new Vector3f(center).add(halfSize));
+    }
+
     public Vector3f getMin() {
         return min;
     }

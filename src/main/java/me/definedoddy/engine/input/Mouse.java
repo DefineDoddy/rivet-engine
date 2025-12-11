@@ -21,6 +21,7 @@ public class Mouse {
     private final boolean[] lastButtonPressed = new boolean[3];
 
     private boolean isDragging;
+    private boolean isLocked;
 
     public static Mouse get() {
         return connected.getFirst();
@@ -57,6 +58,11 @@ public class Mouse {
     }
 
     private void processMousePosition(long window, double xPos, double yPos) {
+        if (isLocked) {
+            xPos = GameWindow.get().getWidth() / 2f;
+            yPos = GameWindow.get().getHeight() / 2f;
+        }
+
         lastX = xPos;
         lastY = yPos;
         isDragging = buttonPressed[0] || buttonPressed[1] || buttonPressed[2];
@@ -132,5 +138,20 @@ public class Mouse {
     public void setCursorIcon(Icon icon, int originX, int originY) {
         long cursor = GLFW.glfwCreateCursor(icon.createGlfwImage(), originX, originY);
         GLFW.glfwSetCursor(GameWindow.get().getWindowId(), cursor);
+    }
+
+    public void setCursorLocked(boolean locked) {
+        isLocked = locked;
+
+        if (isLocked) {
+            centerCursor();
+            setCursorVisible(false);
+        } else {
+            setCursorVisible(true);
+        }
+    }
+
+    public void centerCursor() {
+        setCursorPosition(GameWindow.get().getWidth() / 2f, GameWindow.get().getHeight() / 2f);
     }
 }

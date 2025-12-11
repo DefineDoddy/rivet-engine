@@ -6,6 +6,7 @@ import me.definedoddy.engine.physics.collision.Collider;
 import me.definedoddy.engine.physics.simulation.KinematicBody;
 import me.definedoddy.engine.physics.simulation.PhysicsBody;
 import me.definedoddy.engine.physics.simulation.Rigidbody;
+import me.definedoddy.engine.physics.simulation.StaticBody;
 import org.joml.Vector3f;
 
 import java.util.ArrayList;
@@ -91,8 +92,8 @@ public class PhysicsContainer {
         float depth = getDepth(aBody, bBody);
 
         if (collidingWith(aBody, bBody)) {
-            boolean aStatic = aBody instanceof KinematicBody;
-            boolean bStatic = bBody instanceof KinematicBody;
+            boolean aStatic = (aBody instanceof KinematicBody) || (aBody instanceof StaticBody);
+            boolean bStatic = (bBody instanceof KinematicBody) || (bBody instanceof StaticBody);
             if (aStatic && bStatic) return;
 
             // Positional correction
