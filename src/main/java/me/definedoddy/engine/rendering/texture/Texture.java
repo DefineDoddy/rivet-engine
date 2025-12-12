@@ -1,6 +1,6 @@
 package me.definedoddy.engine.rendering.texture;
 
-import me.definedoddy.engine.manager.GameManager;
+import me.definedoddy.engine.core.Engine;
 import me.definedoddy.engine.rendering.config.RenderConfig;
 import me.definedoddy.toolkit.memory.Disposable;
 import org.lwjgl.opengl.GL11;
@@ -28,7 +28,7 @@ public class Texture implements Disposable {
     }
 
     private void generateMipmaps() {
-        RenderConfig renderConfig = GameManager.getRenderer().getRenderConfig();
+        RenderConfig renderConfig = Engine.getRenderer().getRenderConfig();
         bind();
 
         if (renderConfig.useMipmapping()) {

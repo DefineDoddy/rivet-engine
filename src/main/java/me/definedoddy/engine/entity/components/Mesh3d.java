@@ -10,4 +10,8 @@ public class Mesh3d implements Component {
     public Mesh3d(Handle<Mesh> mesh) {
         this.mesh = mesh;
     }
+
+    public Handle<Mesh> getMesh() {
+        return mesh;
+    }
 }

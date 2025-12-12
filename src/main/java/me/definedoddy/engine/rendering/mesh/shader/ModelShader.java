@@ -1,6 +1,6 @@
 package me.definedoddy.engine.rendering.mesh.shader;
 
-import me.definedoddy.engine.manager.GameManager;
+import me.definedoddy.engine.core.Engine;
 import me.definedoddy.engine.rendering.shader.Shader;
 import me.definedoddy.engine.rendering.shader.uniform.UniformInt;
 import me.definedoddy.engine.rendering.shader.uniform.UniformMatrix4f;
@@ -32,7 +32,7 @@ public class ModelShader extends Shader {
         ModelShader shader = new ModelShader(VERTEX_SHADER, FRAGMENT_SHADER);
 
         // Set shader variables
-        int maxLights = GameManager.getRenderer().getRenderConfig().getMaxLights();
+        int maxLights = Engine.getRenderer().getRenderConfig().getMaxLights();
         shader.setVariable("MAX_LIGHTS", String.valueOf(maxLights));
 
         shader.compile();

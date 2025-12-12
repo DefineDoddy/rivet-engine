@@ -1,9 +1,9 @@
 package me.definedoddy.engine.ui;
 
-import me.definedoddy.engine.manager.GameManager;
+import me.definedoddy.engine.core.Engine;
 
 public class UIBlock extends UIComponent {
     public UIBlock() {
-        GameManager.getRenderer().getUIRenderer().addBlock(this);
+        Engine.getRenderer().getUIRenderer().addBlock(this);
     }
 }

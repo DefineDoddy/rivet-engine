@@ -2,7 +2,7 @@ package me.definedoddy.engine.rendering.mesh.shader;
 
 import me.definedoddy.engine.entity.ModelEntity;
 import me.definedoddy.engine.entity.components.Camera;
-import me.definedoddy.engine.manager.GameManager;
+import me.definedoddy.engine.core.Engine;
 import me.definedoddy.engine.rendering.config.RenderConfig;
 import me.definedoddy.engine.rendering.lighting.Light;
 import me.definedoddy.engine.rendering.mesh.model.Mesh;
@@ -56,7 +56,7 @@ public class ModelRenderer {
     }
 
     private void applyLighting() {
-        RenderConfig renderConfig = GameManager.getRenderer().getRenderConfig();
+        RenderConfig renderConfig = Engine.getRenderer().getRenderConfig();
         int maxLights = renderConfig.getMaxLights();
 
         List<Light> lights = SceneManager.getCurrent().getLights();
