@@ -1,13 +1,13 @@
-package me.definedoddy.game;
+package com.rivetengine.game;
 
 import me.definedoddy.engine.core.Game;
 import me.definedoddy.engine.core.Time;
 import me.definedoddy.engine.debug.Debug;
 import me.definedoddy.engine.entity.Entity;
-import me.definedoddy.engine.entity.components.Camera;
 import me.definedoddy.engine.entity.components.Name;
-import me.definedoddy.engine.entity.components.Skybox;
 import me.definedoddy.engine.entity.components.Transform;
+import me.definedoddy.engine.entity.components.rendering.Camera;
+import me.definedoddy.engine.entity.components.rendering.Skybox;
 import me.definedoddy.engine.file.Assets;
 import me.definedoddy.engine.icon.Icon;
 import me.definedoddy.engine.input.KeyCode;

@@ -1,0 +1,18 @@
+package org.rivetengine.rendering.shader.uniform;
+
+import org.joml.Vector4f;
+import org.lwjgl.opengl.GL20;
+
+public class UniformVec4f extends Uniform {
+    public UniformVec4f(String name) {
+        super(name);
+    }
+
+    public void loadVec4(Vector4f vector) {
+        loadVec4(vector.x(), vector.y(), vector.z(), vector.w());
+    }
+
+    public void loadVec4(float x, float y, float z, float w) {
+        GL20.glUniform4f(super.getLocation(), x, y, z, w);
+    }
+}
