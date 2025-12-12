@@ -3,8 +3,8 @@ package org.rivetengine.entity.components;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
-import me.definedoddy.engine.entity.Entity;
-import me.definedoddy.engine.entity.component.Component;
+import org.rivetengine.entity.Entity;
+import org.rivetengine.entity.component.Component;
 
 public class Transform implements Component {
     public Vector3f position;

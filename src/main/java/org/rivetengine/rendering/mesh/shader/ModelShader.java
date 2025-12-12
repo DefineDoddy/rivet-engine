@@ -1,11 +1,11 @@
 package org.rivetengine.rendering.mesh.shader;
 
-import me.definedoddy.engine.core.Engine;
-import me.definedoddy.engine.rendering.shader.Shader;
-import me.definedoddy.engine.rendering.shader.uniform.UniformInt;
-import me.definedoddy.engine.rendering.shader.uniform.UniformMatrix4f;
-import me.definedoddy.engine.rendering.shader.uniform.custom.UniformLights;
-import me.definedoddy.engine.rendering.shader.uniform.custom.UniformMaterial;
+import org.rivetengine.core.Engine;
+import org.rivetengine.rendering.shader.Shader;
+import org.rivetengine.rendering.shader.uniform.UniformInt;
+import org.rivetengine.rendering.shader.uniform.UniformMatrix4f;
+import org.rivetengine.rendering.shader.uniform.custom.UniformLights;
+import org.rivetengine.rendering.shader.uniform.custom.UniformMaterial;
 import me.definedoddy.toolkit.file.ProjectFile;
 
 public class ModelShader extends Shader {

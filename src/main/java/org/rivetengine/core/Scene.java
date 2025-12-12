@@ -14,11 +14,11 @@ public class Scene {
     public void unload() {
     }
 
-    public void addEntity(Entity entity) {
+    public void spawn(Entity entity) {
         rootEntities.put(entity.getId(), entity);
     }
 
-    public void removeEntity(Entity entity) {
+    public void remove(Entity entity) {
         rootEntities.remove(entity.getId());
     }
 

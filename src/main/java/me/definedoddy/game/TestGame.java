@@ -1,56 +1,42 @@
-package com.rivetengine.game;
+package me.definedoddy.game;
 
-import me.definedoddy.engine.core.Game;
-import me.definedoddy.engine.core.Time;
-import me.definedoddy.engine.debug.Debug;
-import me.definedoddy.engine.entity.Entity;
-import me.definedoddy.engine.entity.components.Name;
-import me.definedoddy.engine.entity.components.Transform;
-import me.definedoddy.engine.entity.components.rendering.Camera;
-import me.definedoddy.engine.entity.components.rendering.Skybox;
-import me.definedoddy.engine.file.Assets;
-import me.definedoddy.engine.icon.Icon;
-import me.definedoddy.engine.input.KeyCode;
-import me.definedoddy.engine.input.Keyboard;
-import me.definedoddy.engine.rendering.cubemap.CubeMap;
-import me.definedoddy.engine.window.GameWindow;
-import me.definedoddy.toolkit.memory.Handle;
+import org.rivetengine.core.Assets;
+import org.rivetengine.core.Game;
+import org.rivetengine.core.Time;
+import org.rivetengine.debug.Debug;
+import org.rivetengine.input.Input;
+import org.rivetengine.input.KeyCode;
+import org.rivetengine.rendering.sprite.Icon;
+import org.rivetengine.window.GameWindow;
+
+import me.definedoddy.game.prefabs.PlayerPrefab;
 
 public class TestGame extends Game {
     public static void main(String[] args) {
         TestGame game = new TestGame();
 
-        GameWindow window = new GameWindow("Test Game", 1280, 720);
-        window.setIcon(Assets.load("assets/icon.png", Icon.class));
-        game.setWindow(window);
+        game.window = new GameWindow("Test Game", 1280, 720);
+        game.window.setIcon(Assets.load("assets/icon.png", Icon.class));
 
-        game.getProcess().start();
+        game.process.start();
     }
 
     @Override
     public void init() {
-        Entity mainCamera = new Entity();
-        mainCamera.addComponent(new Transform());
-        mainCamera.addComponent(new Camera());
-        mainCamera.addComponent(new Name("Main Camera"));
-
-        Handle<CubeMap> sky = Assets.load("assets/skybox", CubeMap.class);
-        mainCamera.addComponent(new Skybox(sky));
-
-        getActiveScene().addEntity(mainCamera);
+        getActiveScene().spawn(new PlayerPrefab().create());
     }
 
     @Override
     public void update(float dt) {
-        if (Keyboard.get().wasKeyPressed(KeyCode.ESCAPE)) {
-            getWindow().close();
+        if (Input.keyboard.wasKeyPressed(KeyCode.ESCAPE)) {
+            window.close();
         }
 
-        if (Keyboard.get().wasKeyPressed(KeyCode.F11)) {
-            getWindow().setMaximised(!getWindow().isMaximised());
+        if (Input.keyboard.wasKeyPressed(KeyCode.F11)) {
+            window.setMaximised(!window.isMaximised());
         }
 
-        if (Keyboard.get().wasKeyPressed(KeyCode.F1)) {
+        if (Input.keyboard.wasKeyPressed(KeyCode.F1)) {
             Debug.log("FPS: " + Time.getFps());
             Debug.log("Entities: " + getActiveScene().getRootEntities().size());
         }

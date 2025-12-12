@@ -1,7 +1,7 @@
-package com.rivetengine.game.entity.player.camera.shake;
+package me.definedoddy.game.entity.camera.shake;
 
-import com.rivetengine.toolkit.maths.Axis3d;
-import com.rivetengine.toolkit.types.EnumFlag;
+import org.rivetengine.toolkit.maths.Axis3d;
+import org.rivetengine.toolkit.types.EnumFlag;
 
 public class CameraShake {
     private final float duration;

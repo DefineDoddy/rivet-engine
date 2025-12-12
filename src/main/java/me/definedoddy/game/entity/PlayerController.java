@@ -1,16 +1,16 @@
-package com.rivetengine.game.entity.player;
+package me.definedoddy.game.entity;
 
-import com.rivetengine.engine.core.Time;
-import com.rivetengine.engine.debug.Debug;
-import me.definedoddy.engine.entity.EntityOld;
-import com.rivetengine.engine.entity.components.physics.body.Rigidbody;
-import com.rivetengine.engine.entity.components.physics.collision.BoxCollider;
-import com.rivetengine.engine.entity.components.rendering.Camera;
-import com.rivetengine.engine.input.KeyCode;
-import com.rivetengine.engine.input.Keyboard;
-import me.definedoddy.engine.scene.SceneManager;
-import com.rivetengine.game.entity.player.camera.FPCamera;
-import com.rivetengine.game.entity.player.camera.shake.CameraShake;
+import org.rivetengine.core.Time;
+import org.rivetengine.debug.Debug;
+import org.rivetengine.entity.EntityOld;
+import org.rivetengine.entity.components.physics.body.Rigidbody;
+import org.rivetengine.entity.components.physics.collision.BoxCollider;
+import org.rivetengine.entity.components.rendering.Camera;
+import org.rivetengine.input.KeyCode;
+import org.rivetengine.input.Keyboard;
+import org.rivetengine.scene.SceneManager;
+import me.definedoddy.game.entity.camera.FPCamera;
+import me.definedoddy.game.entity.camera.shake.CameraShake;
 import org.joml.Vector3f;
 
 public class PlayerController {

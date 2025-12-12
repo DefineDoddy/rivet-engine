@@ -7,29 +7,17 @@ import org.rivetengine.debug.Debug;
 import org.rivetengine.system.GameSystem;
 import org.rivetengine.window.GameWindow;
 
-public class Game {
-    private final Process process = new Process(this);
+public abstract class Game {
+    public final Process process = new Process(this);
     private final List<GameSystem> systems = new ArrayList<>();
 
-    private GameWindow window;
+    public GameWindow window;
     private Scene activeScene;
 
     public void init() {
     }
 
     public void update(float dt) {
-    }
-
-    public Process getProcess() {
-        return process;
-    }
-
-    public GameWindow getWindow() {
-        return window;
-    }
-
-    public void setWindow(GameWindow window) {
-        this.window = window;
     }
 
     public Scene getActiveScene() {

@@ -1,19 +1,16 @@
 package org.rivetengine.input;
 
-import org.rivetengine.icon.Icon;
+import org.rivetengine.rendering.sprite.Icon;
 import org.rivetengine.window.GameWindow;
 import org.joml.Vector2f;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.Arrays;
-import java.util.List;
 
 import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
 import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
 
 public class Mouse {
-    private static List<Mouse> connected;
-
     private double xPos, yPos, lastX, lastY;
     private double scrollX, scrollY;
 
@@ -23,34 +20,17 @@ public class Mouse {
     private boolean isDragging;
     private boolean isLocked;
 
-    public static Mouse get() {
-        return connected.getFirst();
-    }
-
-    public static void initAll() {
-        connected = Input.getConnectedMice();
-        connected.forEach(Mouse::init);
-    }
-
-    public static void preUpdateAll() {
-        connected.forEach(Mouse::preUpdate);
-    }
-
-    public static void postUpdateAll() {
-        connected.forEach(Mouse::postUpdate);
-    }
-
-    private void init() {
+    public void init() {
         GLFW.glfwSetCursorPosCallback(GameWindow.get().getWindowId(), this::processMousePosition);
         GLFW.glfwSetMouseButtonCallback(GameWindow.get().getWindowId(), this::processMouseButton);
         GLFW.glfwSetScrollCallback(GameWindow.get().getWindowId(), this::processMouseScroll);
     }
 
-    private void preUpdate() {
+    public void preUpdate() {
         Arrays.fill(lastButtonPressed, false);
     }
 
-    private void postUpdate() {
+    public void postUpdate() {
         xPos = lastX;
         yPos = lastY;
         scrollX = 0d;
@@ -99,11 +79,11 @@ public class Mouse {
         return (float) yPos;
     }
 
-    public float getDX() {
+    public float getDx() {
         return (float) (lastX - xPos);
     }
 
-    public float getDY() {
+    public float getDy() {
         return (float) (lastY - yPos);
     }
 
@@ -128,7 +108,8 @@ public class Mouse {
     }
 
     public void setCursorVisible(boolean visible) {
-        GLFW.glfwSetInputMode(GameWindow.get().getWindowId(), GLFW.GLFW_CURSOR, visible ? GLFW.GLFW_CURSOR_NORMAL : GLFW.GLFW_CURSOR_DISABLED);
+        GLFW.glfwSetInputMode(GameWindow.get().getWindowId(), GLFW.GLFW_CURSOR,
+                visible ? GLFW.GLFW_CURSOR_NORMAL : GLFW.GLFW_CURSOR_DISABLED);
     }
 
     public void setCursorPosition(float x, float y) {

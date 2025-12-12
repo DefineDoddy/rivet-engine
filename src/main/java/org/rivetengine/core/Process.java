@@ -1,8 +1,7 @@
 package org.rivetengine.core;
 
 import org.rivetengine.debug.Debug;
-import org.rivetengine.input.Keyboard;
-import org.rivetengine.input.Mouse;
+import org.rivetengine.input.Input;
 import org.rivetengine.physics.PhysicsContainer;
 import org.rivetengine.ui.UI;
 import org.rivetengine.utils.errors.ErrorWindowPopup;
@@ -17,8 +16,8 @@ public class Process {
     public void start() {
         Time.init();
         Engine.init();
-        Keyboard.initAll();
-        Mouse.initAll();
+        Input.keyboard.init();
+        Input.mouse.init();
         UI.init();
 
         game.init();
@@ -26,17 +25,17 @@ public class Process {
         Debug.log("Process started");
         Debug.log("Creating window...");
 
-        game.getWindow().create();
-        game.getWindow().setVisible(true);
+        game.window.create();
+        game.window.setVisible(true);
 
         Debug.log("Window created");
 
-        while (game.getWindow().canUpdate()) {
+        while (game.window.canUpdate()) {
             try {
-                game.getWindow().preUpdate();
+                game.window.preUpdate();
 
                 // Input
-                Mouse.preUpdateAll();
+                Input.mouse.preUpdate();
 
                 // Logic
                 PhysicsContainer.update();
@@ -46,11 +45,11 @@ public class Process {
                 UI.update();
 
                 // Input
-                Keyboard.updateAll();
-                Mouse.postUpdateAll();
+                Input.keyboard.update();
+                Input.mouse.postUpdate();
 
                 Time.update();
-                game.getWindow().postUpdate();
+                game.window.postUpdate();
 
                 game.update((float) Time.getDeltaTime());
                 long sleepTime = (long) (1000 / Time.getTargetFps());

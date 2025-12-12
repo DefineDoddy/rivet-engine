@@ -1,9 +1,9 @@
 package org.rivetengine.rendering.mesh;
 
-import me.definedoddy.engine.rendering.mesh.obj.Vertex;
-import me.definedoddy.engine.rendering.object.Vao;
-import me.definedoddy.toolkit.buffer.BufferUtils;
-import me.definedoddy.toolkit.memory.Disposable;
+import org.rivetengine.rendering.mesh.obj.Vertex;
+import org.rivetengine.rendering.object.Vao;
+import org.rivetengine.toolkit.buffer.BufferUtils;
+import org.rivetengine.toolkit.memory.Disposable;
 
 import org.lwjgl.opengl.GL11;
 

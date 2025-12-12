@@ -1,11 +1,11 @@
-package com.rivetengine.game.entity.player.camera;
+package me.definedoddy.game.entity.camera;
 
-import com.rivetengine.engine.core.Time;
-import com.rivetengine.engine.entity.components.rendering.Camera;
-import com.rivetengine.engine.input.Mouse;
-import com.rivetengine.engine.window.GameWindow;
-import com.rivetengine.game.entity.player.camera.shake.CameraShake;
-import com.rivetengine.game.entity.player.camera.shake.ShakeController;
+import org.rivetengine.core.Time;
+import org.rivetengine.entity.components.rendering.Camera;
+import org.rivetengine.input.Mouse;
+import org.rivetengine.window.GameWindow;
+import me.definedoddy.game.entity.camera.shake.CameraShake;
+import me.definedoddy.game.entity.camera.shake.ShakeController;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 

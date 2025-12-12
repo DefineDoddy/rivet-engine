@@ -1,8 +1,5 @@
-import org.gradle.jvm.toolchain.JavaLanguageVersion
-import org.gradle.api.JavaVersion
-
 plugins {
-    id 'java'
+    id "java"
 }
 
 java {
@@ -13,8 +10,8 @@ java {
     targetCompatibility = JavaVersion.VERSION_21
 }
 
-group = 'me.definedoddy'
-version = '0.0.1'
+group = "org.rivetengine"
+version = "0.0.1"
 
 project.ext.lwjglVersion = "3.3.6"
 project.ext.jomlVersion = "1.10.5"
@@ -32,10 +29,10 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.jetbrains:annotations:20.1.0'
+    implementation "org.jetbrains:annotations:20.1.0"
 
-    testImplementation platform('org.junit:junit-bom:5.9.1')
-    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation platform("org.junit:junit-bom:5.9.1")
+    testImplementation "org.junit.jupiter:junit-jupiter"
 
     implementation platform("org.lwjgl:lwjgl-bom:$lwjglVersion")
 

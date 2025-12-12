@@ -1,8 +1,8 @@
-package com.rivetengine.game.entity.player.camera.shake;
+package me.definedoddy.game.entity.camera.shake;
 
-import com.rivetengine.engine.core.Time;
-import com.rivetengine.engine.entity.components.rendering.Camera;
-import com.rivetengine.toolkit.maths.Axis3d;
+import org.rivetengine.core.Time;
+import org.rivetengine.entity.components.rendering.Camera;
+import org.rivetengine.toolkit.maths.Axis3d;
 
 import java.util.ArrayList;
 import java.util.List;

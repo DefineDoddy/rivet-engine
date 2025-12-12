@@ -1,15 +1,15 @@
 package org.rivetengine.rendering;
 
-import me.definedoddy.engine.debug.Debug;
-import me.definedoddy.engine.entity.components.rendering.Camera;
-import me.definedoddy.engine.rendering.config.DefaultRenderConfig;
-import me.definedoddy.engine.rendering.config.RenderConfig;
-import me.definedoddy.engine.rendering.mesh.shader.ModelRenderer;
-import me.definedoddy.engine.rendering.mesh.shader.ModelShader;
-import me.definedoddy.engine.rendering.skybox.shader.SkyboxRenderer;
-import me.definedoddy.engine.rendering.skybox.shader.SkyboxShader;
-import me.definedoddy.engine.ui.shader.UIRenderer;
-import me.definedoddy.engine.ui.shader.UIShader;
+import org.rivetengine.debug.Debug;
+import org.rivetengine.entity.components.rendering.Camera;
+import org.rivetengine.rendering.config.DefaultRenderConfig;
+import org.rivetengine.rendering.config.RenderConfig;
+import org.rivetengine.rendering.mesh.shader.ModelRenderer;
+import org.rivetengine.rendering.mesh.shader.ModelShader;
+import org.rivetengine.rendering.skybox.shader.SkyboxRenderer;
+import org.rivetengine.rendering.skybox.shader.SkyboxShader;
+import org.rivetengine.ui.shader.UIRenderer;
+import org.rivetengine.ui.shader.UIShader;
 
 public class RenderEngine {
     private RenderConfig renderConfig = new DefaultRenderConfig();

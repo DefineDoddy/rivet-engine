@@ -1,22 +1,22 @@
-package com.rivetengine.game.scene;
+package me.definedoddy.game.scene;
 
-import com.rivetengine.engine.core.Scene;
-import com.rivetengine.engine.entity.Entity;
-import com.rivetengine.engine.entity.components.Tags;
-import com.rivetengine.engine.entity.components.Transform;
-import com.rivetengine.engine.entity.components.physics.body.KinematicBody;
-import com.rivetengine.engine.entity.components.physics.collision.BoxCollider;
-import com.rivetengine.engine.entity.components.rendering.Camera;
-import com.rivetengine.engine.entity.components.rendering.Mesh3d;
-import com.rivetengine.engine.entity.components.rendering.Skybox;
-import com.rivetengine.engine.entity.components.rendering.lighting.DirectionalLight;
-import com.rivetengine.engine.entity.components.rendering.lighting.PointLight;
-import com.rivetengine.engine.entity.components.rendering.lighting.SpotLight;
-import com.rivetengine.engine.file.Assets;
-import com.rivetengine.engine.rendering.cubemap.CubeMap;
-import com.rivetengine.engine.rendering.mesh.Mesh;
-import com.rivetengine.engine.rendering.primitives.Primitives;
-import me.definedoddy.toolkit.memory.Handle;
+import org.rivetengine.core.Assets;
+import org.rivetengine.core.Scene;
+import org.rivetengine.entity.Entity;
+import org.rivetengine.entity.components.Tags;
+import org.rivetengine.entity.components.Transform;
+import org.rivetengine.entity.components.physics.body.KinematicBody;
+import org.rivetengine.entity.components.physics.collision.BoxCollider;
+import org.rivetengine.entity.components.rendering.Camera;
+import org.rivetengine.entity.components.rendering.Mesh3d;
+import org.rivetengine.entity.components.rendering.Skybox;
+import org.rivetengine.entity.components.rendering.lighting.DirectionalLight;
+import org.rivetengine.entity.components.rendering.lighting.PointLight;
+import org.rivetengine.entity.components.rendering.lighting.SpotLight;
+import org.rivetengine.rendering.cubemap.CubeMap;
+import org.rivetengine.rendering.mesh.Mesh;
+import org.rivetengine.rendering.primitives.Primitives;
+import org.rivetengine.toolkit.memory.Handle;
 
 import org.joml.Vector2f;
 import org.joml.Vector3f;
@@ -36,7 +36,7 @@ public class TestWorld extends Scene {
         groundEntity.addComponent(new BoxCollider());
         groundEntity.addComponent(new KinematicBody());
 
-        addEntity(groundEntity);
+        spawn(groundEntity);
 
         // Add camera
         Entity mainCamera = new Entity();
@@ -45,7 +45,7 @@ public class TestWorld extends Scene {
         Handle<CubeMap> sky = Assets.load("assets/skybox", CubeMap.class);
         mainCamera.addComponent(new Skybox(sky));
 
-        addEntity(mainCamera);
+        spawn(mainCamera);
 
         addLighting();
     }
@@ -54,16 +54,16 @@ public class TestWorld extends Scene {
         Entity sunEntity = new Entity();
         sunEntity.addComponent(new DirectionalLight(Color.WHITE, 0.5f));
         sunEntity.addComponent(new Transform(new Vector3f(), new Vector3f(-45, 0, 0), new Vector3f(1f)));
-        addEntity(sunEntity);
+        spawn(sunEntity);
 
         Entity pointLightEntity = new Entity();
         pointLightEntity.addComponent(new PointLight(Color.WHITE, 0.5f));
         pointLightEntity.addComponent(new Transform(new Vector3f(0, 5, 0), new Vector3f(), new Vector3f(1f)));
-        addEntity(pointLightEntity);
+        spawn(pointLightEntity);
 
         Entity spotLightEntity = new Entity();
         spotLightEntity.addComponent(new SpotLight(Color.RED, 1f));
         spotLightEntity.addComponent(new Transform(new Vector3f(8, 6, 0), new Vector3f(-45, 0, 0), new Vector3f(1f)));
-        addEntity(spotLightEntity);
+        spawn(spotLightEntity);
     }
 }

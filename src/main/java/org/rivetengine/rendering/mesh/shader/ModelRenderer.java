@@ -1,14 +1,14 @@
 package org.rivetengine.rendering.mesh.shader;
 
-import me.definedoddy.engine.entity.ModelEntity;
-import me.definedoddy.engine.entity.components.rendering.Camera;
-import me.definedoddy.engine.entity.components.rendering.lighting.Light;
-import me.definedoddy.engine.core.Engine;
-import me.definedoddy.engine.rendering.config.RenderConfig;
-import me.definedoddy.engine.rendering.mesh.model.Mesh;
-import me.definedoddy.engine.rendering.mesh.model.MeshMap;
-import me.definedoddy.engine.rendering.texture.Material;
-import me.definedoddy.engine.scene.SceneManager;
+import org.rivetengine.entity.ModelEntity;
+import org.rivetengine.entity.components.rendering.Camera;
+import org.rivetengine.entity.components.rendering.lighting.Light;
+import org.rivetengine.core.Engine;
+import org.rivetengine.rendering.config.RenderConfig;
+import org.rivetengine.rendering.mesh.model.Mesh;
+import org.rivetengine.rendering.mesh.model.MeshMap;
+import org.rivetengine.rendering.texture.Material;
+import org.rivetengine.scene.SceneManager;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;

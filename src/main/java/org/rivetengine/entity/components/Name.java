@@ -1,6 +1,6 @@
 package org.rivetengine.entity.components;
 
-import me.definedoddy.engine.entity.component.Component;
+import org.rivetengine.entity.component.Component;
 
 public class Name implements Component {
     private String name;

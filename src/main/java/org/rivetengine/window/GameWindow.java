@@ -1,11 +1,11 @@
 package org.rivetengine.window;
 
-import org.rivetengine.file.Assets;
-import org.rivetengine.icon.Icon;
+import org.rivetengine.core.Assets;
+import org.rivetengine.rendering.sprite.Icon;
 import org.rivetengine.utils.errors.FatalErrorWindowPopup;
 import org.rivetengine.utils.glfw.GlfwMappings;
 import org.rivetengine.toolkit.memory.Disposable;
-import me.definedoddy.toolkit.memory.Handle;
+import org.rivetengine.toolkit.memory.Handle;
 
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;

@@ -1,7 +1,7 @@
 package org.rivetengine.rendering.skybox.shader;
 
 import org.rivetengine.rendering.shader.Shader;
-import me.definedoddy.engine.rendering.shader.*;
+import org.rivetengine.rendering.shader.*;
 import org.rivetengine.rendering.shader.uniform.UniformFloat;
 import org.rivetengine.rendering.shader.uniform.UniformMatrix4f;
 import org.rivetengine.toolkit.file.ProjectFile;

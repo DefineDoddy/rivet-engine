@@ -1,4 +1,4 @@
-package org.rivetengine.icon;
+package org.rivetengine.rendering.sprite;
 
 import org.rivetengine.utils.glfw.GlfwImageUtils;
 import org.rivetengine.toolkit.buffer.ImageUtils;

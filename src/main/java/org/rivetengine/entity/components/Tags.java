@@ -1,6 +1,6 @@
 package org.rivetengine.entity.components;
 
-import me.definedoddy.engine.entity.component.Component;
+import org.rivetengine.entity.component.Component;
 
 public class Tags implements Component {
     private final String[] tags;
