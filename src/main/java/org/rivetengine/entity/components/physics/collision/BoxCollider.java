@@ -3,7 +3,7 @@ package org.rivetengine.entity.components.physics.collision;
 import org.rivetengine.debug.Debug;
 import org.rivetengine.debug.DebugHandler;
 import org.rivetengine.debug.draw.Cube;
-import org.rivetengine.physics.PhysicsContainer;
+import org.rivetengine.physics.PhysicsSystem;
 import org.rivetengine.physics.collision.AABBCollision;
 import org.rivetengine.physics.collision.BoundingBox;
 import org.rivetengine.physics.collision.Collidable;
@@ -25,7 +25,7 @@ public class BoxCollider extends Collider3d {
             box.translate(new Vector3f(getEntity().getPosition()).sub(halfScale));
         }
 
-        for (Collider collider : PhysicsContainer.getColliders()) {
+        for (Collider collider : PhysicsSystem.getColliders()) {
             if (collider.isCollidingWith(this)) {
                 colliding.add(collider);
 

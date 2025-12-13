@@ -13,7 +13,7 @@ public class DebugRenderer {
         shader.bind();
 
         shader.getProjectionMatrix().loadMatrix(Camera.getActive().getProjectionMatrix());
-        shader.getViewMatrix().loadMatrix(Camera.getActive().getViewMatrix());
+        shader.getViewMatrix().loadMatrix(Camera.getActive().createViewMatrix());
 
         /*
          * // Position attribute

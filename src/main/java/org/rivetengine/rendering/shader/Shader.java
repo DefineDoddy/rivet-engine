@@ -69,13 +69,13 @@ public class Shader implements Disposable {
     public void setUniforms(Uniform... uniforms) {
         this.uniforms = List.of(uniforms);
         for (Uniform uniform : uniforms) {
-            uniform.setProgramId(programId);
+            uniform.programId = programId;
         }
     }
 
     public <T extends Uniform> T getUniform(Class<T> type, String name) {
         for (Uniform uniform : uniforms) {
-            if (uniform.getName().equals(name)) {
+            if (uniform.name.equals(name)) {
                 return type.cast(uniform);
             }
         }

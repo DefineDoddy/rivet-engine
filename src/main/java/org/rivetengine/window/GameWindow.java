@@ -202,11 +202,11 @@ public class GameWindow implements Disposable {
         }
     }
 
-    public void setMaximised(boolean maximized) {
-        this.maximised = maximized;
+    public void setMaximised(boolean maximised) {
+        this.maximised = maximised;
 
         if (isCreated()) {
-            if (maximized) {
+            if (maximised) {
                 glfwMaximizeWindow(windowId);
             } else {
                 glfwRestoreWindow(windowId);

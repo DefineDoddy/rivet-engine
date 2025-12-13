@@ -1,4 +1,4 @@
-package org.rivetengine.rendering.object;
+package org.rivetengine.rendering.mesh.object;
 
 import org.rivetengine.toolkit.memory.Disposable;
 
@@ -37,13 +37,17 @@ public class Vbo implements Disposable {
     }
 
     public void bind() {
-        if (isIndices) glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id);
-        else glBindBuffer(GL_ARRAY_BUFFER, id);
+        if (isIndices)
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id);
+        else
+            glBindBuffer(GL_ARRAY_BUFFER, id);
     }
 
     public void unbind() {
-        if (isIndices) glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-        else glBindBuffer(GL_ARRAY_BUFFER, 0);
+        if (isIndices)
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+        else
+            glBindBuffer(GL_ARRAY_BUFFER, 0);
     }
 
     @Override
@@ -77,8 +81,10 @@ public class Vbo implements Disposable {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == this) return true;
-        if (obj == null || obj.getClass() != this.getClass()) return false;
+        if (obj == this)
+            return true;
+        if (obj == null || obj.getClass() != this.getClass())
+            return false;
 
         Vbo vbo = (Vbo) obj;
         return vbo.componentSize == componentSize &&

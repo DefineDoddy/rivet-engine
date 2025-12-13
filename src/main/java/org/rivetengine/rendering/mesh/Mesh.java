@@ -1,7 +1,7 @@
 package org.rivetengine.rendering.mesh;
 
 import org.rivetengine.rendering.mesh.obj.Vertex;
-import org.rivetengine.rendering.object.Vao;
+import org.rivetengine.rendering.mesh.object.Vao;
 import org.rivetengine.toolkit.buffer.BufferUtils;
 import org.rivetengine.toolkit.memory.Disposable;
 
@@ -13,8 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Mesh implements Disposable {
-    private final String id;
-    private final int indicesOffset;
+    public final String id;
+    public final int indicesOffset;
 
     private final Vao vao = new Vao();
 
@@ -54,10 +54,6 @@ public class Mesh implements Disposable {
 
         IntBuffer buffer = BufferUtils.createIntBuffer(getIndices());
         vao.storeIndices(buffer);
-    }
-
-    public String getId() {
-        return id;
     }
 
     public List<Vertex> getVertices() {

@@ -57,8 +57,8 @@ public class CubeMapLoader {
             Texture texture = textures[i];
 
             glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGBA,
-                    texture.getWidth(), texture.getHeight(),
-                    0, GL_RGBA, GL_UNSIGNED_BYTE, texture.getData());
+                    texture.width, texture.height,
+                    0, GL_RGBA, GL_UNSIGNED_BYTE, texture.data);
         }
 
         int glType = TextureType.CUBEMAP.getGlType();

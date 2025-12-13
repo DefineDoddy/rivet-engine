@@ -1,7 +1,6 @@
 package org.rivetengine.rendering.texture;
 
-import org.rivetengine.core.Engine;
-import org.rivetengine.rendering.config.RenderConfig;
+import org.rivetengine.rendering.RenderSystem;
 import org.rivetengine.toolkit.memory.Disposable;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL14;
@@ -11,11 +10,11 @@ import org.lwjgl.opengl.GL30;
 import java.nio.ByteBuffer;
 
 public class Texture implements Disposable {
-    private final int id;
-    private final int width;
-    private final int height;
-    private final ByteBuffer data;
-    private final TextureType type;
+    public final int id;
+    public final int width;
+    public final int height;
+    public final ByteBuffer data;
+    public final TextureType type;
 
     public Texture(int id, TextureType type, ByteBuffer data, int width, int height) {
         this.id = id;
@@ -28,36 +27,15 @@ public class Texture implements Disposable {
     }
 
     private void generateMipmaps() {
-        RenderConfig renderConfig = Engine.getRenderer().getRenderConfig();
         bind();
 
-        if (renderConfig.useMipmapping()) {
+        if (RenderSystem.USE_MIPMAPPING) {
             GL30.glGenerateMipmap(type.getGlType());
             GL11.glTexParameteri(type.getGlType(), GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR_MIPMAP_LINEAR);
-            GL11.glTexParameterf(type.getGlType(), GL14.GL_TEXTURE_LOD_BIAS, renderConfig.getLODBias());
+            GL11.glTexParameterf(type.getGlType(), GL14.GL_TEXTURE_LOD_BIAS, RenderSystem.LOD_BIAS);
         }
 
         unbind();
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public TextureType getType() {
-        return type;
-    }
-
-    public ByteBuffer getData() {
-        return data;
-    }
-
-    public int getWidth() {
-        return width;
-    }
-
-    public int getHeight() {
-        return height;
     }
 
     public void bind() {
@@ -92,10 +70,12 @@ public class Texture implements Disposable {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == this)
+        if (obj == this) {
             return true;
-        if (!(obj instanceof Texture texture))
+        }
+        if (!(obj instanceof Texture texture)) {
             return false;
+        }
         return texture.id == id;
     }
 
@@ -106,6 +86,6 @@ public class Texture implements Disposable {
                 ", width=" + width +
                 ", height=" + height +
                 ", type=" + type +
-                '}';
+                "}";
     }
 }

@@ -1,4 +1,4 @@
-package org.rivetengine.rendering.object;
+package org.rivetengine.rendering.mesh.object;
 
 import org.rivetengine.toolkit.memory.Disposable;
 
@@ -48,21 +48,28 @@ public class Vao implements Disposable {
     public void bind() {
         glBindVertexArray(id);
 
-        for (Vbo vbo : vbos) if (vbo.isIndices()) vbo.bind();
-        for (int i = 0; i <= maxIndex; i++) glEnableVertexAttribArray(i);
+        for (Vbo vbo : vbos)
+            if (vbo.isIndices())
+                vbo.bind();
+        for (int i = 0; i <= maxIndex; i++)
+            glEnableVertexAttribArray(i);
     }
 
     public void unbind() {
         glBindVertexArray(0);
 
-        for (Vbo vbo : vbos) if (vbo.isIndices()) vbo.unbind();
-        for (int i = 0; i <= maxIndex; i++) glDisableVertexAttribArray(i);
+        for (Vbo vbo : vbos)
+            if (vbo.isIndices())
+                vbo.unbind();
+        for (int i = 0; i <= maxIndex; i++)
+            glDisableVertexAttribArray(i);
     }
 
     @Override
     public void dispose() {
         glDeleteVertexArrays(id);
-        for (Vbo vbo : vbos) vbo.dispose();
+        for (Vbo vbo : vbos)
+            vbo.dispose();
     }
 
     public int getId() {
@@ -70,7 +77,8 @@ public class Vao implements Disposable {
     }
 
     public int getVertexCount() {
-        if (indicesCount != -1) return indicesCount;
+        if (indicesCount != -1)
+            return indicesCount;
 
         Vbo vbo = vbos.getFirst();
         return vbo.getData().limit() / vbo.getComponentSize();
@@ -82,8 +90,10 @@ public class Vao implements Disposable {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (!(obj instanceof Vao vao)) return false;
+        if (this == obj)
+            return true;
+        if (!(obj instanceof Vao vao))
+            return false;
         return vao.id == id;
     }
 }

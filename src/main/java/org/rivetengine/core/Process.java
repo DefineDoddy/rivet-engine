@@ -2,23 +2,22 @@ package org.rivetengine.core;
 
 import org.rivetengine.debug.Debug;
 import org.rivetengine.input.Input;
-import org.rivetengine.physics.PhysicsContainer;
-import org.rivetengine.ui.UI;
+import org.rivetengine.physics.PhysicsSystem;
 import org.rivetengine.utils.errors.ErrorWindowPopup;
 
 public class Process {
     private final Game game;
+    private final Engine engine;
 
     public Process(Game game) {
         this.game = game;
+        this.engine = new Engine(game);
     }
 
     public void start() {
         Time.init();
-        Engine.init();
         Input.keyboard.init();
         Input.mouse.init();
-        UI.init();
 
         game.init();
 
@@ -38,11 +37,8 @@ public class Process {
                 Input.mouse.preUpdate();
 
                 // Logic
-                PhysicsContainer.update();
-
-                // Rendering
-                Engine.getRenderer().update();
-                UI.update();
+                PhysicsSystem.update();
+                engine.update((float) Time.getDeltaTime());
 
                 // Input
                 Input.keyboard.update();
@@ -59,7 +55,7 @@ public class Process {
             }
         }
 
-        Engine.stop();
+        engine.dispose();
         Debug.stop();
 
         Debug.log("Process stopped");

@@ -13,7 +13,7 @@ import org.joml.Vector3f;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PhysicsContainer {
+public class PhysicsSystem {
     private static final List<Collider> colliders = new ArrayList<>();
     private static final List<PhysicsBody> physicsBodies = new ArrayList<>();
 

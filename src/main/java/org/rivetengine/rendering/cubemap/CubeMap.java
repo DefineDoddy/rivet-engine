@@ -1,6 +1,6 @@
 package org.rivetengine.rendering.cubemap;
 
-import org.rivetengine.rendering.object.Vao;
+import org.rivetengine.rendering.mesh.object.Vao;
 import org.rivetengine.rendering.texture.Texture;
 import org.rivetengine.rendering.texture.TextureType;
 import org.rivetengine.toolkit.buffer.BufferUtils;
@@ -10,8 +10,8 @@ import org.lwjgl.opengl.GL30;
 import java.nio.FloatBuffer;
 
 public class CubeMap implements Disposable {
-    private final int textureId;
-    private final Texture[] textures;
+    public final int textureId;
+    public final Texture[] textures;
 
     private float size = 500f;
     private Vao vao;
@@ -47,14 +47,6 @@ public class CubeMap implements Disposable {
         GL30.glDepthMask(true);
 
         vao.unbind();
-    }
-
-    public int getTextureId() {
-        return textureId;
-    }
-
-    public Texture[] getTextures() {
-        return textures;
     }
 
     public Vao getVao() {

@@ -38,7 +38,7 @@ public class TestGame extends Game {
 
         if (Input.keyboard.wasKeyPressed(KeyCode.F1)) {
             Debug.log("FPS: " + Time.getFps());
-            Debug.log("Entities: " + getActiveScene().getRootEntities().size());
+            Debug.log("Entities: " + getActiveScene().getAllEntities().size());
         }
     }
 }

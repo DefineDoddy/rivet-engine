@@ -4,31 +4,23 @@ import org.rivetengine.debug.Debug;
 import org.lwjgl.opengl.GL20;
 
 public abstract class Uniform {
-    private final String name;
-    private int programID;
+    public final String name;
+    public int programId;
     private int location = -1;
 
     protected Uniform(String name) {
         this.name = name;
     }
 
-    public void setProgramId(int programID) {
-        this.programID = programID;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public int getProgramId() {
-        return programID;
-    }
-
     public int getLocation() {
         if (location == -1) {
-            location = GL20.glGetUniformLocation(programID, name);
-            if (location == -1) Debug.logError("Could not find uniform variable: " + name);
+            location = GL20.glGetUniformLocation(programId, name);
+
+            if (location == -1) {
+                Debug.logError("Could not find uniform variable: " + name);
+            }
         }
+
         return location;
     }
 }

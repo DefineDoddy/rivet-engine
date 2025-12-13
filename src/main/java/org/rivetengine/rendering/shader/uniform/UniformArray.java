@@ -40,8 +40,7 @@ public class UniformArray extends Uniform {
             GL20.glUniform3f(getLocationOf(i),
                     values[i].getRed() / 255f,
                     values[i].getGreen() / 255f,
-                    values[i].getBlue() / 255f
-            );
+                    values[i].getBlue() / 255f);
         }
     }
 
@@ -53,8 +52,7 @@ public class UniformArray extends Uniform {
         GL20.glUniform3f(getLocationOf(index),
                 value.getRed() / 255f,
                 value.getGreen() / 255f,
-                value.getBlue() / 255f
-        );
+                value.getBlue() / 255f);
     }
 
     public void loadInts(int[] values) {
@@ -93,9 +91,8 @@ public class UniformArray extends Uniform {
         GL20.glUniform1f(getLocationOf(index), value);
     }
 
-
     private int getLocationOf(int index) {
-        return GL20.glGetUniformLocation(getProgramId(), getName() + "[" + index + "]");
+        return GL20.glGetUniformLocation(programId, name + "[" + index + "]");
     }
 
     public enum Type {

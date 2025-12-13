@@ -1,7 +1,7 @@
 package org.rivetengine.physics.collision.raycast;
 
 import org.rivetengine.entity.components.rendering.Camera;
-import org.rivetengine.physics.PhysicsContainer;
+import org.rivetengine.physics.PhysicsSystem;
 import org.rivetengine.entity.components.physics.collision.Collider;
 import org.rivetengine.window.GameWindow;
 import org.joml.Matrix4f;
@@ -19,7 +19,7 @@ public class RayCastUtils {
     }
 
     public static Collider getIntersectingCollider(Vector3f point) {
-        for (Collider collider : PhysicsContainer.getColliders()) {
+        for (Collider collider : PhysicsSystem.getColliders()) {
             if (collider.containsPoint(point) && collider.isEnabled()) {
                 return collider;
             }
@@ -42,7 +42,7 @@ public class RayCastUtils {
     }
 
     public static Vector3f eyeToWorldPoint(Vector4f eyeCoords) {
-        Matrix4f invertedView = new Matrix4f(Camera.getActive().getViewMatrix()).invert();
+        Matrix4f invertedView = new Matrix4f(Camera.getActive().createViewMatrix()).invert();
         Vector4f rayWorld = invertedView.transform(eyeCoords, new Vector4f());
         Vector3f rayPoint = new Vector3f(rayWorld.x, rayWorld.y, rayWorld.z);
         rayPoint.normalize();
