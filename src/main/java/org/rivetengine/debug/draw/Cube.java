@@ -5,23 +5,15 @@ import org.joml.Vector3f;
 import java.awt.*;
 
 public class Cube {
-    private final Vector3f position;
-    private final Vector3f size;
+    public final Vector3f position;
+    public final Vector3f size;
 
-    private Color colour = Color.WHITE;
-    private float width = 1.0f;
+    public Color colour = Color.WHITE;
+    public float width = 1.0f;
 
     public Cube(Vector3f position, Vector3f size) {
         this.position = position;
         this.size = size;
-    }
-
-    public Vector3f getPosition() {
-        return position;
-    }
-
-    public Vector3f getSize() {
-        return size;
     }
 
     public Cube setColour(Color colour) {
@@ -29,17 +21,9 @@ public class Cube {
         return this;
     }
 
-    public Color getColour() {
-        return colour;
-    }
-
     public Cube setWidth(float width) {
         this.width = width;
         return this;
-    }
-
-    public float getWidth() {
-        return width;
     }
 
     public void draw() {

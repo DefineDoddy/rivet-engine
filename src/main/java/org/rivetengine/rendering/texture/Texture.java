@@ -1,6 +1,6 @@
 package org.rivetengine.rendering.texture;
 
-import org.rivetengine.rendering.RenderSystem;
+import org.rivetengine.rendering.Rendering;
 import org.rivetengine.toolkit.memory.Disposable;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL14;
@@ -29,10 +29,10 @@ public class Texture implements Disposable {
     private void generateMipmaps() {
         bind();
 
-        if (RenderSystem.USE_MIPMAPPING) {
+        if (Rendering.USE_MIPMAPPING) {
             GL30.glGenerateMipmap(type.getGlType());
             GL11.glTexParameteri(type.getGlType(), GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR_MIPMAP_LINEAR);
-            GL11.glTexParameterf(type.getGlType(), GL14.GL_TEXTURE_LOD_BIAS, RenderSystem.LOD_BIAS);
+            GL11.glTexParameterf(type.getGlType(), GL14.GL_TEXTURE_LOD_BIAS, Rendering.LOD_BIAS);
         }
 
         unbind();

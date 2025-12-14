@@ -1,6 +1,8 @@
-package org.rivetengine.rendering.texture;
+package org.rivetengine.rendering.material;
 
 import java.awt.*;
+
+import org.rivetengine.rendering.texture.Texture;
 
 public class MaterialBuilder {
     private final Material ref = new Material();
@@ -10,7 +12,7 @@ public class MaterialBuilder {
     private Texture specular;
 
     private Color colour = Color.WHITE;
-    private float shininess = ref.getShininess();
+    private float shininess = ref.shininess;
 
     private boolean transparent;
 
@@ -50,12 +52,12 @@ public class MaterialBuilder {
 
     public Material build() {
         Material material = new Material();
-        material.setDiffuseMap(diffuse);
-        material.setNormalMap(normal);
-        material.setSpecularMap(specular);
-        material.setColour(colour);
-        material.setShininess(shininess);
-        material.setTransparent(transparent);
+        material.diffuseMap = diffuse;
+        material.normalMap = normal;
+        material.specularMap = specular;
+        material.colour = colour;
+        material.shininess = shininess;
+        material.transparent = transparent;
         return material;
     }
 }

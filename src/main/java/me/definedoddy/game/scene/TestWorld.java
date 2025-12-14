@@ -13,9 +13,9 @@ import org.rivetengine.entity.components.rendering.Skybox;
 import org.rivetengine.entity.components.rendering.lighting.DirectionalLight;
 import org.rivetengine.entity.components.rendering.lighting.PointLight;
 import org.rivetengine.entity.components.rendering.lighting.SpotLight;
+import org.rivetengine.rendering.Primitives;
 import org.rivetengine.rendering.cubemap.CubeMap;
 import org.rivetengine.rendering.mesh.Mesh;
-import org.rivetengine.rendering.primitives.Primitives;
 import org.rivetengine.toolkit.memory.Handle;
 
 import org.joml.Vector2f;

@@ -1,6 +1,6 @@
 package org.rivetengine.rendering.mesh.shader;
 
-import org.rivetengine.rendering.RenderSystem;
+import org.rivetengine.rendering.Rendering;
 import org.rivetengine.rendering.shader.Shader;
 import org.rivetengine.rendering.shader.uniform.UniformInt;
 import org.rivetengine.rendering.shader.uniform.UniformMatrix4f;
@@ -31,7 +31,7 @@ public class MeshShader extends Shader {
         MeshShader shader = new MeshShader(VERTEX_SHADER, FRAGMENT_SHADER);
 
         // Set shader variables
-        shader.setVariable("MAX_LIGHTS", String.valueOf(RenderSystem.MAX_LIGHTS));
+        shader.setVariable("MAX_LIGHTS", String.valueOf(Rendering.MAX_LIGHTS));
         shader.compile();
 
         shader.setUniforms(

@@ -5,8 +5,8 @@ import java.util.Map;
 
 import org.rivetengine.rendering.cubemap.CubeMap;
 import org.rivetengine.rendering.cubemap.CubeMapLoader;
+import org.rivetengine.rendering.material.Material;
 import org.rivetengine.rendering.mesh.Mesh;
-import org.rivetengine.rendering.texture.Material;
 import org.rivetengine.toolkit.memory.Handle;
 
 public class Assets {

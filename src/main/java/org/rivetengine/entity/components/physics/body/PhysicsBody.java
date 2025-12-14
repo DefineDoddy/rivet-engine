@@ -2,9 +2,9 @@ package org.rivetengine.entity.components.physics.body;
 
 import org.rivetengine.entity.component.Component;
 import org.rivetengine.entity.component.OptionallyRequires;
-import org.rivetengine.entity.components.physics.collision.BoxCollider;
+import org.rivetengine.entity.components.physics.collision.Collider;
 
-@OptionallyRequires(BoxCollider.class)
+@OptionallyRequires(Collider.class)
 public abstract class PhysicsBody implements Component {
     public float mass = 1;
     public float restitution = 1f;

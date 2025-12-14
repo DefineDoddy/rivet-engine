@@ -37,14 +37,29 @@ public class File {
         return getPath();
     }
 
-    public String getFileName() {
+    public String getName() {
         return path.getFileName().toString();
     }
 
-    public String getExtension() {
-        String fileName = getFileName();
+    public String getNameWithoutExtension() {
+        String fileName = getName();
         int index = fileName.lastIndexOf(".");
-        if (index < 0) return null;
+
+        if (index < 0) {
+            return fileName;
+        }
+
+        return fileName.substring(0, index);
+    }
+
+    public String getExtension() {
+        String fileName = getName();
+        int index = fileName.lastIndexOf(".");
+
+        if (index < 0) {
+            return null;
+        }
+
         return fileName.substring(index + 1);
     }
 

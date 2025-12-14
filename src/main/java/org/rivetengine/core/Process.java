@@ -2,7 +2,6 @@ package org.rivetengine.core;
 
 import org.rivetengine.debug.Debug;
 import org.rivetengine.input.Input;
-import org.rivetengine.physics.PhysicsSystem;
 import org.rivetengine.utils.errors.ErrorWindowPopup;
 
 public class Process {
@@ -20,6 +19,7 @@ public class Process {
         Input.mouse.init();
 
         game.init();
+        engine.init();
 
         Debug.log("Process started");
         Debug.log("Creating window...");
@@ -32,22 +32,18 @@ public class Process {
         while (game.window.canUpdate()) {
             try {
                 game.window.preUpdate();
-
-                // Input
                 Input.mouse.preUpdate();
 
-                // Logic
-                PhysicsSystem.update();
-                engine.update((float) Time.getDeltaTime());
+                float dt = (float) Time.getDeltaTime();
+                game.getSystems().forEach((system) -> system.update(game, dt));
 
-                // Input
                 Input.keyboard.update();
                 Input.mouse.postUpdate();
 
                 Time.update();
                 game.window.postUpdate();
+                game.update(dt);
 
-                game.update((float) Time.getDeltaTime());
                 long sleepTime = (long) (1000 / Time.getTargetFps());
                 Thread.sleep(sleepTime);
             } catch (Exception e) {
@@ -56,8 +52,6 @@ public class Process {
         }
 
         engine.dispose();
-        Debug.stop();
-
         Debug.log("Process stopped");
     }
 }

@@ -1,5 +1,6 @@
 package me.definedoddy.game.prefabs;
 
+import org.joml.Vector3f;
 import org.rivetengine.entity.Entity;
 import org.rivetengine.entity.Prefab;
 import org.rivetengine.entity.components.Name;
@@ -15,7 +16,7 @@ public class PlayerPrefab implements Prefab {
 
         player.addComponent(new Name("Player"));
         player.addComponent(new Rigidbody());
-        player.addComponent(new BoxCollider());
+        player.addComponent(new BoxCollider(new Vector3f(1f, 2f, 1f)));
 
         return player;
     }

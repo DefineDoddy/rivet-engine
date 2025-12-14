@@ -3,39 +3,55 @@ package org.rivetengine.physics.collision;
 import org.joml.Vector3f;
 
 public class AABBCollision {
-    public static boolean intersectBoundingBoxes(BoundingBox a, BoundingBox b) {
-        return a.getMin().x < b.getMax().x && a.getMax().x > b.getMin().x &&
-                a.getMin().y < b.getMax().y && a.getMax().y > b.getMin().y &&
-                a.getMin().z < b.getMax().z && a.getMax().z > b.getMin().z;
+
+    public static boolean isColliding(BoundingBox a, BoundingBox b) {
+        Vector3f aMin = a.getMin();
+        Vector3f aMax = a.getMax();
+        Vector3f bMin = b.getMin();
+        Vector3f bMax = b.getMax();
+
+        return aMin.x <= bMax.x && aMax.x >= bMin.x
+                && aMin.y <= bMax.y && aMax.y >= bMin.y
+                && aMin.z <= bMax.z && aMax.z >= bMin.z;
     }
 
     public static Vector3f getNormal(BoundingBox a, BoundingBox b) {
-        float dx = b.getCenter().x - a.getCenter().x;
-        float px = (b.getSize().x + a.getSize().x) - Math.abs(dx);
-        if (px <= 0) return new Vector3f();
+        Vector3f diff = new Vector3f(b.center).sub(a.center);
+        Vector3f overlap = getOverlap(a, b);
 
-        float dy = b.getCenter().y - a.getCenter().y;
-        float py = (b.getSize().y + a.getSize().y) - Math.abs(dy);
-        if (py <= 0) return new Vector3f();
+        if (overlap.x <= 0 || overlap.y <= 0 || overlap.z <= 0) {
+            return new Vector3f();
+        }
 
-        float dz = b.getCenter().z - a.getCenter().z;
-        float pz = (b.getSize().z + a.getSize().z) - Math.abs(dz);
-        if (pz <= 0) return new Vector3f();
-
-        if (px < py && px < pz) {
-            return new Vector3f(1, 0, 0);
-        } else if (py < pz) {
-            return new Vector3f(0, 1, 0);
+        // Find axis of minimum penetration
+        if (overlap.x <= overlap.y && overlap.x <= overlap.z) {
+            return new Vector3f(Math.signum(diff.x), 0, 0);
+        } else if (overlap.y <= overlap.x && overlap.y <= overlap.z) {
+            return new Vector3f(0, Math.signum(diff.y), 0);
         } else {
-            return new Vector3f(0, 0, 1);
+            return new Vector3f(0, 0, Math.signum(diff.z));
         }
     }
 
     public static float getDepth(BoundingBox a, BoundingBox b) {
-        float overlapX = Math.min(a.getMax().x, b.getMax().x) - Math.max(a.getMin().x, b.getMin().x);
-        float overlapY = Math.min(a.getMax().y, b.getMax().y) - Math.max(a.getMin().y, b.getMin().y);
-        if (overlapX <= 0 || overlapY <= 0) return 0f;
-        return Math.min(overlapX, overlapY);
+        Vector3f overlap = getOverlap(a, b);
+
+        if (overlap.x <= 0 || overlap.y <= 0 || overlap.z <= 0) {
+            return 0f;
+        }
+
+        return Math.min(overlap.x, Math.min(overlap.y, overlap.z));
     }
 
+    private static Vector3f getOverlap(BoundingBox a, BoundingBox b) {
+        Vector3f aMin = a.getMin();
+        Vector3f aMax = a.getMax();
+        Vector3f bMin = b.getMin();
+        Vector3f bMax = b.getMax();
+
+        return new Vector3f(
+                Math.min(aMax.x, bMax.x) - Math.max(aMin.x, bMin.x),
+                Math.min(aMax.y, bMax.y) - Math.max(aMin.y, bMin.y),
+                Math.min(aMax.z, bMax.z) - Math.max(aMin.z, bMin.z));
+    }
 }

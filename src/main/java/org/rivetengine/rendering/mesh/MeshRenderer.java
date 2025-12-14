@@ -4,8 +4,8 @@ import org.rivetengine.entity.Entity;
 import org.rivetengine.entity.components.rendering.Mesh3d;
 import org.rivetengine.core.Assets;
 import org.rivetengine.core.Game;
-import org.rivetengine.rendering.RenderSystem;
 import org.rivetengine.rendering.RenderUtils;
+import org.rivetengine.rendering.Rendering;
 import org.rivetengine.rendering.mesh.shader.MeshShader;
 import org.rivetengine.toolkit.memory.Disposable;
 import org.rivetengine.toolkit.memory.Handle;
@@ -72,7 +72,7 @@ public class MeshRenderer implements Disposable {
     }
 
     public void applyLighting(List<Entity> lightEntities) {
-        int maxLights = RenderSystem.MAX_LIGHTS;
+        int maxLights = Rendering.MAX_LIGHTS;
 
         if (lightEntities.size() > maxLights) {
             lightEntities = lightEntities.subList(0, maxLights);
@@ -91,9 +91,9 @@ public class MeshRenderer implements Disposable {
         GL11.glCullFace(GL11.GL_BACK);
     }
 
-    private void disableCulling() {
-        GL11.glDisable(GL11.GL_CULL_FACE);
-    }
+    // private void disableCulling() {
+    // GL11.glDisable(GL11.GL_CULL_FACE);
+    // }
 
     @Override
     public void dispose() {

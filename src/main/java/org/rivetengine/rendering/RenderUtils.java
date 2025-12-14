@@ -6,6 +6,7 @@ import org.rivetengine.core.Game;
 import org.rivetengine.entity.Entity;
 import org.rivetengine.entity.components.Transform;
 import org.rivetengine.entity.components.rendering.Camera;
+import org.rivetengine.system.SystemUtils;
 
 public class RenderUtils {
     public static Matrix4f[] createCameraMatrices(Game game) {
@@ -37,7 +38,7 @@ public class RenderUtils {
     }
 
     public static Matrix4f createViewMatrix(Entity cameraEntity) {
-        Transform transform = getTransformSafe(cameraEntity);
+        Transform transform = SystemUtils.getTransformSafe(cameraEntity);
 
         Matrix4f viewMatrix = new Matrix4f();
 
@@ -51,16 +52,6 @@ public class RenderUtils {
 
         viewMatrix.translate(negativeCameraPos);
         return viewMatrix;
-    }
-
-    public static Transform getTransformSafe(Entity entity) {
-        Transform transform = entity.getComponent(Transform.class);
-
-        if (transform != null) {
-            transform = new Transform();
-        }
-
-        return transform;
     }
 
     public static Matrix4f getWorldMatrixSafe(Entity entity) {
