@@ -9,6 +9,7 @@ import org.rivetengine.entity.components.Transform;
 import org.rivetengine.entity.components.rendering.Material;
 import org.rivetengine.entity.components.rendering.Mesh3d;
 import org.rivetengine.rendering.mesh.Mesh;
+import org.rivetengine.rendering.mesh.MeshBuilder;
 import org.rivetengine.toolkit.file.File;
 import org.rivetengine.toolkit.memory.Handle;
 

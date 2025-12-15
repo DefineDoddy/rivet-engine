@@ -9,11 +9,11 @@ import java.util.Objects;
 import static org.lwjgl.opengl.GL15.*;
 
 public class Vbo implements Disposable {
-    private final int id;
+    public final int id;
+    public final boolean isIndices;
 
     private int componentSize;
     private int length;
-    private final boolean isIndices;
 
     private FloatBuffer data;
     private IntBuffer indices;
@@ -37,26 +37,24 @@ public class Vbo implements Disposable {
     }
 
     public void bind() {
-        if (isIndices)
+        if (isIndices) {
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id);
-        else
+        } else {
             glBindBuffer(GL_ARRAY_BUFFER, id);
+        }
     }
 
     public void unbind() {
-        if (isIndices)
+        if (isIndices) {
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-        else
+        } else {
             glBindBuffer(GL_ARRAY_BUFFER, 0);
+        }
     }
 
     @Override
     public void dispose() {
         glDeleteBuffers(id);
-    }
-
-    public int getId() {
-        return id;
     }
 
     public int getComponentSize() {
@@ -65,10 +63,6 @@ public class Vbo implements Disposable {
 
     public int getLength() {
         return length;
-    }
-
-    public boolean isIndices() {
-        return isIndices;
     }
 
     public FloatBuffer getData() {
@@ -81,10 +75,12 @@ public class Vbo implements Disposable {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == this)
+        if (obj == this) {
             return true;
-        if (obj == null || obj.getClass() != this.getClass())
+        }
+        if (obj == null || obj.getClass() != this.getClass()) {
             return false;
+        }
 
         Vbo vbo = (Vbo) obj;
         return vbo.componentSize == componentSize &&

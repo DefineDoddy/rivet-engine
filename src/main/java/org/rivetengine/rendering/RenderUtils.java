@@ -1,12 +1,10 @@
 package org.rivetengine.rendering;
 
 import org.joml.Matrix4f;
-import org.joml.Vector3f;
 import org.rivetengine.core.Game;
 import org.rivetengine.entity.Entity;
 import org.rivetengine.entity.components.Transform;
 import org.rivetengine.entity.components.rendering.Camera;
-import org.rivetengine.system.SystemUtils;
 
 public class RenderUtils {
     public static Matrix4f[] createCameraMatrices(Game game) {
@@ -38,26 +36,14 @@ public class RenderUtils {
     }
 
     public static Matrix4f createViewMatrix(Entity cameraEntity) {
-        Transform transform = SystemUtils.getTransformSafe(cameraEntity);
-
-        Matrix4f viewMatrix = new Matrix4f();
-
-        viewMatrix.identity();
-        viewMatrix.rotateX((float) Math.toRadians(transform.rotation.x));
-        viewMatrix.rotateY((float) Math.toRadians(transform.rotation.y));
-        viewMatrix.rotateZ((float) Math.toRadians(transform.rotation.z));
-
-        Vector3f cameraPos = transform.position;
-        Vector3f negativeCameraPos = new Vector3f(-cameraPos.x, -cameraPos.y, -cameraPos.z);
-
-        viewMatrix.translate(negativeCameraPos);
-        return viewMatrix;
+        Matrix4f worldMatrix = getWorldMatrixSafe(cameraEntity);
+        return worldMatrix.invert(new Matrix4f());
     }
 
     public static Matrix4f getWorldMatrixSafe(Entity entity) {
         Transform transform = entity.getComponent(Transform.class);
 
-        if (transform != null) {
+        if (transform == null) {
             transform = new Transform();
         }
 

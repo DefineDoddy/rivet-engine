@@ -2,7 +2,7 @@ package org.rivetengine.rendering;
 
 import org.rivetengine.core.Assets;
 import org.rivetengine.rendering.mesh.Mesh;
-import org.rivetengine.rendering.mesh.obj.MeshBuilder;
+import org.rivetengine.rendering.mesh.MeshBuilder;
 import org.rivetengine.toolkit.memory.Handle;
 import org.joml.Vector2f;
 import org.joml.Vector3f;

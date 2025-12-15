@@ -11,7 +11,7 @@ import org.rivetengine.entity.component.ComponentResolver;
 import org.rivetengine.entity.components.Name;
 
 public class Entity {
-    private final UUID id;
+    public final UUID id;
 
     private final Map<Class<? extends Component>, Component> components = new HashMap<>();
     private final List<Entity> children = new ArrayList<>();
@@ -21,23 +21,19 @@ public class Entity {
         this.id = UUID.randomUUID();
     }
 
-    public UUID getId() {
-        return id;
-    }
-
     public <T extends Component> void addComponent(T component) {
-        addComponent(component, false);
+        addComponent(component, true);
     }
 
     public <T extends Component> void addComponent(T component, boolean resolveDependencies) {
-        components.put(component.getClass(), component);
-        component.onAttach(this);
-
         if (resolveDependencies) {
             ComponentResolver.resolveDependencies(this, component);
         } else {
             ComponentResolver.checkDependencies(this, component);
         }
+
+        components.put(component.getClass(), component);
+        component.onAttach(this);
     }
 
     public <T extends Component> void removeComponent(Class<T> componentClass) {
@@ -48,12 +44,23 @@ public class Entity {
         }
     }
 
+    @SuppressWarnings("unchecked")
     public <T extends Component> T getComponent(Class<T> componentClass) {
-        return componentClass.cast(components.get(componentClass));
+        for (Component component : components.values()) {
+            if (componentClass.isInstance(component)) {
+                return (T) component;
+            }
+        }
+        return null;
     }
 
     public boolean hasComponent(Class<? extends Component> componentClass) {
-        return components.containsKey(componentClass);
+        for (Component component : components.values()) {
+            if (componentClass.isInstance(component)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public List<Component> getComponents() {

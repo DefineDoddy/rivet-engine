@@ -10,7 +10,7 @@ import java.util.List;
 import static org.lwjgl.opengl.GL30.*;
 
 public class Vao implements Disposable {
-    private final int id;
+    public final int id;
     private final List<Vbo> vbos = new ArrayList<>();
 
     private int indicesCount = -1;
@@ -48,37 +48,44 @@ public class Vao implements Disposable {
     public void bind() {
         glBindVertexArray(id);
 
-        for (Vbo vbo : vbos)
-            if (vbo.isIndices())
+        for (Vbo vbo : vbos) {
+            if (vbo.isIndices) {
                 vbo.bind();
-        for (int i = 0; i <= maxIndex; i++)
+            }
+        }
+
+        for (int i = 0; i <= maxIndex; i++) {
             glEnableVertexAttribArray(i);
+        }
     }
 
     public void unbind() {
         glBindVertexArray(0);
 
-        for (Vbo vbo : vbos)
-            if (vbo.isIndices())
+        for (Vbo vbo : vbos) {
+            if (vbo.isIndices) {
                 vbo.unbind();
-        for (int i = 0; i <= maxIndex; i++)
+            }
+        }
+
+        for (int i = 0; i <= maxIndex; i++) {
             glDisableVertexAttribArray(i);
+        }
     }
 
     @Override
     public void dispose() {
         glDeleteVertexArrays(id);
-        for (Vbo vbo : vbos)
-            vbo.dispose();
-    }
 
-    public int getId() {
-        return id;
+        for (Vbo vbo : vbos) {
+            vbo.dispose();
+        }
     }
 
     public int getVertexCount() {
-        if (indicesCount != -1)
+        if (indicesCount != -1) {
             return indicesCount;
+        }
 
         Vbo vbo = vbos.getFirst();
         return vbo.getData().limit() / vbo.getComponentSize();
@@ -90,10 +97,12 @@ public class Vao implements Disposable {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (!(obj instanceof Vao vao))
+        }
+        if (!(obj instanceof Vao vao)) {
             return false;
+        }
         return vao.id == id;
     }
 }

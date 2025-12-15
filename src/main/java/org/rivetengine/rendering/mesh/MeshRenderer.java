@@ -1,12 +1,15 @@
 package org.rivetengine.rendering.mesh;
 
 import org.rivetengine.entity.Entity;
+import org.rivetengine.entity.components.rendering.Material;
 import org.rivetengine.entity.components.rendering.Mesh3d;
+import org.rivetengine.entity.components.rendering.lighting.Light;
 import org.rivetengine.core.Assets;
 import org.rivetengine.core.Game;
 import org.rivetengine.rendering.RenderUtils;
 import org.rivetengine.rendering.Rendering;
 import org.rivetengine.rendering.mesh.shader.MeshShader;
+import org.rivetengine.system.SystemUtils;
 import org.rivetengine.toolkit.memory.Disposable;
 import org.rivetengine.toolkit.memory.Handle;
 import org.joml.Matrix4f;
@@ -24,29 +27,40 @@ public class MeshRenderer implements Disposable {
         this.shader = shader;
     }
 
-    public void renderMeshes(Game game, List<Entity> meshEntities) {
+    public void render(Game game) {
         shader.bind();
+        applyLighting(game);
 
         Matrix4f[] cameraMatrices = RenderUtils.createCameraMatrices(game);
         shader.projectionMatrix.loadMatrix(cameraMatrices[0]);
         shader.viewMatrix.loadMatrix(cameraMatrices[1]);
 
+        List<Entity> meshEntities = SystemUtils.getEntitiesWithComponent(game, Mesh3d.class);
         Map<Handle<Mesh>, List<Entity>> batchedEntities = batchEntities(meshEntities);
 
         for (Map.Entry<Handle<Mesh>, List<Entity>> entry : batchedEntities.entrySet()) {
-            Mesh mesh = Assets.get(entry.getKey());
+            Handle<Mesh> handle = entry.getKey();
+            if (handle == null) {
+                continue;
+            }
+
+            Mesh mesh = Assets.get(handle);
+            if (mesh == null) {
+                continue;
+            }
+
             mesh.bind();
+
+            // Load global mesh material
+            shader.meshMaterial.loadMaterial(new Material());
 
             for (Entity entity : entry.getValue()) {
                 Matrix4f transformMatrix = RenderUtils.getWorldMatrixSafe(entity);
                 shader.transformMatrix.loadMatrix(transformMatrix);
 
-                // TODO: Load material properties via getComponent<Material>
-
-                // if (material.isTransparent()) {
-                // disableCulling();
-                // }
-
+                // Load model-specific material
+                Material mat = findMaterial(entity);
+                shader.modelMaterial.loadMaterial(mat);
                 mesh.render();
             }
 
@@ -64,6 +78,10 @@ public class MeshRenderer implements Disposable {
             Mesh3d meshComponent = entity.getComponent(Mesh3d.class);
             Handle<Mesh> handle = meshComponent.mesh;
 
+            if (handle == null) {
+                continue;
+            }
+
             batches.putIfAbsent(handle, new ArrayList<>());
             batches.get(handle).add(entity);
         }
@@ -71,7 +89,20 @@ public class MeshRenderer implements Disposable {
         return batches;
     }
 
-    public void applyLighting(List<Entity> lightEntities) {
+    private Material findMaterial(Entity entity) {
+        Entity current = entity;
+        while (current != null) {
+            Material mat = current.getComponent(Material.class);
+            if (mat != null) {
+                return mat;
+            }
+            current = current.getParent();
+        }
+        return new Material(); // default
+    }
+
+    public void applyLighting(Game game) {
+        List<Entity> lightEntities = SystemUtils.getEntitiesWithComponent(game, Light.class);
         int maxLights = Rendering.MAX_LIGHTS;
 
         if (lightEntities.size() > maxLights) {

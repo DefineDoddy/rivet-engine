@@ -12,18 +12,18 @@ import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
 
 public class Mouse {
     private double xPos, yPos, lastX, lastY;
+    private double deltaX, deltaY;
     private double scrollX, scrollY;
 
     private final boolean[] buttonPressed = new boolean[3];
     private final boolean[] lastButtonPressed = new boolean[3];
 
     private boolean isDragging;
-    private boolean isLocked;
 
     public void init() {
-        GLFW.glfwSetCursorPosCallback(GameWindow.get().getWindowId(), this::processMousePosition);
-        GLFW.glfwSetMouseButtonCallback(GameWindow.get().getWindowId(), this::processMouseButton);
-        GLFW.glfwSetScrollCallback(GameWindow.get().getWindowId(), this::processMouseScroll);
+        GLFW.glfwSetCursorPosCallback(GameWindow.get().getId(), this::processMousePosition);
+        GLFW.glfwSetMouseButtonCallback(GameWindow.get().getId(), this::processMouseButton);
+        GLFW.glfwSetScrollCallback(GameWindow.get().getId(), this::processMouseScroll);
     }
 
     public void preUpdate() {
@@ -33,18 +33,21 @@ public class Mouse {
     public void postUpdate() {
         xPos = lastX;
         yPos = lastY;
+        deltaX = 0;
+        deltaY = 0;
         scrollX = 0d;
         scrollY = 0d;
     }
 
     private void processMousePosition(long window, double xPos, double yPos) {
-        if (isLocked) {
-            xPos = GameWindow.get().getWidth() / 2f;
-            yPos = GameWindow.get().getHeight() / 2f;
-        }
+        deltaX = xPos - lastX;
+        deltaY = yPos - lastY;
 
         lastX = xPos;
         lastY = yPos;
+
+        this.xPos = xPos;
+        this.yPos = yPos;
         isDragging = buttonPressed[0] || buttonPressed[1] || buttonPressed[2];
     }
 
@@ -68,7 +71,7 @@ public class Mouse {
     }
 
     public Vector2f getDelta() {
-        return new Vector2f((float) (lastX - xPos), (float) (lastY - yPos));
+        return new Vector2f((float) deltaX, (float) deltaY);
     }
 
     public float getX() {
@@ -80,11 +83,11 @@ public class Mouse {
     }
 
     public float getDx() {
-        return (float) (lastX - xPos);
+        return (float) deltaX;
     }
 
     public float getDy() {
-        return (float) (lastY - yPos);
+        return (float) deltaY;
     }
 
     public float getScrollX() {
@@ -108,28 +111,25 @@ public class Mouse {
     }
 
     public void setCursorVisible(boolean visible) {
-        GLFW.glfwSetInputMode(GameWindow.get().getWindowId(), GLFW.GLFW_CURSOR,
-                visible ? GLFW.GLFW_CURSOR_NORMAL : GLFW.GLFW_CURSOR_DISABLED);
+        setCursorVisible(visible, false);
+    }
+
+    public void setCursorVisible(boolean visible, boolean locked) {
+        if (visible) {
+            GLFW.glfwSetInputMode(GameWindow.get().getId(), GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_NORMAL);
+        } else {
+            GLFW.glfwSetInputMode(GameWindow.get().getId(), GLFW.GLFW_CURSOR,
+                    locked ? GLFW.GLFW_CURSOR_DISABLED : GLFW.GLFW_CURSOR_HIDDEN);
+        }
     }
 
     public void setCursorPosition(float x, float y) {
-        GLFW.glfwSetCursorPos(GameWindow.get().getWindowId(), x, y);
+        GLFW.glfwSetCursorPos(GameWindow.get().getId(), x, y);
     }
 
     public void setCursorIcon(Icon icon, int originX, int originY) {
         long cursor = GLFW.glfwCreateCursor(icon.createGlfwImage(), originX, originY);
-        GLFW.glfwSetCursor(GameWindow.get().getWindowId(), cursor);
-    }
-
-    public void setCursorLocked(boolean locked) {
-        isLocked = locked;
-
-        if (isLocked) {
-            centerCursor();
-            setCursorVisible(false);
-        } else {
-            setCursorVisible(true);
-        }
+        GLFW.glfwSetCursor(GameWindow.get().getId(), cursor);
     }
 
     public void centerCursor() {

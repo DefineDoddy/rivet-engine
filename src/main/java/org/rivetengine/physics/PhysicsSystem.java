@@ -4,6 +4,7 @@ import org.rivetengine.core.Game;
 import org.rivetengine.entity.Entity;
 import org.rivetengine.entity.components.Transform;
 import org.rivetengine.entity.components.physics.body.PhysicsBody;
+import org.rivetengine.entity.components.physics.body.KinematicBody;
 import org.rivetengine.entity.components.physics.body.Rigidbody;
 import org.rivetengine.entity.components.physics.collision.Collider;
 import org.rivetengine.system.GameSystem;
@@ -23,8 +24,8 @@ public class PhysicsSystem extends GameSystem {
             return;
         }
 
-        List<Entity> collidables = getEntitiesWith(game, Collider.class);
-        List<Entity> bodies = getEntitiesWith(game, PhysicsBody.class);
+        List<Entity> collidables = SystemUtils.getEntitiesWithComponent(game, Collider.class);
+        List<Entity> bodies = SystemUtils.getEntitiesWithComponent(game, PhysicsBody.class);
 
         while (accumTime >= Physics.TIME_STEP) {
             integrate(bodies, Physics.TIME_STEP);
@@ -41,6 +42,9 @@ public class PhysicsSystem extends GameSystem {
                 rb.velocity.fma(dt, Physics.GRAVITY);
                 Transform transform = SystemUtils.getTransformSafe(entity);
                 transform.position.fma(dt, rb.velocity);
+            } else if (body instanceof KinematicBody kb) {
+                Transform transform = SystemUtils.getTransformSafe(entity);
+                transform.position.fma(dt, kb.velocity);
             }
         }
     }

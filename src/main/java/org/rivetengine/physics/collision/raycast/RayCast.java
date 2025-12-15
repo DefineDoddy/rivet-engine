@@ -2,18 +2,21 @@ package org.rivetengine.physics.collision.raycast;
 
 import org.rivetengine.physics.Physics;
 import org.rivetengine.entity.components.physics.collision.Collider;
+import org.rivetengine.core.Scene;
 import org.joml.Vector3f;
 
 public class RayCast {
+    private final Scene scene;
     private final Vector3f origin;
     private final Vector3f direction;
     private final float maxDistance;
 
-    public RayCast(Vector3f origin, Vector3f direction) {
-        this(origin, direction, 1000);
+    public RayCast(Scene scene, Vector3f origin, Vector3f direction) {
+        this(scene, origin, direction, 1000);
     }
 
-    public RayCast(Vector3f origin, Vector3f direction, float maxDistance) {
+    public RayCast(Scene scene, Vector3f origin, Vector3f direction, float maxDistance) {
+        this.scene = scene;
         this.origin = origin;
         this.direction = direction;
         this.maxDistance = maxDistance;
@@ -25,8 +28,9 @@ public class RayCast {
         for (float i = 0; i < maxDistance; i += Physics.RAYCAST_STEP) {
             point.add(direction);
 
-            Collider collider = RayCastUtils.getIntersectingCollider(point);
-            if (collider != null) return new RayCastHit(true, point, collider, i);
+            Collider collider = RayCastUtils.getIntersectingCollider(scene, point);
+            if (collider != null)
+                return new RayCastHit(true, point, collider, i);
         }
 
         return new RayCastHit(false, point, null, maxDistance);

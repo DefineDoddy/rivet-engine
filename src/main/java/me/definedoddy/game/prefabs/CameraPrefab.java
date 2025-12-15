@@ -16,7 +16,7 @@ public class CameraPrefab implements Prefab {
         Entity camera = new Entity();
 
         camera.addComponent(new Name("Main Camera"));
-        camera.addComponent(new Transform());
+        camera.addComponent(Transform.fromXYZ(0, 1.6f, 0));
         camera.addComponent(new Camera());
 
         Handle<CubeMap> sky = Assets.load("assets/skybox", CubeMap.class);

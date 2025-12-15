@@ -1,7 +1,7 @@
 package org.rivetengine.toolkit.file;
 
 public class ProjectFile extends File {
-    public static final String PROJECT_ROOT = "src/main/java/me/definedoddy/";
+    public static final String PROJECT_ROOT = "src/main/java/org/rivetengine/";
 
     public ProjectFile(String path) {
         super(PROJECT_ROOT + path);

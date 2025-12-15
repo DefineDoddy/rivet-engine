@@ -3,22 +3,22 @@ package org.rivetengine.entity.components.rendering;
 import java.awt.Color;
 
 import org.rivetengine.entity.component.Component;
+import org.rivetengine.rendering.texture.Texture;
+import org.rivetengine.toolkit.memory.Handle;
 
 public class Material implements Component {
     public Color diffuse;
     public Color specular;
     public float shininess;
-    public String diffuseMap;
-    public String normalMap;
-    public String specularMap;
+
+    public Handle<Texture> diffuseMap;
+    public Handle<Texture> normalMap;
+    public Handle<Texture> specularMap;
 
     public Material() {
         this.diffuse = Color.WHITE;
         this.specular = Color.WHITE;
-        this.shininess = 32f;
-        this.diffuseMap = null;
-        this.normalMap = null;
-        this.specularMap = null;
+        this.shininess = 16f;
     }
 
     public Material(Color diffuse) {
@@ -26,7 +26,7 @@ public class Material implements Component {
         this.diffuse = diffuse;
     }
 
-    public Material(String diffuseMap) {
+    public Material(Handle<Texture> diffuseMap) {
         this();
         this.diffuseMap = diffuseMap;
     }

@@ -1,7 +1,9 @@
 package org.rivetengine.rendering.shader.uniform.custom;
 
-import org.rivetengine.rendering.material.Material;
+import org.rivetengine.core.Assets;
+import org.rivetengine.entity.components.rendering.Material;
 import org.rivetengine.rendering.shader.uniform.Uniform;
+import org.rivetengine.rendering.texture.Texture;
 import org.lwjgl.opengl.GL20;
 
 public class UniformMaterial extends Uniform {
@@ -10,26 +12,27 @@ public class UniformMaterial extends Uniform {
     }
 
     public void loadMaterial(Material material) {
-        // Load textures
-        int diffuseId = material.diffuseMap != null ? material.diffuseMap.id : -1;
-        // GL20.glUniform1i(getLocationOf(programId, "diffuse"), diffuseId);
+        Texture diffuseTex = material.diffuseMap != null ? Assets.get(material.diffuseMap) : null;
+        Texture normalTex = material.normalMap != null ? Assets.get(material.normalMap) : null;
+        Texture specularTex = material.specularMap != null ? Assets.get(material.specularMap) : null;
+
+        int diffuseId = diffuseTex != null ? diffuseTex.id : -1;
         GL20.glUniform1i(getLocationOf(programId, "has_diffuse"), diffuseId != -1 ? 1 : 0);
 
-        int normalId = material.normalMap != null ? material.normalMap.id : -1;
-        // GL20.glUniform1i(getLocationOf(programId, "normal"), normalId);
+        int normalId = normalTex != null ? normalTex.id : -1;
         GL20.glUniform1i(getLocationOf(programId, "has_normal"), normalId != -1 ? 1 : 0);
 
-        int specularId = material.specularMap != null ? material.specularMap.id : -1;
-        // GL20.glUniform1i(getLocationOf(programId, "specular"), specularId);
+        int specularId = specularTex != null ? specularTex.id : -1;
         GL20.glUniform1i(getLocationOf(programId, "has_specular"), specularId != -1 ? 1 : 0);
 
         // Load properties
         GL20.glUniform3f(getLocationOf(programId, "tint_colour"),
-                material.colour.getRed() / 255f,
-                material.colour.getGreen() / 255f,
-                material.colour.getBlue() / 255f);
+                material.diffuse.getRed() / 255f,
+                material.diffuse.getGreen() / 255f,
+                material.diffuse.getBlue() / 255f);
 
-        GL20.glUniform1i(getLocationOf(programId, "transparent"), material.transparent ? 1 : 0);
+        // GL20.glUniform1i(getLocationOf(programId, "transparent"),
+        // material.transparent ? 1 : 0);
         GL20.glUniform1f(getLocationOf(programId, "shininess"), material.shininess);
     }
 

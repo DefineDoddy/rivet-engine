@@ -13,7 +13,7 @@ public class Keyboard {
     private final boolean[] lastKeysPressed = new boolean[350];
 
     public void init() {
-        GLFW.glfwSetKeyCallback(GameWindow.get().getWindowId(), this::keyCallback);
+        GLFW.glfwSetKeyCallback(GameWindow.get().getId(), this::keyCallback);
     }
 
     public void update() {

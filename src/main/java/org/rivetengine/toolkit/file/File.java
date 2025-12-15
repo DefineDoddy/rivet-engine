@@ -29,7 +29,10 @@ public class File {
     }
 
     public boolean exists() {
-        return path.toFile().exists();
+        if (path.toFile().exists()) {
+            return true;
+        }
+        return File.class.getClassLoader().getResource(path.toString().replace("\\", "/")) != null;
     }
 
     @Override
@@ -75,6 +78,10 @@ public class File {
         try {
             return new java.io.FileInputStream(this.getPath());
         } catch (Exception e) {
+            InputStream res = File.class.getClassLoader().getResourceAsStream(this.getPath());
+            if (res != null) {
+                return res;
+            }
             throw new RuntimeException("Error reading file: " + this.getPath(), e);
         }
     }

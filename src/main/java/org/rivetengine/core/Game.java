@@ -20,6 +20,19 @@ public abstract class Game {
     public void update(float dt) {
     }
 
+    void loadDefaultScene() {
+        if (activeScene == null) {
+            activeScene = new Scene();
+            activeScene.load();
+
+            for (GameSystem system : systems) {
+                system.onSceneLoaded(activeScene);
+            }
+
+            Debug.logInfo("Loaded default scene");
+        }
+    }
+
     public Scene getActiveScene() {
         return activeScene;
     }
@@ -29,7 +42,7 @@ public abstract class Game {
             activeScene.unload();
 
             for (GameSystem system : systems) {
-                system.onSceneUnload(activeScene);
+                system.onSceneUnloaded(activeScene);
             }
         }
 
@@ -42,10 +55,10 @@ public abstract class Game {
         activeScene.load();
 
         for (GameSystem system : systems) {
-            system.onSceneLoad(activeScene);
+            system.onSceneLoaded(activeScene);
         }
 
-        Debug.log("Loaded scene: " + scene.getSimpleName());
+        Debug.logInfo("Loaded scene: " + scene.getSimpleName());
         return scene.cast(activeScene);
     }
 

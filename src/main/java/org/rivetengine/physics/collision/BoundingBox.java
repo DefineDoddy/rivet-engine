@@ -24,4 +24,13 @@ public class BoundingBox {
         Vector3f halfExtents = new Vector3f(max).sub(min).mul(0.5f);
         return new BoundingBox(center, halfExtents);
     }
+
+    public boolean containsPoint(Vector3f point) {
+        Vector3f min = getMin();
+        Vector3f max = getMax();
+
+        return point.x >= min.x && point.x <= max.x
+                && point.y >= min.y && point.y <= max.y
+                && point.z >= min.z && point.z <= max.z;
+    }
 }

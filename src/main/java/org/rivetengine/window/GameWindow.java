@@ -36,7 +36,7 @@ public class GameWindow implements Disposable {
     private boolean alwaysOnTop = false;
     private Handle<Icon> iconHandle;
 
-    private Color backgroundColor = Color.BLACK;
+    private Color backgroundColor = Color.WHITE;
 
     public GameWindow(String title, int width, int height) {
         this.title = title;
@@ -268,7 +268,7 @@ public class GameWindow implements Disposable {
         return height;
     }
 
-    public long getWindowId() {
+    public long getId() {
         return windowId;
     }
 

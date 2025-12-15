@@ -2,11 +2,14 @@ package org.rivetengine.rendering.skybox;
 
 import org.rivetengine.core.Assets;
 import org.rivetengine.core.Game;
+import org.rivetengine.entity.Entity;
 import org.rivetengine.entity.components.rendering.Skybox;
+import org.rivetengine.rendering.cubemap.CubeMap;
 import org.rivetengine.rendering.RenderUtils;
 import org.rivetengine.rendering.skybox.shader.SkyboxShader;
-import org.rivetengine.toolkit.memory.Disposable;
 import org.joml.Matrix4f;
+import org.lwjgl.opengl.GL30;
+import org.rivetengine.toolkit.memory.Disposable;
 
 public class SkyboxRenderer implements Disposable {
     private final SkyboxShader shader;
@@ -15,8 +18,19 @@ public class SkyboxRenderer implements Disposable {
         this.shader = shader;
     }
 
-    public void render(Game game, Skybox skybox) {
-        if (skybox == null) {
+    public void render(Game game) {
+        Entity cameraEntity = RenderUtils.getActiveCameraEntity(game);
+        if (cameraEntity == null) {
+            return;
+        }
+
+        Skybox skybox = cameraEntity.getComponent(Skybox.class);
+        if (skybox == null || skybox.cubeMap == null) {
+            return;
+        }
+
+        CubeMap cubeMap = Assets.get(skybox.cubeMap);
+        if (cubeMap == null) {
             return;
         }
 
@@ -27,7 +41,10 @@ public class SkyboxRenderer implements Disposable {
         shader.viewMatrix.loadMatrix(modifyViewMatrix(cameraMatrices[1]));
         shader.rotation.loadFloat(skybox.rotation);
 
-        Assets.get(skybox.cubeMap).render();
+        GL30.glDepthFunc(GL30.GL_LEQUAL);
+        cubeMap.render();
+        GL30.glDepthFunc(GL30.GL_LESS);
+
         shader.unbind();
     }
 

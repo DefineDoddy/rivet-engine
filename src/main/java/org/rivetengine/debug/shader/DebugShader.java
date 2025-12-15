@@ -5,7 +5,7 @@ import org.rivetengine.rendering.shader.uniform.UniformMatrix4f;
 import org.rivetengine.toolkit.file.ProjectFile;
 
 public class DebugShader extends Shader {
-    private static final ProjectFile FOLDER = new ProjectFile("engine/debug/shader");
+    private static final ProjectFile FOLDER = new ProjectFile("debug/shader");
     private static final ProjectFile VERTEX_SHADER = new ProjectFile(FOLDER, "debug_vertex.glsl");
     private static final ProjectFile FRAGMENT_SHADER = new ProjectFile(FOLDER, "debug_fragment.glsl");
 

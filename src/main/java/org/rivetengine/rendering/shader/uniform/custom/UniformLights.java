@@ -1,5 +1,7 @@
 package org.rivetengine.rendering.shader.uniform.custom;
 
+import org.joml.Matrix4f;
+import org.joml.Vector3f;
 import org.rivetengine.entity.Entity;
 import org.rivetengine.entity.components.Transform;
 import org.rivetengine.entity.components.rendering.lighting.DirectionalLight;
@@ -44,10 +46,18 @@ public class UniformLights extends Uniform {
         if (lightEntity.hasComponent(DirectionalLight.class)) {
             Transform transform = getTransformSafe(lightEntity);
 
+            // Calculate direction the light is shining towards
+            Matrix4f rotMatrix = new Matrix4f().rotateXYZ(
+                    (float) Math.toRadians(transform.rotation.x),
+                    (float) Math.toRadians(transform.rotation.y),
+                    (float) Math.toRadians(transform.rotation.z));
+            Vector3f forward = new Vector3f(0, 0, -1);
+            Vector3f lightDirection = forward.mulDirection(rotMatrix);
+
             GL20.glUniform3f(getLocationOf(programId, index, "direction"),
-                    transform.rotation.x,
-                    transform.rotation.y,
-                    transform.rotation.z);
+                    lightDirection.x,
+                    lightDirection.y,
+                    lightDirection.z);
         } else if (lightEntity.hasComponent(PointLight.class)) {
             PointLight pointLight = lightEntity.getComponent(PointLight.class);
             Transform transform = getTransformSafe(lightEntity);
@@ -74,10 +84,18 @@ public class UniformLights extends Uniform {
                     transform.position.y,
                     transform.position.z);
 
+            // Calculate direction the spot is pointing
+            Matrix4f rotMatrix = new Matrix4f().rotateXYZ(
+                    (float) Math.toRadians(transform.rotation.x),
+                    (float) Math.toRadians(transform.rotation.y),
+                    (float) Math.toRadians(transform.rotation.z));
+            Vector3f forward = new Vector3f(0, 0, -1);
+            Vector3f spotDirection = forward.mulDirection(rotMatrix);
+
             GL20.glUniform3f(getLocationOf(programId, index, "direction"),
-                    transform.rotation.x,
-                    transform.rotation.y,
-                    transform.rotation.z);
+                    spotDirection.x,
+                    spotDirection.y,
+                    spotDirection.z);
 
             float constant = 1f;
             float linear = 0.09f;

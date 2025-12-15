@@ -1,6 +1,10 @@
 package org.rivetengine.rendering.mesh.obj;
 
+import org.rivetengine.core.Assets;
 import org.rivetengine.entity.components.rendering.Material;
+import org.rivetengine.rendering.texture.Texture;
+import org.rivetengine.rendering.texture.TextureLoader;
+import org.rivetengine.rendering.texture.TextureType;
 import org.rivetengine.toolkit.file.File;
 
 import java.awt.Color;
@@ -23,8 +27,9 @@ public class MtlImporter {
                     continue;
 
                 if (line.startsWith("newmtl ")) {
-                    if (currentName != null)
+                    if (currentName != null) {
                         materials.put(currentName, currentMat);
+                    }
 
                     currentName = line.substring(7).trim();
                     currentMat = new Material();
@@ -36,13 +41,17 @@ public class MtlImporter {
                     } else if (line.startsWith("Ns ")) {
                         currentMat.shininess = Float.parseFloat(line.split("\\s+")[1]);
                     } else if (line.startsWith("map_Kd ")) {
-                        currentMat.diffuseMap = line.substring(7).trim();
+                        Texture texture = TextureLoader.loadTexture2D(
+                                new File(line.substring(7).trim()),
+                                TextureType.DIFFUSE);
+                        currentMat.diffuseMap = Assets.register(line.substring(7).trim(), texture);
                     }
                 }
             }
 
-            if (currentName != null)
+            if (currentName != null) {
                 materials.put(currentName, currentMat);
+            }
 
             reader.close();
         } catch (Exception e) {

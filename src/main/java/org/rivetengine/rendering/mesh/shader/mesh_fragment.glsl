@@ -142,7 +142,12 @@ vec3 calc_spot_light(Light light, vec3 normal, vec3 view_dir) {
 }
 
 vec3 calc_specular(Light light, vec3 normal, vec3 view_dir) {
-    vec3 light_dir = normalize(light.position - frag_position);
+    vec3 light_dir;
+    if (light.type == 0) {
+        light_dir = normalize(-light.direction);
+    } else {
+        light_dir = normalize(light.position - frag_position);
+    }
     vec3 unit_reflection = reflect(-light_dir, normal);
     float specular_factor = max(dot(unit_reflection, view_dir), 0.0);
     return pow(specular_factor, SHINE_DAMPER) * light.colour * mesh_material.shininess * model_material.shininess;

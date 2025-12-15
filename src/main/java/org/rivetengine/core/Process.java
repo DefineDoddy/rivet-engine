@@ -14,20 +14,22 @@ public class Process {
     }
 
     public void start() {
+        Debug.logInfo("Starting process...");
         Time.init();
+
+        Debug.logDebug("Creating window...");
+        game.window.create();
+        game.window.setVisible(true);
+        Debug.logDebug("Window created");
+
         Input.keyboard.init();
         Input.mouse.init();
 
         game.init();
         engine.init();
 
-        Debug.log("Process started");
-        Debug.log("Creating window...");
-
-        game.window.create();
-        game.window.setVisible(true);
-
-        Debug.log("Window created");
+        game.loadDefaultScene();
+        Debug.logInfo("Process started");
 
         while (game.window.canUpdate()) {
             try {
@@ -52,6 +54,6 @@ public class Process {
         }
 
         engine.dispose();
-        Debug.log("Process stopped");
+        Debug.logInfo("Process stopped");
     }
 }

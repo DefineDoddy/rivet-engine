@@ -9,7 +9,8 @@ import org.rivetengine.input.KeyCode;
 import org.rivetengine.rendering.sprite.Icon;
 import org.rivetengine.window.GameWindow;
 
-import me.definedoddy.game.prefabs.PlayerPrefab;
+import me.definedoddy.game.scene.TestWorld;
+import me.definedoddy.game.system.PlayerInputSystem;
 
 public class TestGame extends Game {
     public static void main(String[] args) {
@@ -23,7 +24,10 @@ public class TestGame extends Game {
 
     @Override
     public void init() {
-        getActiveScene().spawn(new PlayerPrefab().create());
+        Input.mouse.setCursorVisible(false, true);
+
+        addSystem(new PlayerInputSystem());
+        loadScene(TestWorld.class);
     }
 
     @Override
@@ -37,8 +41,8 @@ public class TestGame extends Game {
         }
 
         if (Input.keyboard.wasKeyPressed(KeyCode.F1)) {
-            Debug.log("FPS: " + Time.getFps());
-            Debug.log("Entities: " + getActiveScene().getAllEntities().size());
+            Debug.logInfo("FPS: " + Time.getFps());
+            Debug.logInfo("Entities: " + getActiveScene().getAllEntities().size());
         }
     }
 }

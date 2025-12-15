@@ -1,8 +1,7 @@
-package org.rivetengine.rendering.mesh.obj;
+package org.rivetengine.rendering.mesh;
 
 import org.joml.Vector2f;
 import org.joml.Vector3f;
-import org.rivetengine.rendering.mesh.Mesh;
 
 import java.util.ArrayList;
 import java.util.List;

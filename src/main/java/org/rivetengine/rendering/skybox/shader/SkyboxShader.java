@@ -6,7 +6,7 @@ import org.rivetengine.rendering.shader.uniform.UniformMatrix4f;
 import org.rivetengine.toolkit.file.ProjectFile;
 
 public class SkyboxShader extends Shader {
-    private static final ProjectFile FOLDER = new ProjectFile("engine/rendering/skybox/shader");
+    private static final ProjectFile FOLDER = new ProjectFile("rendering/skybox/shader");
     private static final ProjectFile VERTEX_SHADER = new ProjectFile(FOLDER, "skybox_vertex.glsl");
     private static final ProjectFile FRAGMENT_SHADER = new ProjectFile(FOLDER, "skybox_fragment.glsl");
 

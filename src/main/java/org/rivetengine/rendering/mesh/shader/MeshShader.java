@@ -9,7 +9,7 @@ import org.rivetengine.rendering.shader.uniform.custom.UniformMaterial;
 import org.rivetengine.toolkit.file.ProjectFile;
 
 public class MeshShader extends Shader {
-    private static final ProjectFile FOLDER = new ProjectFile("engine/rendering/mesh/shader");
+    private static final ProjectFile FOLDER = new ProjectFile("rendering/mesh/shader");
     private static final ProjectFile VERTEX_SHADER = new ProjectFile(FOLDER, "mesh_vertex.glsl");
     private static final ProjectFile FRAGMENT_SHADER = new ProjectFile(FOLDER, "mesh_fragment.glsl");
 
@@ -19,6 +19,7 @@ public class MeshShader extends Shader {
     public final UniformMatrix4f viewMatrix = new UniformMatrix4f("view_matrix");
 
     public final UniformMaterial meshMaterial = new UniformMaterial("mesh_material");
+    public final UniformMaterial modelMaterial = new UniformMaterial("model_material");
 
     public final UniformLights lights = new UniformLights("lights");
     public final UniformInt lightCount = new UniformInt("light_count");
@@ -36,7 +37,7 @@ public class MeshShader extends Shader {
 
         shader.setUniforms(
                 shader.transformMatrix, shader.projectionMatrix, shader.viewMatrix,
-                shader.meshMaterial, shader.lights, shader.lightCount);
+                shader.meshMaterial, shader.modelMaterial, shader.lights, shader.lightCount);
 
         shader.validate();
         return shader;

@@ -5,8 +5,8 @@ import java.util.Map;
 
 import org.rivetengine.rendering.cubemap.CubeMap;
 import org.rivetengine.rendering.cubemap.CubeMapLoader;
-import org.rivetengine.rendering.material.Material;
-import org.rivetengine.rendering.mesh.Mesh;
+import org.rivetengine.toolkit.file.File;
+import org.rivetengine.rendering.sprite.Icon;
 import org.rivetengine.toolkit.memory.Handle;
 
 public class Assets {
@@ -14,9 +14,14 @@ public class Assets {
 
     public static <T> Handle<T> load(String path, Class<T> type) {
         if (!storage.containsKey(path)) {
-            T asset = loadFromDisk(path, type);
-            storage.put(path, asset);
+            if (new File(path).exists()) {
+                T asset = loadFromDisk(path, type);
+                storage.put(path, asset);
+                return new Handle<>(path);
+            }
+            return null;
         }
+
         return new Handle<>(path);
     }
 
@@ -27,14 +32,11 @@ public class Assets {
 
     @SuppressWarnings("unchecked")
     private static <T> T loadFromDisk(String path, Class<T> type) {
-        if (type == Mesh.class) {
-            // return (T) MeshLoader.load(path);
-        }
-        if (type == Material.class) {
-            // return (T) MaterialLoader.load(path);
-        }
         if (type == CubeMap.class) {
             return (T) CubeMapLoader.load(path);
+        }
+        if (type == Icon.class) {
+            return (T) Icon.fromFile(new File(path));
         }
 
         throw new IllegalArgumentException("Unknown asset type: " + type);

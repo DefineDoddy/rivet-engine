@@ -6,6 +6,7 @@ import org.joml.Vector3f;
 
 import org.rivetengine.entity.Entity;
 import org.rivetengine.entity.component.Component;
+import org.rivetengine.toolkit.maths.Directions;
 
 public class Transform implements Component {
     public Vector3f position;
@@ -30,6 +31,10 @@ public class Transform implements Component {
         return new Transform(new Vector3f(), new Vector3f(), new Vector3f(1, 1, 1));
     }
 
+    public Transform lookingAt(float x, float y, float z) {
+        return lookingAt(new Vector3f(x, y, z), Directions.UP);
+    }
+
     public Transform lookingAt(Vector3f target, Vector3f up) {
         Matrix4f lookAt = new Matrix4f().lookAt(position, target, up);
         Matrix4f rotationMatrix = new Matrix4f();
@@ -41,7 +46,8 @@ public class Transform implements Component {
     public Matrix4f getLocalMatrix() {
         Matrix4f matrix = new Matrix4f().identity();
         matrix.translate(position);
-        matrix.rotateXYZ(rotation.x, rotation.y, rotation.z);
+        matrix.rotateXYZ((float) Math.toRadians(rotation.x), (float) Math.toRadians(rotation.y),
+                (float) Math.toRadians(rotation.z));
         matrix.scale(scale);
         return matrix;
     }

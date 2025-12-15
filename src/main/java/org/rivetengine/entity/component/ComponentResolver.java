@@ -11,7 +11,7 @@ public class ComponentResolver {
                 if (!entity.hasComponent(requiredClass)) {
                     throw new IllegalStateException("Component " + component.getClass().getSimpleName() +
                             " requires component " + requiredClass.getSimpleName() + " to be present on Entity "
-                            + entity.getId());
+                            + entity.id);
                 }
             }
         }
@@ -41,7 +41,7 @@ public class ComponentResolver {
                         Component optionalComponent = optionalClass.getDeclaredConstructor().newInstance();
                         entity.addComponent(optionalComponent, true);
                     } catch (Exception e) {
-                        Debug.logWarning("Failed to instantiate optional component: " + optionalClass.getSimpleName());
+                        Debug.logWarn("Failed to instantiate optional component: " + optionalClass.getSimpleName());
                     }
                 }
             }
