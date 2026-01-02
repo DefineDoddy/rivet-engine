@@ -36,10 +36,17 @@ public class Transform implements Component {
     }
 
     public Transform lookingAt(Vector3f target, Vector3f up) {
+        Vector3f dir = new Vector3f(target).sub(position).normalize();
+        if (Math.abs(dir.dot(up)) > 0.999f) {
+            up = Directions.FORWARD;
+        }
+
         Matrix4f lookAt = new Matrix4f().lookAt(position, target, up);
         Matrix4f rotationMatrix = new Matrix4f();
         lookAt.invert(rotationMatrix);
         rotationMatrix.getUnnormalizedRotation(new Quaternionf()).getEulerAnglesXYZ(rotation);
+        rotation.set((float) Math.toDegrees(rotation.x), (float) Math.toDegrees(rotation.y),
+                (float) Math.toDegrees(rotation.z));
         return this;
     }
 

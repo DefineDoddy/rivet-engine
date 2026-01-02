@@ -42,17 +42,14 @@ public class UniformLights extends Uniform {
 
         GL20.glUniform1f(getLocationOf(programId, index, "intensity"), lightComponent.intensity);
 
+        Transform transform = getTransformSafe(lightEntity);
+        Matrix4f worldMatrix = transform.getWorldMatrix(lightEntity);
+
         // Store position
         if (lightEntity.hasComponent(DirectionalLight.class)) {
-            Transform transform = getTransformSafe(lightEntity);
-
             // Calculate direction the light is shining towards
-            Matrix4f rotMatrix = new Matrix4f().rotateXYZ(
-                    (float) Math.toRadians(transform.rotation.x),
-                    (float) Math.toRadians(transform.rotation.y),
-                    (float) Math.toRadians(transform.rotation.z));
-            Vector3f forward = new Vector3f(0, 0, -1);
-            Vector3f lightDirection = forward.mulDirection(rotMatrix);
+            Vector3f lightDirection = new Vector3f(0, 0, -1);
+            worldMatrix.transformDirection(lightDirection);
 
             GL20.glUniform3f(getLocationOf(programId, index, "direction"),
                     lightDirection.x,
@@ -60,12 +57,13 @@ public class UniformLights extends Uniform {
                     lightDirection.z);
         } else if (lightEntity.hasComponent(PointLight.class)) {
             PointLight pointLight = lightEntity.getComponent(PointLight.class);
-            Transform transform = getTransformSafe(lightEntity);
+            Vector3f worldPos = new Vector3f();
+            worldMatrix.getTranslation(worldPos);
 
             GL20.glUniform3f(getLocationOf(programId, index, "position"),
-                    transform.position.x,
-                    transform.position.y,
-                    transform.position.z);
+                    worldPos.x,
+                    worldPos.y,
+                    worldPos.z);
 
             float radius = pointLight.radius;
             float constant = 1f;
@@ -77,20 +75,17 @@ public class UniformLights extends Uniform {
             GL20.glUniform1f(getLocationOf(programId, index, "quadratic"), quadratic);
         } else if (lightEntity.hasComponent(SpotLight.class)) {
             SpotLight spotLight = lightEntity.getComponent(SpotLight.class);
-            Transform transform = getTransformSafe(lightEntity);
+            Vector3f worldPos = new Vector3f();
+            worldMatrix.getTranslation(worldPos);
 
             GL20.glUniform3f(getLocationOf(programId, index, "position"),
-                    transform.position.x,
-                    transform.position.y,
-                    transform.position.z);
+                    worldPos.x,
+                    worldPos.y,
+                    worldPos.z);
 
             // Calculate direction the spot is pointing
-            Matrix4f rotMatrix = new Matrix4f().rotateXYZ(
-                    (float) Math.toRadians(transform.rotation.x),
-                    (float) Math.toRadians(transform.rotation.y),
-                    (float) Math.toRadians(transform.rotation.z));
-            Vector3f forward = new Vector3f(0, 0, -1);
-            Vector3f spotDirection = forward.mulDirection(rotMatrix);
+            Vector3f spotDirection = new Vector3f(0, 0, -1);
+            worldMatrix.transformDirection(spotDirection);
 
             GL20.glUniform3f(getLocationOf(programId, index, "direction"),
                     spotDirection.x,

@@ -16,6 +16,6 @@ void main() {
         0.0, 0.0, 0.0, 1.0
     );
 
-    gl_Position = projection_matrix * rotated_view_matrix * vec4(tex_coords, 1.0);
+    gl_Position = (projection_matrix * rotated_view_matrix * vec4(tex_coords, 1.0)).xyww;
     pass_tex_coords = tex_coords;
 }

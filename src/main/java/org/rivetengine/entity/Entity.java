@@ -8,7 +8,6 @@ import java.util.UUID;
 
 import org.rivetengine.entity.component.Component;
 import org.rivetengine.entity.component.ComponentResolver;
-import org.rivetengine.entity.components.Name;
 
 public class Entity {
     public final UUID id;
@@ -16,9 +15,15 @@ public class Entity {
     private final Map<Class<? extends Component>, Component> components = new HashMap<>();
     private final List<Entity> children = new ArrayList<>();
     private Entity parent = null;
+    public final String name;
 
     public Entity() {
+        this(null);
+    }
+
+    public Entity(String name) {
         this.id = UUID.randomUUID();
+        this.name = name;
     }
 
     public <T extends Component> void addComponent(T component) {
@@ -89,29 +94,22 @@ public class Entity {
         return children;
     }
 
-    public Entity findChild(String name) {
-        for (Entity child : children) {
-            Name n = child.getComponent(Name.class);
-
-            if (n != null && n.getName().equals(name)) {
-                return child;
-            }
-        }
-        return null;
+    public Entity getChild(String name) {
+        return getChild(name, true);
     }
 
-    public Entity findChildRecursive(String name) {
-        Entity found = findChild(name);
-
-        if (found != null) {
-            return found;
-        }
-
+    public Entity getChild(String name, boolean recursive) {
         for (Entity child : children) {
-            found = child.findChildRecursive(name);
+            if (name != null && name.equals(child.name)) {
+                return child;
+            }
 
-            if (found != null) {
-                return found;
+            if (recursive) {
+                Entity found = child.getChild(name, true);
+
+                if (found != null) {
+                    return found;
+                }
             }
         }
 

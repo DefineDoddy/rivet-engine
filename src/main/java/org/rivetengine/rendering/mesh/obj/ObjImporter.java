@@ -4,7 +4,6 @@ import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.rivetengine.core.Assets;
 import org.rivetengine.entity.Entity;
-import org.rivetengine.entity.components.Name;
 import org.rivetengine.entity.components.Transform;
 import org.rivetengine.entity.components.rendering.Material;
 import org.rivetengine.entity.components.rendering.Mesh3d;
@@ -48,8 +47,7 @@ public class ObjImporter {
     private Entity parse() {
         String name = file.getNameWithoutExtension();
 
-        root = new Entity();
-        root.addComponent(new Name(name));
+        root = new Entity(name);
         root.addComponent(new Transform());
 
         loadMaterials();
@@ -115,8 +113,7 @@ public class ObjImporter {
     }
 
     private void startMesh(String name) {
-        currentEntity = new Entity();
-        currentEntity.addComponent(new Name(name));
+        currentEntity = new Entity(name);
         currentEntity.addComponent(new Transform());
 
         currentMesh = new MeshBuilder();

@@ -14,6 +14,10 @@ public class Process {
     }
 
     public void start() {
+        if (game.window == null) {
+            throw new IllegalStateException("Game window is not initialised.");
+        }
+
         Debug.logInfo("Starting process...");
         Time.init();
 

@@ -1,7 +1,6 @@
 package org.rivetengine.core;
 
 import org.rivetengine.entity.Entity;
-import org.rivetengine.entity.components.Name;
 
 import java.util.*;
 
@@ -20,10 +19,6 @@ public class Scene {
 
     public void remove(Entity entity) {
         rootEntities.remove(entity.id);
-    }
-
-    public Entity getEntity(UUID id) {
-        return rootEntities.get(id);
     }
 
     public List<Entity> getRootEntities() {
@@ -46,32 +41,26 @@ public class Scene {
         }
     }
 
-    public Entity findEntity(String name) {
-        for (Entity child : rootEntities.values()) {
-            Name n = child.getComponent(Name.class);
-
-            if (n != null && n.getName().equals(name)) {
-                return child;
-            }
-        }
-        return null;
+    public Entity getEntity(UUID id) {
+        return rootEntities.get(id);
     }
 
-    public Entity findEntityRecursive(String name) {
-        Entity found = findEntity(name);
+    public Entity getEntity(String name) {
+        return getEntity(name, true);
+    }
 
-        if (found != null) {
-            return found;
-        }
-
-        for (Entity child : rootEntities.values()) {
-            found = child.findChildRecursive(name);
-
-            if (found != null) {
-                return found;
+    public Entity getEntity(String name, boolean recursive) {
+        for (Entity root : rootEntities.values()) {
+            if (name != null && name.equals(root.name)) {
+                return root;
+            }
+            if (recursive) {
+                Entity found = root.getChild(name, true);
+                if (found != null) {
+                    return found;
+                }
             }
         }
-
         return null;
     }
 }

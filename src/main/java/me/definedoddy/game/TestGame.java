@@ -11,12 +11,13 @@ import org.rivetengine.window.GameWindow;
 
 import me.definedoddy.game.scene.TestWorld;
 import me.definedoddy.game.system.PlayerInputSystem;
+import me.definedoddy.game.system.SkyRotatorSystem;
 
 public class TestGame extends Game {
     public static void main(String[] args) {
         TestGame game = new TestGame();
 
-        game.window = new GameWindow("Test Game", 1280, 720);
+        game.window = new GameWindow("Test Game", 1920, 1080);
         game.window.setIcon(Assets.load("assets/icon.png", Icon.class));
 
         game.process.start();
@@ -27,6 +28,8 @@ public class TestGame extends Game {
         Input.mouse.setCursorVisible(false, true);
 
         addSystem(new PlayerInputSystem());
+        addSystem(new SkyRotatorSystem());
+
         loadScene(TestWorld.class);
     }
 

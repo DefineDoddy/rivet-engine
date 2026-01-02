@@ -13,7 +13,6 @@ import org.rivetengine.entity.components.rendering.lighting.PointLight;
 import org.rivetengine.entity.components.rendering.lighting.SpotLight;
 import org.rivetengine.rendering.Primitives;
 import org.rivetengine.rendering.mesh.Mesh;
-import org.rivetengine.toolkit.maths.Directions;
 import org.rivetengine.toolkit.memory.Handle;
 
 import me.definedoddy.game.prefabs.PlayerPrefab;
@@ -33,7 +32,7 @@ public class TestWorld extends Scene {
 
         groundEntity.addComponent(new Transform(new Vector3f(0, -0.5f, 0), new Vector3f(), new Vector3f(1f)));
         groundEntity.addComponent(new Tags("ground"));
-        groundEntity.addComponent(new BoxCollider(new Vector3f(100f, 1f, 100f)));
+        groundEntity.addComponent(new BoxCollider(new Vector3f(50f, 1f, 50f)));
         groundEntity.addComponent(new KinematicBody());
         groundEntity.addComponent(new Material(Color.GRAY));
 
@@ -45,18 +44,18 @@ public class TestWorld extends Scene {
 
     private void addLighting() {
         Entity sunEntity = new Entity();
-        sunEntity.addComponent(new DirectionalLight(Color.WHITE, 1f));
-        sunEntity.addComponent(new Transform().lookingAt(0, -90, 0));
+        sunEntity.addComponent(new DirectionalLight(Color.WHITE, 0.25f));
+        sunEntity.addComponent(Transform.fromXYZ(0, 10, 0).lookingAt(0, 0, 0));
         spawn(sunEntity);
 
         Entity pointLightEntity = new Entity();
-        pointLightEntity.addComponent(new PointLight(Color.WHITE, 0.5f));
-        pointLightEntity.addComponent(Transform.fromXYZ(0, 5f, 0));
+        pointLightEntity.addComponent(new PointLight(Color.WHITE, 5f));
+        pointLightEntity.addComponent(Transform.fromXYZ(0, 5f, 0).lookingAt(0, 0, 0));
         spawn(pointLightEntity);
 
         Entity spotLightEntity = new Entity();
-        spotLightEntity.addComponent(new SpotLight(Color.RED, 0.5f));
-        spotLightEntity.addComponent(Transform.fromXYZ(8f, 6f, 0f));
+        spotLightEntity.addComponent(new SpotLight(Color.RED, 5f));
+        spotLightEntity.addComponent(Transform.fromXYZ(8f, 6f, 0f).lookingAt(0, 0, 0));
         spawn(spotLightEntity);
     }
 }

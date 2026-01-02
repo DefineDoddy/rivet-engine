@@ -17,7 +17,7 @@ public class Time {
     }
 
     public static double getTime() {
-        return System.nanoTime() / 1000000000.0;
+        return System.nanoTime() / 1000000000d;
     }
 
     public static double getDeltaTime() {

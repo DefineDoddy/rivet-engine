@@ -18,7 +18,7 @@ public class Material implements Component {
     public Material() {
         this.diffuse = Color.WHITE;
         this.specular = Color.WHITE;
-        this.shininess = 16f;
+        this.shininess = 0.5f;
     }
 
     public Material(Color diffuse) {
