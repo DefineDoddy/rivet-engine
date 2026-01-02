@@ -3,7 +3,7 @@ package me.definedoddy.game.system;
 import org.rivetengine.core.Game;
 import org.rivetengine.core.Scene;
 import org.rivetengine.entity.Entity;
-import org.rivetengine.entity.components.rendering.Skybox;
+import org.rivetengine.entity.components.camera.Skybox;
 import org.rivetengine.system.GameSystem;
 
 public class SkyRotatorSystem extends GameSystem {

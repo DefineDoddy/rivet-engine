@@ -7,6 +7,7 @@ import org.rivetengine.core.Game;
 import org.rivetengine.core.Scene;
 import org.rivetengine.entity.Entity;
 import org.rivetengine.entity.components.Transform;
+import org.rivetengine.entity.components.camera.CameraShake;
 import org.rivetengine.input.Input;
 import org.rivetengine.input.KeyCode;
 import org.rivetengine.rendering.RenderUtils;
@@ -71,6 +72,13 @@ public class PlayerInputSystem extends GameSystem {
         } else {
             body.velocity.x = 0;
             body.velocity.z = 0;
+        }
+
+        if (Input.keyboard.wasKeyPressed(KeyCode.SPACE)) {
+            CameraShake cameraShake = cameraEntity.getComponent(CameraShake.class);
+            if (cameraShake != null) {
+                cameraShake.shake(new Vector3f(0.2f, 0.2f, 0f), new Vector3f(0.2f, 0.2f, 0.5f), 0.5f);
+            }
         }
     }
 }

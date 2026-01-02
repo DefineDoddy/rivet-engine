@@ -3,7 +3,7 @@ package org.rivetengine.rendering.skybox;
 import org.rivetengine.core.Assets;
 import org.rivetengine.core.Game;
 import org.rivetengine.entity.Entity;
-import org.rivetengine.entity.components.rendering.Skybox;
+import org.rivetengine.entity.components.camera.Skybox;
 import org.rivetengine.rendering.cubemap.CubeMap;
 import org.rivetengine.rendering.RenderUtils;
 import org.rivetengine.rendering.skybox.shader.SkyboxShader;

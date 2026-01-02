@@ -1,4 +1,4 @@
-package org.rivetengine.entity.components.rendering;
+package org.rivetengine.entity.components.camera;
 
 import org.rivetengine.entity.component.Component;
 

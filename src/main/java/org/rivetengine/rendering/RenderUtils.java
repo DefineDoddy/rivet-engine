@@ -4,7 +4,8 @@ import org.joml.Matrix4f;
 import org.rivetengine.core.Game;
 import org.rivetengine.entity.Entity;
 import org.rivetengine.entity.components.Transform;
-import org.rivetengine.entity.components.rendering.Camera;
+import org.rivetengine.entity.components.camera.Camera;
+import org.rivetengine.entity.components.camera.CameraShake;
 
 public class RenderUtils {
     public static Matrix4f[] createCameraMatrices(Game game) {
@@ -37,6 +38,14 @@ public class RenderUtils {
 
     public static Matrix4f createViewMatrix(Entity cameraEntity) {
         Matrix4f worldMatrix = getWorldMatrixSafe(cameraEntity);
+        CameraShake shake = cameraEntity.getComponent(CameraShake.class);
+        if (shake != null) {
+            worldMatrix.translate(shake.offset);
+            worldMatrix.rotateXYZ(
+                    (float) Math.toRadians(shake.rotationOffset.x),
+                    (float) Math.toRadians(shake.rotationOffset.y),
+                    (float) Math.toRadians(shake.rotationOffset.z));
+        }
         return worldMatrix.invert(new Matrix4f());
     }
 
