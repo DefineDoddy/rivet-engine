@@ -10,6 +10,9 @@ import org.rivetengine.rendering.mesh.obj.ObjImporter;
 import org.rivetengine.toolkit.file.File;
 import org.rivetengine.toolkit.file.Resource;
 import org.rivetengine.rendering.sprite.Icon;
+import org.rivetengine.rendering.texture.Texture;
+import org.rivetengine.rendering.texture.TextureLoader;
+import org.rivetengine.rendering.texture.TextureType;
 import org.rivetengine.toolkit.memory.Handle;
 
 public class Assets {
@@ -37,6 +40,9 @@ public class Assets {
     private static <T> T loadFromDisk(String path, Class<T> type) {
         if (type == Entity.class) {
             return (T) ObjImporter.load(new Resource(path));
+        }
+        if (type == Texture.class) {
+            return (T) TextureLoader.loadTexture2D(new Resource(path), TextureType.DIFFUSE);
         }
         if (type == CubeMap.class) {
             return (T) CubeMapLoader.load(path);

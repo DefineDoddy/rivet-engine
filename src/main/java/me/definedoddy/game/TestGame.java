@@ -21,7 +21,7 @@ public class TestGame extends Game {
     public static void main(String[] args) {
         TestGame game = new TestGame();
 
-        game.window = new GameWindow("Test Game", 1920, 1080);
+        game.window = new GameWindow("Test Game", 2560, 1440);
         game.window.setIcon(Assets.load("assets/icon.png", Icon.class));
 
         game.process.start();

@@ -9,25 +9,32 @@ import org.rivetengine.entity.components.camera.Camera;
 import org.rivetengine.entity.components.camera.PostProcessing;
 import org.rivetengine.entity.components.camera.Skybox;
 import org.rivetengine.rendering.cubemap.CubeMap;
-import org.rivetengine.rendering.postprocessing.Bloom;
+import org.rivetengine.rendering.postprocessing.chromaticaberration.ChromaticAberration;
+import org.rivetengine.rendering.postprocessing.vignette.Vignette;
 import org.rivetengine.toolkit.memory.Handle;
 
 public class CameraPrefab implements Prefab {
     @Override
     public Entity create() {
-        Entity camera = new Entity("Main Camera");
+        Entity entity = new Entity("Main Camera");
 
-        camera.addComponent(Transform.fromXYZ(0, 0.8f, 0));
-        camera.addComponent(new Camera());
-        camera.addComponent(new Shaker());
+        entity.addChild(new GunPrefab().create());
+
+        entity.addComponent(Transform.fromXYZ(0, 0.8f, 0));
+        entity.addComponent(new Shaker());
+
+        Camera camera = new Camera();
+        camera.fieldOfView = 80f;
+        entity.addComponent(camera);
 
         PostProcessing postProcessing = new PostProcessing();
-        postProcessing.addEffect(new Bloom());
-        camera.addComponent(postProcessing);
+        postProcessing.addEffect(new Vignette());
+        postProcessing.addEffect(new ChromaticAberration());
+        entity.addComponent(postProcessing);
 
         Handle<CubeMap> sky = Assets.load("assets/skybox", CubeMap.class);
-        camera.addComponent(new Skybox(sky));
+        entity.addComponent(new Skybox(sky));
 
-        return camera;
+        return entity;
     }
 }

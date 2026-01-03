@@ -33,9 +33,9 @@ public class PlayerController implements Component {
     public float cameraOffsetY = 0.9f;
 
     // Camera bobbing
-    public float bobAmplitude = 0.4f;
-    public float bobFrequency = 22f;
-    public float bobSmoothing = 12f;
+    public float bobAmplitude = 0.3f;
+    public float bobFrequency = 24f;
+    public float bobSmoothing = 24f;
     public float bobPhase = 0f;
     public float bobOffset = 0f;
 

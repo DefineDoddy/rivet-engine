@@ -14,6 +14,7 @@ import org.rivetengine.entity.components.rendering.lighting.PointLight;
 import org.rivetengine.entity.components.rendering.lighting.SpotLight;
 import org.rivetengine.rendering.Primitives;
 import org.rivetengine.rendering.mesh.Mesh;
+import org.rivetengine.rendering.texture.Texture;
 import org.rivetengine.toolkit.memory.Handle;
 
 import me.definedoddy.game.prefabs.PlayerPrefab;
@@ -31,14 +32,18 @@ public class TestWorld extends Scene {
         Handle<Mesh> groundMesh = Primitives.quad(new Vector2f(100, 100));
         groundEntity.addComponent(new Mesh3d(groundMesh));
 
-        groundEntity.addComponent(new Transform(new Vector3f(0, -0.5f, 0), new Vector3f(), new Vector3f(1f)));
+        groundEntity.addComponent(Transform.identity());
         groundEntity.addComponent(new Tags("ground"));
         groundEntity.addComponent(new BoxCollider(new Vector3f(50f, 1f, 50f)));
         groundEntity.addComponent(new KinematicBody());
-        groundEntity.addComponent(new Material(Color.GRAY));
+
+        Handle<Texture> diffuseTex = Assets.load("assets/textures/asphalt/asphalt_diff.jpg", Texture.class);
+        Material material = new Material(diffuseTex);
+        material.shininess = 0.2f;
+        groundEntity.addComponent(material);
 
         spawn(groundEntity);
-        spawn(new PlayerPrefab().create());
+        spawn(new PlayerPrefab(new Vector3f(0, 2f, -10f), new Vector3f(0, -90f, 0)).create());
 
         Entity stallEntity = Assets.loadModel("assets/obj/stall/stall.obj");
         stallEntity.addComponent(new BoxCollider(stallEntity));
@@ -49,8 +54,8 @@ public class TestWorld extends Scene {
 
     private void addLighting() {
         Entity sunEntity = new Entity();
-        sunEntity.addComponent(new DirectionalLight(Color.WHITE, 0.25f));
-        sunEntity.addComponent(Transform.fromXYZ(0, 10, 0).lookingAt(0, 0, 0));
+        sunEntity.addComponent(new DirectionalLight(Color.WHITE, 0.8f));
+        sunEntity.addComponent(Transform.fromXYZ(0, 10, 0).lookingAt(0, 0, 10));
         spawn(sunEntity);
 
         Entity pointLightEntity = new Entity();

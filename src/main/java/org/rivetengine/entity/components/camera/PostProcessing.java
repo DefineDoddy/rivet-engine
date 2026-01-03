@@ -16,4 +16,8 @@ public class PostProcessing implements Component {
     public void removeEffect(Class<? extends PostProcessEffect> type) {
         effects.removeIf(e -> e.getClass() == type);
     }
+
+    public List<PostProcessEffect> getEffects() {
+        return effects;
+    }
 }
