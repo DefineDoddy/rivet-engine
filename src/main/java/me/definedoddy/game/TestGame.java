@@ -6,11 +6,15 @@ import org.rivetengine.core.Time;
 import org.rivetengine.debug.Debug;
 import org.rivetengine.input.Input;
 import org.rivetengine.input.KeyCode;
+import org.rivetengine.physics.Physics;
 import org.rivetengine.rendering.sprite.Icon;
 import org.rivetengine.window.GameWindow;
 
 import me.definedoddy.game.scene.TestWorld;
+import me.definedoddy.game.system.PlayerActionSystem;
+import me.definedoddy.game.system.PlayerCameraSystem;
 import me.definedoddy.game.system.PlayerInputSystem;
+import me.definedoddy.game.system.PlayerMovementSystem;
 import me.definedoddy.game.system.SkyRotatorSystem;
 
 public class TestGame extends Game {
@@ -27,7 +31,12 @@ public class TestGame extends Game {
     public void init() {
         Input.mouse.setCursorVisible(false, true);
 
+        Physics.gravity.mul(4);
+
         addSystem(new PlayerInputSystem());
+        addSystem(new PlayerActionSystem());
+        addSystem(new PlayerMovementSystem());
+        addSystem(new PlayerCameraSystem());
         addSystem(new SkyRotatorSystem());
 
         loadScene(TestWorld.class);

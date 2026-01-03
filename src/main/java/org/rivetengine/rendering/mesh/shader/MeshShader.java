@@ -18,8 +18,8 @@ public class MeshShader extends Shader {
     public final UniformMatrix4f projectionMatrix = new UniformMatrix4f("projection_matrix");
     public final UniformMatrix4f viewMatrix = new UniformMatrix4f("view_matrix");
 
-    public final UniformMaterial meshMaterial = new UniformMaterial("mesh_material");
-    public final UniformMaterial modelMaterial = new UniformMaterial("model_material");
+    public final UniformMaterial meshMaterial = new UniformMaterial("mesh_material", 0);
+    public final UniformMaterial modelMaterial = new UniformMaterial("model_material", 3);
 
     public final UniformLights lights = new UniformLights("lights");
     public final UniformInt lightCount = new UniformInt("light_count");

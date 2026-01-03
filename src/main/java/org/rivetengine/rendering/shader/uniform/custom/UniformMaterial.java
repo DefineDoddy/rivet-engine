@@ -7,23 +7,38 @@ import org.rivetengine.rendering.texture.Texture;
 import org.lwjgl.opengl.GL20;
 
 public class UniformMaterial extends Uniform {
-    public UniformMaterial(String name) {
+    private final int baseUnit;
+
+    public UniformMaterial(String name, int baseUnit) {
         super(name);
+        this.baseUnit = baseUnit;
     }
 
     public void loadMaterial(Material material) {
+        if (material == null) {
+            material = new Material();
+        }
         Texture diffuseTex = material.diffuseMap != null ? Assets.get(material.diffuseMap) : null;
         Texture normalTex = material.normalMap != null ? Assets.get(material.normalMap) : null;
         Texture specularTex = material.specularMap != null ? Assets.get(material.specularMap) : null;
 
-        int diffuseId = diffuseTex != null ? diffuseTex.id : -1;
-        GL20.glUniform1i(getLocationOf(programId, "has_diffuse"), diffuseId != -1 ? 1 : 0);
+        if (diffuseTex != null) {
+            diffuseTex.bind(baseUnit);
+            GL20.glUniform1i(getLocationOf(programId, "diffuse"), baseUnit);
+        }
+        GL20.glUniform1i(getLocationOf(programId, "has_diffuse"), diffuseTex != null ? 1 : 0);
 
-        int normalId = normalTex != null ? normalTex.id : -1;
-        GL20.glUniform1i(getLocationOf(programId, "has_normal"), normalId != -1 ? 1 : 0);
+        if (normalTex != null) {
+            normalTex.bind(baseUnit + 1);
+            GL20.glUniform1i(getLocationOf(programId, "normal"), baseUnit + 1);
+        }
+        GL20.glUniform1i(getLocationOf(programId, "has_normal"), normalTex != null ? 1 : 0);
 
-        int specularId = specularTex != null ? specularTex.id : -1;
-        GL20.glUniform1i(getLocationOf(programId, "has_specular"), specularId != -1 ? 1 : 0);
+        if (specularTex != null) {
+            specularTex.bind(baseUnit + 2);
+            GL20.glUniform1i(getLocationOf(programId, "specular"), baseUnit + 2);
+        }
+        GL20.glUniform1i(getLocationOf(programId, "has_specular"), specularTex != null ? 1 : 0);
 
         // Load properties
         GL20.glUniform3f(getLocationOf(programId, "tint_colour"),

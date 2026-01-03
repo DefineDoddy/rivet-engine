@@ -1,7 +1,7 @@
 package org.rivetengine.core;
 
 import org.rivetengine.physics.PhysicsSystem;
-import org.rivetengine.rendering.CameraSystem;
+import org.rivetengine.rendering.ShakeSystem;
 import org.rivetengine.rendering.RenderSystem;
 import org.rivetengine.toolkit.memory.Disposable;
 
@@ -10,7 +10,7 @@ public class Engine implements Disposable {
 
     private RenderSystem renderSystem;
     private PhysicsSystem physicsSystem;
-    private CameraSystem cameraSystem;
+    private ShakeSystem shakeSystem;
 
     public Engine(Game game) {
         this.game = game;
@@ -19,11 +19,11 @@ public class Engine implements Disposable {
     public void init() {
         renderSystem = new RenderSystem();
         physicsSystem = new PhysicsSystem();
-        cameraSystem = new CameraSystem();
+        shakeSystem = new ShakeSystem();
 
         game.addSystem(renderSystem);
         game.addSystem(physicsSystem);
-        game.addSystem(cameraSystem);
+        game.addSystem(shakeSystem);
     }
 
     @Override
@@ -37,8 +37,8 @@ public class Engine implements Disposable {
             game.removeSystem(physicsSystem);
         }
 
-        if (cameraSystem != null) {
-            game.removeSystem(cameraSystem);
+        if (shakeSystem != null) {
+            game.removeSystem(shakeSystem);
         }
     }
 }

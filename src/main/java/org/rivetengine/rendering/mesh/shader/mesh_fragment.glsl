@@ -83,11 +83,15 @@ vec3 calc_dir_light(Light light, vec3 normal, vec3 view_dir) {
 
     vec3 specular = calc_specular(light, normal, view_dir);
 
-    if (mesh_material.has_diffuse) {
+    if (model_material.has_diffuse) {
+        diffuse *= texture(model_material.diffuse, frag_tex_coords).rgb;
+    } else if (mesh_material.has_diffuse) {
         diffuse *= texture(mesh_material.diffuse, frag_tex_coords).rgb;
     }
 
-    if (mesh_material.has_specular) {
+    if (model_material.has_specular) {
+        specular *= texture(model_material.specular, frag_tex_coords).r;
+    } else if (mesh_material.has_specular) {
         specular *= texture(mesh_material.specular, frag_tex_coords).r;
     }
 
@@ -104,11 +108,15 @@ vec3 calc_point_light(Light light, vec3 normal, vec3 view_dir) {
 
     vec3 specular = calc_specular(light, normal, view_dir) * attenuation;
 
-    if (mesh_material.has_diffuse) {
+    if (model_material.has_diffuse) {
+        diffuse *= texture(model_material.diffuse, frag_tex_coords).rgb;
+    } else if (mesh_material.has_diffuse) {
         diffuse *= texture(mesh_material.diffuse, frag_tex_coords).rgb;
     }
 
-    if (mesh_material.has_specular) {
+    if (model_material.has_specular) {
+        specular *= texture(model_material.specular, frag_tex_coords).r;
+    } else if (mesh_material.has_specular) {
         specular *= texture(mesh_material.specular, frag_tex_coords).r;
     }
 
@@ -130,11 +138,15 @@ vec3 calc_spot_light(Light light, vec3 normal, vec3 view_dir) {
 
     vec3 specular = calc_specular(light, normal, view_dir) * attenuation * spot_brightness;
 
-    if (mesh_material.has_diffuse) {
+    if (model_material.has_diffuse) {
+        diffuse *= texture(model_material.diffuse, frag_tex_coords).rgb;
+    } else if (mesh_material.has_diffuse) {
         diffuse *= texture(mesh_material.diffuse, frag_tex_coords).rgb;
     }
 
-    if (mesh_material.has_specular) {
+    if (model_material.has_specular) {
+        specular *= texture(model_material.specular, frag_tex_coords).r;
+    } else if (mesh_material.has_specular) {
         specular *= texture(mesh_material.specular, frag_tex_coords).r;
     }
 

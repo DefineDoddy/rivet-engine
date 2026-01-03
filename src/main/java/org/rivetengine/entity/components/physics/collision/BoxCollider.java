@@ -3,6 +3,7 @@ package org.rivetengine.entity.components.physics.collision;
 import org.rivetengine.entity.Entity;
 import org.rivetengine.entity.components.Transform;
 import org.rivetengine.physics.collision.BoundingBox;
+import org.rivetengine.utils.EntityUtils;
 
 import org.joml.Vector3f;
 
@@ -23,6 +24,19 @@ public class BoxCollider extends Collider3d {
     public BoxCollider(Vector3f size, Vector3f offset) {
         this.size = size;
         this.offset = offset;
+    }
+
+    public BoxCollider(BoundingBox bounds) {
+        this(bounds != null ? bounds.halfExtents : new Vector3f(1),
+                bounds != null ? bounds.center : new Vector3f(0));
+    }
+
+    public BoxCollider(Entity entity) {
+        this(EntityUtils.getTotalBounds(entity));
+    }
+
+    public static BoxCollider fit(Entity entity) {
+        return new BoxCollider(entity);
     }
 
     @Override

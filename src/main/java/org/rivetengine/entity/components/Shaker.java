@@ -1,11 +1,9 @@
-package org.rivetengine.entity.components.camera;
+package org.rivetengine.entity.components;
 
 import org.joml.Vector3f;
 import org.rivetengine.entity.component.Component;
-import org.rivetengine.entity.component.Requires;
 
-@Requires(Camera.class)
-public class CameraShake implements Component {
+public class Shaker implements Component {
     public Vector3f positionIntensity = new Vector3f();
     public Vector3f rotationIntensity = new Vector3f();
     public float duration;
@@ -35,5 +33,12 @@ public class CameraShake implements Component {
 
     public boolean isActive() {
         return elapsed < duration;
+    }
+
+    public void stop() {
+        this.duration = 0;
+        this.elapsed = 0;
+        this.offset.set(0);
+        this.rotationOffset.set(0);
     }
 }

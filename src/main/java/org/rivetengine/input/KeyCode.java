@@ -47,10 +47,19 @@ public enum KeyCode {
     ENTER(257),
     BACKSPACE(259),
     TAB(258),
-    SHIFT(340),
-    CONTROL(341),
-    ALT(342),
+    LEFT_SHIFT(340),
+    RIGHT_SHIFT(344),
+    LEFT_CONTROL(341),
+    RIGHT_CONTROL(345),
+    LEFT_ALT(342),
+    RIGHT_ALT(346),
+    LEFT_SUPER(343),
+    RIGHT_SUPER(347),
     CAPS_LOCK(280),
+    SCROLL_LOCK(281),
+    NUM_LOCK(282),
+    PRINT_SCREEN(283),
+    PAUSE(284),
 
     // Navigation keys
     INSERT(260),
@@ -91,7 +100,29 @@ public enum KeyCode {
     NUMPAD_6(326),
     NUMPAD_7(327),
     NUMPAD_8(328),
-    NUMPAD_9(329);
+    NUMPAD_9(329),
+    NUMPAD_DECIMAL(330),
+    NUMPAD_DIVIDE(331),
+    NUMPAD_MULTIPLY(332),
+    NUMPAD_SUBTRACT(333),
+    NUMPAD_ADD(334),
+    NUMPAD_ENTER(335),
+    NUMPAD_EQUAL(336),
+
+    // Punctuation
+    APOSTROPHE(39),
+    COMMA(44),
+    MINUS(45),
+    PERIOD(46),
+    SLASH(47),
+    SEMICOLON(59),
+    EQUAL(61),
+    LEFT_BRACKET(91),
+    BACKSLASH(92),
+    RIGHT_BRACKET(93),
+    GRAVE_ACCENT(96),
+    WORLD_1(161),
+    WORLD_2(162);
 
     private final int value;
 

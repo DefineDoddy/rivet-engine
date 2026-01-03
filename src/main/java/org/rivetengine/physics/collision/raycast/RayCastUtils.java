@@ -14,20 +14,17 @@ import org.rivetengine.physics.collision.BoundingBox;
 import org.rivetengine.rendering.RenderUtils;
 import org.rivetengine.window.GameWindow;
 
+import java.util.function.Predicate;
+
 public class RayCastUtils {
-    public static RayCastHit rayCast(Scene scene, Vector3f origin, Vector3f direction) {
-        return new RayCast(scene, origin, direction).cast();
-    }
-
-    public static RayCastHit rayCast(Scene scene, Vector3f origin, Vector3f direction, float maxDistance) {
-        return new RayCast(scene, origin, direction, maxDistance).cast();
-    }
-
-    public static Collider getIntersectingCollider(Scene scene, Vector3f point) {
+    public static RayCastHit getIntersecting(Scene scene, Vector3f point, Predicate<Entity> filter, float distance) {
         if (scene == null)
             return null;
 
         for (Entity entity : scene.getAllEntities()) {
+            if (filter != null && !filter.test(entity))
+                continue;
+
             Collider3d collider = entity.getComponent(Collider3d.class);
             if (collider == null)
                 continue;
@@ -35,11 +32,16 @@ public class RayCastUtils {
             if (collider instanceof BoxCollider box) {
                 BoundingBox boxBounds = box.getBox();
                 if (boxBounds.containsPoint(point))
-                    return collider;
+                    return new RayCastHit(point, collider, entity, distance);
             }
         }
 
         return null;
+    }
+
+    public static Collider getIntersectingCollider(Scene scene, Vector3f point) {
+        RayCastHit hit = getIntersecting(scene, point, null, 0);
+        return hit != null ? hit.collider : null;
     }
 
     public static Vector3f screenToWorldPoint(Game game, float x, float y) {

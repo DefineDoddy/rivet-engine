@@ -4,7 +4,7 @@ public class Noise {
     public static float noise(float x) {
         int i = (int) Math.floor(x);
         float f = x - i;
-        f = f * f * (3.0f - 2.0f * f);
+        f = f * f * (3f - 2f * f);
         return lerp(hash(i), hash(i + 1), f);
     }
 

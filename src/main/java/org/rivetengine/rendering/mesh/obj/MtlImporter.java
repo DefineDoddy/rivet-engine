@@ -42,7 +42,7 @@ public class MtlImporter {
                         currentMat.shininess = Float.parseFloat(line.split("\\s+")[1]);
                     } else if (line.startsWith("map_Kd ")) {
                         Texture texture = TextureLoader.loadTexture2D(
-                                new File(line.substring(7).trim()),
+                                new File(file.getParent(), line.substring(7).trim()),
                                 TextureType.DIFFUSE);
                         currentMat.diffuseMap = Assets.register(line.substring(7).trim(), texture);
                     }

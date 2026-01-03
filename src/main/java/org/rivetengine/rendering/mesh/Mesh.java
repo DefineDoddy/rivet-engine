@@ -3,16 +3,19 @@ package org.rivetengine.rendering.mesh;
 import org.rivetengine.toolkit.buffer.BufferUtils;
 import org.rivetengine.toolkit.memory.Disposable;
 import org.rivetengine.rendering.mesh.object.Vao;
+import org.rivetengine.physics.collision.BoundingBox;
 
 import org.lwjgl.opengl.GL11;
 
 public class Mesh implements Disposable {
     private final Vao vao;
     private final int indexCount;
+    private final BoundingBox bounds;
 
-    public Mesh(float[] positions, float[] texCoords, float[] normals, int[] indices) {
+    public Mesh(float[] positions, float[] texCoords, float[] normals, int[] indices, BoundingBox bounds) {
         this.vao = new Vao();
         this.indexCount = indices.length;
+        this.bounds = bounds;
 
         vao.storeData(0, BufferUtils.createFloatBuffer(positions), 3);
         vao.storeData(1, BufferUtils.createFloatBuffer(texCoords), 2);
@@ -36,6 +39,10 @@ public class Mesh implements Disposable {
 
     public int getIndexCount() {
         return indexCount;
+    }
+
+    public BoundingBox getBounds() {
+        return bounds;
     }
 
     @Override

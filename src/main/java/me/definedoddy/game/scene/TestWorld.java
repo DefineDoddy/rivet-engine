@@ -1,5 +1,6 @@
 package me.definedoddy.game.scene;
 
+import org.rivetengine.core.Assets;
 import org.rivetengine.core.Scene;
 import org.rivetengine.entity.Entity;
 import org.rivetengine.entity.components.Tags;
@@ -39,6 +40,10 @@ public class TestWorld extends Scene {
         spawn(groundEntity);
         spawn(new PlayerPrefab().create());
 
+        Entity stallEntity = Assets.loadModel("assets/obj/stall/stall.obj");
+        stallEntity.addComponent(new BoxCollider(stallEntity));
+        spawn(stallEntity);
+
         addLighting();
     }
 
@@ -50,11 +55,11 @@ public class TestWorld extends Scene {
 
         Entity pointLightEntity = new Entity();
         pointLightEntity.addComponent(new PointLight(Color.WHITE, 5f));
-        pointLightEntity.addComponent(Transform.fromXYZ(0, 5f, 0).lookingAt(0, 0, 0));
+        pointLightEntity.addComponent(Transform.fromXYZ(0, 3f, 0).lookingAt(0, 0, 0));
         spawn(pointLightEntity);
 
         Entity spotLightEntity = new Entity();
-        spotLightEntity.addComponent(new SpotLight(Color.RED, 5f));
+        spotLightEntity.addComponent(new SpotLight(Color.RED, 10f));
         spotLightEntity.addComponent(Transform.fromXYZ(8f, 6f, 0f).lookingAt(0, 0, 0));
         spawn(spotLightEntity);
     }

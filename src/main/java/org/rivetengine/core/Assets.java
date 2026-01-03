@@ -3,9 +3,12 @@ package org.rivetengine.core;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.rivetengine.entity.Entity;
 import org.rivetengine.rendering.cubemap.CubeMap;
 import org.rivetengine.rendering.cubemap.CubeMapLoader;
+import org.rivetengine.rendering.mesh.obj.ObjImporter;
 import org.rivetengine.toolkit.file.File;
+import org.rivetengine.toolkit.file.Resource;
 import org.rivetengine.rendering.sprite.Icon;
 import org.rivetengine.toolkit.memory.Handle;
 
@@ -32,6 +35,9 @@ public class Assets {
 
     @SuppressWarnings("unchecked")
     private static <T> T loadFromDisk(String path, Class<T> type) {
+        if (type == Entity.class) {
+            return (T) ObjImporter.load(new Resource(path));
+        }
         if (type == CubeMap.class) {
             return (T) CubeMapLoader.load(path);
         }
@@ -49,5 +55,10 @@ public class Assets {
     public static <T> Handle<T> register(String id, T asset) {
         storage.put(id, asset);
         return new Handle<>(id);
+    }
+
+    public static Entity loadModel(String path) {
+        Handle<Entity> handle = load(path, Entity.class);
+        return handle != null ? get(handle) : null;
     }
 }

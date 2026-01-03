@@ -39,7 +39,7 @@ public class PhysicsSystem extends GameSystem {
             PhysicsBody body = entity.getComponent(PhysicsBody.class);
 
             if (body instanceof Rigidbody rb) {
-                rb.velocity.fma(dt, Physics.GRAVITY);
+                rb.velocity.fma(dt, Physics.gravity);
                 Transform transform = SystemUtils.getTransformSafe(entity);
                 transform.position.fma(dt, rb.velocity);
             } else if (body instanceof KinematicBody kb) {

@@ -1,5 +1,6 @@
 package me.definedoddy.game.system;
 
+import me.definedoddy.game.component.PlayerController;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
@@ -7,11 +8,9 @@ import org.rivetengine.core.Game;
 import org.rivetengine.core.Scene;
 import org.rivetengine.entity.Entity;
 import org.rivetengine.entity.components.Transform;
-import org.rivetengine.entity.components.camera.CameraShake;
 import org.rivetengine.input.Input;
 import org.rivetengine.input.KeyCode;
 import org.rivetengine.rendering.RenderUtils;
-import org.rivetengine.entity.components.physics.body.Rigidbody;
 import org.rivetengine.system.GameSystem;
 
 public class PlayerInputSystem extends GameSystem {
@@ -24,61 +23,42 @@ public class PlayerInputSystem extends GameSystem {
             return;
         }
 
+        PlayerController controller = player.getComponent(PlayerController.class);
         Transform playerTransform = player.getComponent(Transform.class);
-        Rigidbody body = player.getComponent(Rigidbody.class);
         Entity cameraEntity = player.getChild("Main Camera");
 
-        if (cameraEntity == null || body == null) {
+        if (cameraEntity == null || controller == null) {
             return;
         }
 
         Transform cameraTransform = cameraEntity.getComponent(Transform.class);
 
-        // Mouse look
         Vector2f mouseDelta = Input.mouse.getDelta();
         float sensitivity = 0.1f;
-
         playerTransform.rotation.y -= mouseDelta.x * sensitivity;
-        cameraTransform.rotation.x -= mouseDelta.y * sensitivity;
-        cameraTransform.rotation.x = Math.max(-90, Math.min(90, cameraTransform.rotation.x));
-
-        // Keyboard movement
-        float speed = 15f;
-        Vector3f moveDir = new Vector3f();
+        cameraTransform.rotation.x = Math.max(-90,
+                Math.min(90, cameraTransform.rotation.x - mouseDelta.y * sensitivity));
 
         Matrix4f cameraWorld = RenderUtils.getWorldMatrixSafe(cameraEntity);
         Vector3f forward = new Vector3f(0, 0, -1);
         cameraWorld.transformDirection(forward);
+        forward.y = 0;
         forward.normalize();
-
         Vector3f right = new Vector3f(forward).cross(0, 1, 0).normalize();
 
-        if (Input.keyboard.isKeyPressed(KeyCode.W)) {
-            moveDir.add(forward);
-        }
-        if (Input.keyboard.isKeyPressed(KeyCode.S)) {
-            moveDir.sub(forward);
-        }
-        if (Input.keyboard.isKeyPressed(KeyCode.A)) {
-            moveDir.sub(right);
-        }
-        if (Input.keyboard.isKeyPressed(KeyCode.D)) {
-            moveDir.add(right);
+        float forwardAxis = (Input.keyboard.isKeyPressed(KeyCode.W) ? 1f : 0f)
+                - (Input.keyboard.isKeyPressed(KeyCode.S) ? 1f : 0f);
+        float strafeAxis = (Input.keyboard.isKeyPressed(KeyCode.D) ? 1f : 0f)
+                - (Input.keyboard.isKeyPressed(KeyCode.A) ? 1f : 0f);
+
+        controller.rawMoveInput.set(strafeAxis, 0, -forwardAxis);
+        controller.moveInput.set(forward.mul(forwardAxis).add(right.mul(strafeAxis)));
+        if (controller.moveInput.lengthSquared() > 0f) {
+            controller.moveInput.normalize();
         }
 
-        if (moveDir.length() > 0) {
-            moveDir.normalize();
-            body.velocity.set(moveDir.x * speed, body.velocity.y, moveDir.z * speed);
-        } else {
-            body.velocity.x = 0;
-            body.velocity.z = 0;
-        }
-
-        if (Input.keyboard.wasKeyPressed(KeyCode.SPACE)) {
-            CameraShake cameraShake = cameraEntity.getComponent(CameraShake.class);
-            if (cameraShake != null) {
-                cameraShake.shake(new Vector3f(0.2f, 0.2f, 0f), new Vector3f(0.2f, 0.2f, 0.5f), 0.5f);
-            }
-        }
+        controller.jumpRequested = Input.keyboard.wasKeyPressed(KeyCode.SPACE);
+        controller.dashRequested = Input.keyboard.wasKeyPressed(KeyCode.LEFT_SHIFT);
+        controller.slideRequested = Input.keyboard.isKeyPressed(KeyCode.LEFT_CONTROL);
     }
 }

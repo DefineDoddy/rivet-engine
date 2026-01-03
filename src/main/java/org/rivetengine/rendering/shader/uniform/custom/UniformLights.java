@@ -3,11 +3,11 @@ package org.rivetengine.rendering.shader.uniform.custom;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.rivetengine.entity.Entity;
-import org.rivetengine.entity.components.Transform;
 import org.rivetengine.entity.components.rendering.lighting.DirectionalLight;
 import org.rivetengine.entity.components.rendering.lighting.Light;
 import org.rivetengine.entity.components.rendering.lighting.PointLight;
 import org.rivetengine.entity.components.rendering.lighting.SpotLight;
+import org.rivetengine.rendering.RenderUtils;
 import org.rivetengine.rendering.shader.uniform.Uniform;
 import org.lwjgl.opengl.GL20;
 
@@ -42,8 +42,7 @@ public class UniformLights extends Uniform {
 
         GL20.glUniform1f(getLocationOf(programId, index, "intensity"), lightComponent.intensity);
 
-        Transform transform = getTransformSafe(lightEntity);
-        Matrix4f worldMatrix = transform.getWorldMatrix(lightEntity);
+        Matrix4f worldMatrix = RenderUtils.getWorldMatrixSafe(lightEntity);
 
         // Store position
         if (lightEntity.hasComponent(DirectionalLight.class)) {
@@ -107,13 +106,5 @@ public class UniformLights extends Uniform {
 
     private int getLocationOf(int programID, int index, String property) {
         return GL20.glGetUniformLocation(programID, name + "[" + index + "]." + property);
-    }
-
-    private Transform getTransformSafe(Entity entity) {
-        Transform transform = entity.getComponent(Transform.class);
-        if (transform == null) {
-            transform = new Transform();
-        }
-        return transform;
     }
 }

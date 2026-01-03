@@ -4,26 +4,18 @@ import java.util.List;
 
 import org.rivetengine.core.Game;
 import org.rivetengine.entity.Entity;
-import org.rivetengine.entity.components.camera.Camera;
-import org.rivetengine.entity.components.camera.CameraShake;
+import org.rivetengine.entity.components.Shaker;
 import org.rivetengine.system.GameSystem;
+import org.rivetengine.system.SystemUtils;
 import org.rivetengine.utils.Noise;
 
-public class CameraSystem extends GameSystem {
+public class ShakeSystem extends GameSystem {
     @Override
     public void update(Game game, float dt) {
-        List<Entity> entities = game.getActiveScene().getAllEntities();
+        List<Entity> entities = SystemUtils.getEntitiesWithComponent(game, Shaker.class);
 
         for (Entity entity : entities) {
-            Camera camera = entity.getComponent(Camera.class);
-            if (camera == null || !camera.active) { // TODO: implement .isMain?
-                continue;
-            }
-
-            CameraShake shake = entity.getComponent(CameraShake.class);
-            if (shake == null) {
-                continue;
-            }
+            Shaker shake = entity.getComponent(Shaker.class);
 
             if (shake.isActive()) {
                 float elapsed = shake.elapsed + dt;
@@ -47,7 +39,7 @@ public class CameraSystem extends GameSystem {
                                 * decay,
                         (Noise.noise(seed + 5000f + elapsed * freq * 1.1f) * 2f - 1f) * shake.rotationIntensity.z
                                 * decay);
-            } else {
+            } else if (shake.offset.lengthSquared() > 0 || shake.rotationOffset.lengthSquared() > 0) {
                 shake.offset.set(0, 0, 0);
                 shake.rotationOffset.set(0, 0, 0);
             }
